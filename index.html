@@ -3,1070 +3,1022 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#0f0f0f">
+<meta name="theme-color" content="#0a0a0f">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>Circulate ✈️</title>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Circulate</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;700&display=swap');
-
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-
 :root{
-  --bg:#0f0f0f;
-  --card:rgba(255,255,255,.05);
-  --card2:rgba(255,255,255,.03);
-  --border:rgba(255,255,255,.08);
-  --neon:#c8ff00;
-  --neon-g:rgba(200,255,0,.15);
-  --neon-g2:rgba(200,255,0,.4);
-  --blue:#4d7cff;
-  --blue-g:rgba(77,124,255,.2);
-  --pink:#ff4d8d;
-  --pink-g:rgba(255,77,141,.15);
-  --orange:#ff8a00;
-  --orange-g:rgba(255,138,0,.15);
-  --cyan:#00e5ff;
-  --purple:#a855f7;
-  --t1:#ffffff;
-  --t2:rgba(255,255,255,.55);
-  --t3:rgba(255,255,255,.3);
-  --r:24px;
-  --r2:16px;
-  --r3:12px;
-  --safe-b:env(safe-area-inset-bottom,0px);
+--bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a2e;
+--w:#ffffff;--w1:rgba(255,255,255,.9);--w2:rgba(255,255,255,.5);--w3:rgba(255,255,255,.25);--w4:rgba(255,255,255,.08);
+--lime:#b8ff57;--lime2:#d4ff8e;--lime-g:rgba(184,255,87,.15);--lime-g2:rgba(184,255,87,.3);
+--blue:#6c8aff;--blue-g:rgba(108,138,255,.15);
+--pink:#ff6eb4;--pink-g:rgba(255,110,180,.12);
+--orange:#ffa64d;--orange-g:rgba(255,166,77,.12);
+--violet:#a78bfa;--violet-g:rgba(167,139,250,.12);
+--cyan:#5eead4;
+--r:28px;--r2:20px;--r3:14px;
+--safe-b:env(safe-area-inset-bottom,0px);
+--font:'Plus Jakarta Sans',system-ui,sans-serif;
+}
+html,body{font-family:var(--font);background:var(--bg);color:var(--w);min-height:100dvh;overflow:hidden;-webkit-font-smoothing:antialiased;touch-action:manipulation;perspective:1200px}
+
+/* ═══ 3D SCENE ═══ */
+.scene{position:fixed;inset:0;perspective:1200px;transform-style:preserve-3d}
+
+/* ═══ AMBIENT ═══ */
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.amb-orb{position:absolute;border-radius:50%;filter:blur(100px);animation:orbDrift 12s ease-in-out infinite alternate}
+.amb-1{width:500px;height:500px;background:rgba(184,255,87,.06);top:-15%;right:-10%;animation-delay:0s}
+.amb-2{width:400px;height:400px;background:rgba(108,138,255,.05);bottom:-10%;left:-10%;animation-delay:-4s}
+.amb-3{width:300px;height:300px;background:rgba(255,110,180,.04);top:40%;left:40%;animation-delay:-7s}
+@keyframes orbDrift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(30px,-20px) scale(1.1)}}
+
+.grid-overlay{
+position:fixed;inset:0;pointer-events:none;z-index:0;
+background-image:
+  linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
+background-size:60px 60px;
 }
 
-html,body{
-  font-family:'DM Sans','Space Grotesk',system-ui,sans-serif;
-  background:var(--bg);color:var(--t1);
-  min-height:100dvh;overflow:hidden;
-  -webkit-font-smoothing:antialiased;
-  touch-action:manipulation;
-}
-
-/* === ANIMATED BG MESH === */
-.mesh{
-  position:fixed;inset:0;z-index:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 60% 50% at 20% 20%,rgba(200,255,0,.04) 0%,transparent 70%),
-    radial-gradient(ellipse 50% 60% at 80% 80%,rgba(77,124,255,.04) 0%,transparent 70%),
-    radial-gradient(ellipse 40% 40% at 50% 50%,rgba(255,77,141,.03) 0%,transparent 70%);
-}
-.mesh::after{
-  content:'';position:absolute;inset:0;
-  background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='1' cy='1' r='1' fill='rgba(255,255,255,0.03)'/%3E%3C/svg%3E");
-  opacity:.5;
-}
-
-/* === SCREENS === */
+/* ═══ SCREENS ═══ */
 .scr{
-  position:absolute;inset:0;display:flex;flex-direction:column;
-  padding:20px 20px calc(20px + var(--safe-b));
-  z-index:1;overflow-y:auto;overflow-x:hidden;
-  opacity:0;pointer-events:none;transform:scale(.96);
-  transition:all .45s cubic-bezier(.4,0,.2,1);
-  max-width:500px;margin:0 auto;left:0;right:0;
-  scrollbar-width:none;
+position:absolute;inset:0;display:flex;flex-direction:column;
+padding:24px 22px calc(24px + var(--safe-b));
+z-index:2;overflow-y:auto;overflow-x:hidden;
+opacity:0;pointer-events:none;
+transform:translateZ(-60px) rotateY(8deg);
+transition:all .6s cubic-bezier(.16,1,.3,1);
+max-width:520px;margin:0 auto;left:0;right:0;
+scrollbar-width:none;transform-style:preserve-3d;
 }
 .scr::-webkit-scrollbar{display:none}
-.scr.on{opacity:1;pointer-events:all;transform:scale(1)}
+.scr.on{opacity:1;pointer-events:all;transform:translateZ(0) rotateY(0)}
+.scr.out{opacity:0;transform:translateZ(60px) rotateY(-8deg)}
 
-/* === PILL BADGE === */
+/* ═══ 3D TILT CARD ═══ */
+.tilt-card{
+position:relative;padding:28px;margin-bottom:18px;
+background:linear-gradient(145deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+border:1px solid rgba(255,255,255,.08);
+border-radius:var(--r);overflow:hidden;
+transform-style:preserve-3d;
+transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s;
+will-change:transform;
+}
+.tilt-card::before{
+content:'';position:absolute;inset:0;
+background:linear-gradient(135deg,rgba(255,255,255,.08) 0%,transparent 50%);
+pointer-events:none;border-radius:inherit;
+opacity:0;transition:opacity .3s;
+}
+.tilt-card:hover::before,.tilt-card:active::before{opacity:1}
+.tilt-card .shine{
+position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.08) 0%,transparent 60%);
+}
+.tilt-card:active{transform:scale(.97)}
+
+/* ═══ FLOATING ILLUSTRATION ═══ */
+.illust{
+width:100%;max-width:340px;margin:0 auto 24px;
+position:relative;transform-style:preserve-3d;
+}
+.illust-3d{
+animation:float3d 6s ease-in-out infinite;
+transform-style:preserve-3d;
+}
+@keyframes float3d{
+0%,100%{transform:translateY(0) rotateX(2deg) rotateY(-3deg)}
+25%{transform:translateY(-12px) rotateX(-1deg) rotateY(3deg)}
+50%{transform:translateY(-6px) rotateX(3deg) rotateY(-2deg)}
+75%{transform:translateY(-15px) rotateX(-2deg) rotateY(4deg)}
+}
+
+.illust svg{
+width:100%;height:auto;
+filter:drop-shadow(0 20px 60px rgba(0,0,0,.4));
+}
+
+/* ═══ LAYERED 3D ILLUSTRATION ═══ */
+.layer-wrap{position:relative;width:280px;height:260px;margin:0 auto 24px;transform-style:preserve-3d;perspective:800px}
+.layer{position:absolute;inset:0;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.layer-bg{transform:translateZ(-30px) scale(1.08)}
+.layer-mid{transform:translateZ(0px)}
+.layer-fg{transform:translateZ(30px) scale(.94)}
+
+/* ═══ TYPOGRAPHY ═══ */
+h1{font-size:38px;font-weight:800;line-height:1.08;letter-spacing:-1.5px}
+h2{font-size:26px;font-weight:700;letter-spacing:-.8px}
+.gradient{background:linear-gradient(135deg,var(--lime),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sub{color:var(--w2);font-size:15px;line-height:1.7}
+.micro{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--w3)}
+
+/* ═══ PILL ═══ */
 .pill{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:6px 14px;border-radius:50px;font-size:12px;font-weight:600;
-  letter-spacing:.5px;text-transform:uppercase;
+display:inline-flex;align-items:center;gap:6px;
+padding:7px 16px;border-radius:50px;font-size:12px;font-weight:700;
+letter-spacing:.6px;text-transform:uppercase;
+backdrop-filter:blur(12px);
 }
-.pill-neon{background:var(--neon-g);color:var(--neon);border:1px solid rgba(200,255,0,.2)}
-.pill-blue{background:var(--blue-g);color:var(--blue);border:1px solid rgba(77,124,255,.2)}
-.pill-pink{background:var(--pink-g);color:var(--pink);border:1px solid rgba(255,77,141,.2)}
-.pill-orange{background:var(--orange-g);color:var(--orange);border:1px solid rgba(255,138,0,.2)}
+.pill-lime{background:var(--lime-g);color:var(--lime);border:1px solid rgba(184,255,87,.2)}
+.pill-blue{background:var(--blue-g);color:var(--blue);border:1px solid rgba(108,138,255,.2)}
+.pill-pink{background:var(--pink-g);color:var(--pink);border:1px solid rgba(255,110,180,.2)}
+.pill-orange{background:var(--orange-g);color:var(--orange);border:1px solid rgba(255,166,77,.2)}
 
-/* === HERO TEXT === */
-.hero{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;line-height:1.1;letter-spacing:-1.5px;margin:16px 0 12px}
-.hero .pop{
-  background:linear-gradient(135deg,var(--neon),#a3ff00);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
+/* ═══ BUTTONS ═══ */
+.btn{
+width:100%;padding:18px;border:none;border-radius:var(--r2);
+font-family:var(--font);font-size:17px;font-weight:700;
+cursor:pointer;transition:all .3s cubic-bezier(.16,1,.3,1);
+position:relative;overflow:hidden;display:flex;
+align-items:center;justify-content:center;gap:10px;
+letter-spacing:-.2px;transform-style:preserve-3d;
 }
-.desc{color:var(--t2);font-size:15px;line-height:1.65;margin-bottom:28px}
+.btn:active{transform:scale(.94) translateZ(-4px)}
+.btn-glow{
+background:var(--lime);color:#0a0a0f;
+box-shadow:0 8px 40px rgba(184,255,87,.25),0 0 0 1px rgba(184,255,87,.3),inset 0 1px 0 rgba(255,255,255,.2);
+}
+.btn-glow:active{box-shadow:0 2px 16px rgba(184,255,87,.15)}
+.btn-glass{
+background:rgba(255,255,255,.06);color:var(--w);
+border:1.5px solid var(--w4);
+backdrop-filter:blur(12px);
+}
+.btn-glass:active{background:rgba(255,255,255,.12)}
+.btn-red{
+background:rgba(255,110,180,.1);color:var(--pink);
+border:1.5px solid rgba(255,110,180,.2);
+}
+.btn-sm{padding:14px;font-size:14px;border-radius:var(--r3)}
 
-/* === BLOB CARD (no boring rectangles) === */
-.blob{
-  position:relative;padding:24px;margin-bottom:16px;
-  background:var(--card);border:1px solid var(--border);
-  border-radius:var(--r);overflow:hidden;
-  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+/* ═══ DURATION PICKER ═══ */
+.dur-wrap{display:flex;align-items:center;justify-content:center;gap:28px;padding:16px 0}
+.dur-ring{
+width:64px;height:64px;border-radius:50%;
+background:rgba(255,255,255,.04);border:2px solid var(--w4);
+display:flex;align-items:center;justify-content:center;
+font-size:28px;color:var(--w);cursor:pointer;
+transition:all .3s cubic-bezier(.16,1,.3,1);
+backdrop-filter:blur(8px);
 }
-.blob::before{
-  content:'';position:absolute;top:-50%;right:-50%;
-  width:100%;height:100%;border-radius:50%;
-  background:radial-gradient(circle,rgba(200,255,0,.06),transparent 70%);
-  pointer-events:none;
-}
-.blob:active{transform:scale(.97)}
+.dur-ring:active{transform:scale(.8) rotate(-15deg);background:var(--lime);color:#0a0a0f;border-color:var(--lime)}
+.dur-center{text-align:center}
+.dur-big{font-size:68px;font-weight:800;letter-spacing:-4px;line-height:1;color:var(--lime);
+transition:all .35s cubic-bezier(.16,1,.3,1)}
+.dur-big.pop{animation:numPop .5s cubic-bezier(.16,1,.3,1)}
+@keyframes numPop{0%{transform:scale(1)}35%{transform:scale(1.25) rotate(-3deg)}70%{transform:scale(.95)}100%{transform:scale(1)}}
+.dur-unit{font-size:16px;color:var(--w2);font-weight:500;margin-top:2px}
 
-/* === SQUISHY BUTTONS === */
-.squishy{
-  width:100%;padding:18px;border:none;border-radius:var(--r);
-  font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;
-  cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1);
-  position:relative;overflow:hidden;display:flex;align-items:center;
-  justify-content:center;gap:8px;letter-spacing:-.3px;
-}
-.squishy:active{transform:scale(.93) rotate(-1deg)}
-.sq-neon{
-  background:var(--neon);color:#0f0f0f;
-  box-shadow:0 8px 40px rgba(200,255,0,.3),0 2px 8px rgba(200,255,0,.2);
-}
-.sq-neon:active{box-shadow:0 2px 16px rgba(200,255,0,.2)}
-.sq-dark{
-  background:rgba(255,255,255,.08);color:var(--t1);
-  border:1.5px solid var(--border);
-}
-.sq-danger{
-  background:rgba(255,77,141,.1);color:var(--pink);
-  border:1.5px solid rgba(255,77,141,.2);
-}
-.sq-blue{
-  background:var(--blue);color:white;
-  box-shadow:0 8px 40px rgba(77,124,255,.3);
-}
-
-/* === BOUNCY NUMBERS === */
-.big-num{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:72px;font-weight:700;line-height:1;
-  letter-spacing:-4px;
-  transition:all .3s cubic-bezier(.34,1.56,.64,1);
-}
-.big-num.bounce{animation:numBounce .5s cubic-bezier(.34,1.56,.64,1)}
-@keyframes numBounce{
-  0%{transform:scale(1)}30%{transform:scale(1.3) rotate(-3deg)}
-  60%{transform:scale(.9) rotate(2deg)}100%{transform:scale(1) rotate(0)}
-}
-
-/* === WOBBLY DURATION PICKER === */
-.dur-picker{display:flex;align-items:center;justify-content:center;gap:24px;padding:20px 0}
-.dur-circle{
-  width:60px;height:60px;border-radius:50%;
-  background:rgba(255,255,255,.06);border:2px solid var(--border);
-  display:flex;align-items:center;justify-content:center;
-  font-size:28px;font-weight:300;color:var(--t1);cursor:pointer;
-  transition:all .25s cubic-bezier(.34,1.56,.64,1);
-}
-.dur-circle:active{
-  transform:scale(.8) rotate(-10deg);
-  background:var(--neon);border-color:var(--neon);color:#0f0f0f;
-}
-.dur-val{text-align:center}
-.dur-val .big-num{color:var(--neon)}
-.dur-val small{font-size:18px;color:var(--t2);font-weight:400}
-
-/* === CHIPS (fun bouncy pills) === */
+/* ═══ CHIPS ═══ */
 .chips{display:flex;flex-wrap:wrap;gap:10px}
 .chip{
-  padding:12px 18px;border-radius:50px;
-  border:1.5px solid var(--border);background:var(--card2);
-  font-size:14px;font-weight:600;cursor:pointer;
-  transition:all .25s cubic-bezier(.34,1.56,.64,1);
-  color:var(--t2);display:flex;align-items:center;gap:8px;
-  user-select:none;
+padding:12px 20px;border-radius:50px;
+border:1.5px solid var(--w4);
+background:rgba(255,255,255,.03);
+font-size:14px;font-weight:600;cursor:pointer;
+transition:all .3s cubic-bezier(.16,1,.3,1);
+color:var(--w2);display:flex;align-items:center;gap:8px;
+user-select:none;backdrop-filter:blur(8px);
 }
-.chip:active{transform:scale(.88) rotate(-5deg)}
+.chip:active{transform:scale(.9) rotate(-4deg)}
 .chip.on{
-  border-color:var(--neon);background:var(--neon-g);color:var(--neon);
-  box-shadow:0 0 20px rgba(200,255,0,.15);
-  transform:scale(1.02);
+border-color:var(--lime);background:var(--lime-g);color:var(--lime);
+box-shadow:0 0 24px rgba(184,255,87,.12);
 }
-.chip .ico{font-size:18px}
+.chip .ci{font-size:18px}
 
-/* === WAVY TIMELINE === */
-.wave-tl{
-  position:relative;height:10px;border-radius:5px;
-  background:rgba(255,255,255,.05);margin:16px 0 8px;
-  overflow:visible;
+/* ═══ WAVE TIMELINE ═══ */
+.tl-outer{position:relative;height:12px;border-radius:6px;background:rgba(255,255,255,.04);margin:16px 0 8px;overflow:visible}
+.tl-fill{height:100%;border-radius:6px;position:relative;
+background:linear-gradient(90deg,var(--violet),var(--blue),var(--lime));
+background-size:200% 100%;animation:gradShift 5s ease-in-out infinite;
+transition:width 1.2s cubic-bezier(.16,1,.3,1);
+box-shadow:0 0 20px rgba(184,255,87,.2);
 }
-.wave-fill{
-  height:100%;border-radius:5px;position:relative;
-  background:linear-gradient(90deg,var(--purple),var(--blue),var(--neon));
-  background-size:200% 100%;animation:waveGrad 4s ease-in-out infinite;
-  transition:width 1s cubic-bezier(.4,0,.2,1);
-  box-shadow:0 0 20px rgba(200,255,0,.2);
-}
-@keyframes waveGrad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
-.wave-fill::after{
-  content:'✈️';position:absolute;right:-14px;top:-12px;
-  font-size:22px;animation:planeFloat 2s ease-in-out infinite;
-  filter:drop-shadow(0 4px 8px rgba(0,0,0,.5));
-}
-@keyframes planeFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-6px) rotate(2deg)}}
-.wave-dot{
-  position:absolute;top:50%;transform:translate(-50%,-50%);
-  width:16px;height:16px;border-radius:50%;
-  background:var(--bg);border:2.5px solid rgba(255,255,255,.12);
-  transition:all .4s cubic-bezier(.34,1.56,.64,1);z-index:2;
-}
-.wave-dot.done{background:var(--neon);border-color:var(--neon);transform:translate(-50%,-50%) scale(1.15);box-shadow:0 0 12px var(--neon-g2)}
-.wave-dot.now{border-color:var(--neon);animation:dotBreath 1.5s ease-in-out infinite}
-@keyframes dotBreath{0%,100%{box-shadow:0 0 0 0 var(--neon-g2)}50%{box-shadow:0 0 0 10px transparent}}
+@keyframes gradShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.tl-fill::after{content:'✈️';position:absolute;right:-14px;top:-10px;font-size:22px;
+filter:drop-shadow(0 4px 12px rgba(0,0,0,.5));animation:planeBob 2.5s ease-in-out infinite}
+@keyframes planeBob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-8px) rotate(3deg)}}
+.tl-dot{position:absolute;top:50%;transform:translate(-50%,-50%);
+width:18px;height:18px;border-radius:50%;
+background:var(--bg2);border:2.5px solid var(--w4);
+transition:all .5s cubic-bezier(.16,1,.3,1);z-index:2}
+.tl-dot.done{background:var(--lime);border-color:var(--lime);box-shadow:0 0 12px var(--lime-g2);transform:translate(-50%,-50%) scale(1.1)}
+.tl-dot.now{border-color:var(--lime);animation:dotPulse 1.5s ease-in-out infinite}
+@keyframes dotPulse{0%,100%{box-shadow:0 0 0 0 var(--lime-g2)}50%{box-shadow:0 0 0 10px transparent}}
 
-/* === STAT BLOBS === */
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-.stat-blob{
-  padding:20px 16px;text-align:center;position:relative;overflow:hidden;
-}
-.stat-blob .stat-icon{font-size:24px;margin-bottom:8px;display:block}
-.stat-blob .stat-n{font-family:'Space Grotesk';font-size:34px;font-weight:700;line-height:1}
-.stat-blob .stat-l{font-size:12px;color:var(--t2);margin-top:4px;font-weight:500}
+/* ═══ STAT PODS ═══ */
+.pods{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+.pod{padding:22px 16px;text-align:center;transform-style:preserve-3d}
+.pod-icon{font-size:28px;margin-bottom:8px;display:block;
+animation:iconFloat 4s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes iconFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-6px) rotate(5deg)}}
+.pod-num{font-size:36px;font-weight:800;line-height:1;letter-spacing:-1px}
+.pod-lbl{font-size:12px;color:var(--w2);margin-top:4px;font-weight:500}
 
-/* === JUICE METER (hydration) === */
-.juice{
-  display:flex;align-items:center;gap:16px;cursor:pointer;
-  padding:20px;
+/* ═══ HYDRATION BOTTLE 3D ═══ */
+.hydro{display:flex;align-items:center;gap:18px;cursor:pointer;padding:22px}
+.hydro-3d{
+width:50px;height:96px;border-radius:25px;
+border:2.5px solid var(--w4);position:relative;
+overflow:hidden;flex-shrink:0;
+background:rgba(0,0,0,.3);
+transform:perspective(400px) rotateY(-5deg);
+transition:transform .3s;
 }
-.juice-bottle{
-  width:44px;height:88px;border-radius:22px;
-  border:2.5px solid var(--border);position:relative;
-  overflow:hidden;flex-shrink:0;background:rgba(0,0,0,.3);
+.hydro:active .hydro-3d{transform:perspective(400px) rotateY(5deg) scale(.95)}
+.hydro-water{
+position:absolute;bottom:0;left:0;right:0;
+background:linear-gradient(180deg,#38bdf8,#0284c7);
+transition:height .7s cubic-bezier(.16,1,.3,1);
+border-radius:0 0 23px 23px;
 }
-.juice-water{
-  position:absolute;bottom:0;left:0;right:0;
-  background:linear-gradient(180deg,#38bdf8,#0284c7);
-  transition:height .7s cubic-bezier(.34,1.56,.64,1);
-  border-radius:0 0 20px 20px;
+.hydro-wave{
+position:absolute;top:-4px;left:-20%;width:140%;height:10px;
+background:radial-gradient(ellipse,rgba(255,255,255,.35) 0%,transparent 70%);
+animation:waveDance 2s ease-in-out infinite;
 }
-.juice-wave{
-  position:absolute;top:-3px;left:-10%;width:120%;height:8px;
-  background:radial-gradient(ellipse,rgba(255,255,255,.3) 0%,transparent 70%);
-  animation:jwave 1.5s ease-in-out infinite;
+@keyframes waveDance{0%,100%{transform:translateX(-5%) scaleY(1)}50%{transform:translateX(5%) scaleY(1.5)}}
+.hydro-info{flex:1}
+.hydro-n{font-size:24px;font-weight:800}
+.hydro-hint{font-size:13px;color:var(--w2);margin-top:2px}
+.hydro-plus{
+width:52px;height:52px;border-radius:50%;border:none;
+background:linear-gradient(135deg,#0ea5e9,#38bdf8);
+color:white;font-size:28px;display:flex;align-items:center;justify-content:center;
+cursor:pointer;transition:all .3s cubic-bezier(.16,1,.3,1);
+box-shadow:0 8px 32px rgba(14,165,233,.3);flex-shrink:0;
 }
-@keyframes jwave{0%,100%{transform:translateX(-5%)}50%{transform:translateX(5%)}}
-.juice-info{flex:1}
-.juice-n{font-family:'Space Grotesk';font-size:24px;font-weight:700}
-.juice-hint{font-size:13px;color:var(--t2);margin-top:2px}
-.juice-plus{
-  width:50px;height:50px;border-radius:50%;border:none;
-  background:linear-gradient(135deg,#0ea5e9,#38bdf8);
-  color:white;font-size:28px;font-weight:300;
-  display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .25s cubic-bezier(.34,1.56,.64,1);
-  box-shadow:0 6px 24px rgba(14,165,233,.3);flex-shrink:0;
-}
-.juice-plus:active{transform:scale(.8) rotate(-15deg)}
+.hydro-plus:active{transform:scale(.75) rotate(-20deg)}
 
-/* === EXERCISE RING === */
-.ex-wrap{width:240px;height:240px;margin:0 auto 20px;position:relative}
-.ex-wrap svg{width:100%;height:100%;transform:rotate(-90deg)}
-.ex-bg{fill:none;stroke:rgba(255,255,255,.05);stroke-width:8}
-.ex-fill{
-  fill:none;stroke:url(#ringGrad);stroke-width:8;stroke-linecap:round;
-  stroke-dasharray:691.15;stroke-dashoffset:691.15;
-  transition:stroke-dashoffset 1s linear;
-  filter:drop-shadow(0 0 12px rgba(200,255,0,.4));
-}
-.ex-anim-box{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:140px;height:140px}
-.ex-big-t{
-  position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);
-  font-family:'Space Grotesk';font-size:52px;font-weight:700;
-  color:var(--neon);text-shadow:0 0 30px var(--neon-g2);letter-spacing:-3px;
-}
+/* ═══ EXERCISE RING ═══ */
+.ex-ring-wrap{width:260px;height:260px;margin:0 auto 24px;position:relative;transform-style:preserve-3d;
+animation:float3d 6s ease-in-out infinite}
+.ex-ring-wrap svg{width:100%;height:100%;transform:rotate(-90deg)}
+.exr-bg{fill:none;stroke:rgba(255,255,255,.04);stroke-width:10}
+.exr-fill{fill:none;stroke:url(#exGrad);stroke-width:10;stroke-linecap:round;
+stroke-dasharray:723.82;stroke-dashoffset:723.82;
+transition:stroke-dashoffset 1s linear;
+filter:drop-shadow(0 0 16px rgba(184,255,87,.3))}
+.ex-inner{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:160px;height:160px}
+.ex-timer{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);
+font-size:56px;font-weight:800;color:var(--lime);letter-spacing:-3px;
+text-shadow:0 0 40px var(--lime-g2)}
 
-/* === STREAK BADGE === */
-.streak-b{
-  display:inline-flex;align-items:center;gap:6px;padding:8px 16px;
-  border-radius:50px;font-size:14px;font-weight:700;margin-bottom:14px;
-  background:linear-gradient(135deg,rgba(255,138,0,.15),rgba(255,77,141,.1));
-  border:1px solid rgba(255,138,0,.25);color:var(--orange);
-  animation:streakWiggle 3s ease-in-out infinite;
-}
-@keyframes streakWiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}
+/* ═══ STREAK ═══ */
+.streak{
+display:inline-flex;align-items:center;gap:7px;padding:9px 18px;
+border-radius:50px;font-size:14px;font-weight:700;margin-bottom:14px;
+background:linear-gradient(135deg,var(--orange-g),var(--pink-g));
+border:1px solid rgba(255,166,77,.2);color:var(--orange);
+animation:streakWag 2.5s ease-in-out infinite}
+@keyframes streakWag{0%,100%{transform:rotate(0)}15%{transform:rotate(-3deg)}30%{transform:rotate(3deg)}45%{transform:rotate(0)}}
 
-/* === NEXT CHECKPOINT CARD === */
-.next-blob{
-  padding:28px;text-align:center;cursor:pointer;
-  border-color:var(--neon);border-width:2px;
-  background:linear-gradient(135deg,rgba(200,255,0,.03),rgba(77,124,255,.03));
+/* ═══ NEXT CP ═══ */
+.next-card{cursor:pointer;text-align:center;padding:32px;
+border:2px solid rgba(184,255,87,.2);
+background:linear-gradient(135deg,rgba(184,255,87,.03),rgba(108,138,255,.03))}
+.next-card .beacon{
+width:90px;height:90px;border-radius:50%;margin:0 auto 18px;
+display:flex;align-items:center;justify-content:center;
+font-size:36px;position:relative;
+background:rgba(184,255,87,.06);border:2px solid rgba(184,255,87,.2);
+animation:float3d 4s ease-in-out infinite;
 }
-.next-blob .pulse-dot{
-  width:80px;height:80px;border-radius:50%;
-  margin:0 auto 16px;display:flex;align-items:center;justify-content:center;
-  font-size:32px;position:relative;
-  background:rgba(200,255,0,.08);border:2px solid rgba(200,255,0,.3);
-}
-.next-blob .pulse-dot::before,.next-blob .pulse-dot::after{
-  content:'';position:absolute;inset:-8px;border-radius:50%;
-  border:2px solid rgba(200,255,0,.15);
-  animation:pulseDot 2s ease-in-out infinite;
-}
-.next-blob .pulse-dot::after{inset:-18px;animation-delay:.4s;border-color:rgba(200,255,0,.08)}
-@keyframes pulseDot{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.2);opacity:0}}
+.next-card .beacon::before{content:'';position:absolute;inset:-10px;border-radius:50%;
+border:2px solid rgba(184,255,87,.1);animation:beaconPulse 2s ease-in-out infinite}
+.next-card .beacon::after{content:'';position:absolute;inset:-22px;border-radius:50%;
+border:2px solid rgba(184,255,87,.05);animation:beaconPulse 2s ease-in-out infinite .5s}
+@keyframes beaconPulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.2);opacity:0}}
+.next-big{font-size:58px;font-weight:800;color:var(--lime);letter-spacing:-3px;margin:10px 0;
+text-shadow:0 0 50px var(--lime-g2)}
 
-/* === SOCIAL LINE === */
-.social-line{
-  text-align:center;font-size:13px;color:var(--t3);font-style:italic;
-  line-height:1.6;padding:4px 16px;margin-bottom:12px;
-}
+/* ═══ SOCIAL ═══ */
+.social{text-align:center;font-size:13px;color:var(--w3);font-style:italic;line-height:1.6;padding:0 12px;margin-bottom:14px}
 
-/* === XP TOAST === */
-.xp-toast{
-  position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);
-  font-family:'Space Grotesk';font-size:36px;font-weight:700;
-  color:var(--neon);pointer-events:none;z-index:999;
-  text-shadow:0 0 30px var(--neon-g2);
-  animation:xpPop .8s cubic-bezier(.34,1.56,.64,1) forwards;
-}
-@keyframes xpPop{
-  0%{opacity:0;transform:translate(-50%,-50%) scale(0) rotate(-20deg)}
-  50%{opacity:1;transform:translate(-50%,-50%) scale(1.4) rotate(5deg)}
-  100%{opacity:0;transform:translate(-50%,-80%) scale(.8) rotate(0)}
-}
+/* ═══ COMMIT ═══ */
+.commit-card{text-align:center;padding:32px;
+border:2px solid var(--lime);
+background:linear-gradient(135deg,var(--lime-g),var(--blue-g));
+animation:commitGlow 4s ease-in-out infinite}
+@keyframes commitGlow{0%,100%{box-shadow:0 0 30px var(--lime-g)}50%{box-shadow:0 0 60px var(--lime-g),0 0 120px rgba(108,138,255,.1)}}
+.commit-txt{font-size:19px;font-weight:700;line-height:1.7}
+.commit-txt em{color:var(--lime);font-style:normal;font-weight:800}
 
-/* === CELEBRATION === */
-.celeb-overlay{
-  position:fixed;inset:0;z-index:500;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:rgba(15,15,15,.97);
-  opacity:0;pointer-events:none;transition:all .4s;padding:32px;
-}
-.celeb-overlay.on{opacity:1;pointer-events:all}
-.celeb-em{font-size:96px;animation:celebSpin 1s cubic-bezier(.34,1.56,.64,1);margin-bottom:20px}
-@keyframes celebSpin{
-  0%{transform:scale(0) rotate(-180deg)}
-  50%{transform:scale(1.3) rotate(10deg)}
-  100%{transform:scale(1) rotate(0)}
-}
-.celeb-h{font-family:'Space Grotesk';font-size:32px;font-weight:700;margin-bottom:8px;letter-spacing:-.5px}
-.celeb-p{font-size:16px;color:var(--t2);margin-bottom:6px;text-align:center;line-height:1.5}
-.celeb-xp{
-  font-family:'Space Grotesk';font-size:22px;font-weight:700;
-  color:var(--neon);margin-bottom:28px;
-}
+/* ═══ TIP ═══ */
+.tip-card{padding:36px 28px;text-align:center;margin:auto 0}
+.tip-em{font-size:72px;display:block;margin-bottom:20px;animation:tipWobble 3s ease-in-out infinite}
+@keyframes tipWobble{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-15px) rotate(5deg)}}
+.tip-txt{font-size:16px;color:var(--w2);line-height:1.75}
+.tip-txt strong{color:var(--w)}
+
+/* ═══ XP TOAST ═══ */
+.xp-t{position:fixed;top:35%;left:50%;transform:translate(-50%,-50%);
+font-size:40px;font-weight:800;color:var(--lime);pointer-events:none;z-index:999;
+text-shadow:0 0 30px var(--lime-g2);animation:xpPop .9s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes xpPop{0%{opacity:0;transform:translate(-50%,-50%) scale(0) rotate(-30deg)}
+40%{opacity:1;transform:translate(-50%,-60%) scale(1.5) rotate(5deg)}
+100%{opacity:0;transform:translate(-50%,-100%) scale(.6) rotate(0)}}
+
+/* ═══ CELEBRATION ═══ */
+.celeb{position:fixed;inset:0;z-index:500;display:flex;flex-direction:column;
+align-items:center;justify-content:center;
+background:rgba(10,10,15,.97);backdrop-filter:blur(30px);
+opacity:0;pointer-events:none;transition:all .45s;padding:32px;perspective:800px}
+.celeb.on{opacity:1;pointer-events:all}
+.cel-em{font-size:100px;animation:celSpin .8s cubic-bezier(.16,1,.3,1);margin-bottom:20px}
+@keyframes celSpin{0%{transform:scale(0) rotateY(-180deg)}60%{transform:scale(1.2) rotateY(15deg)}100%{transform:scale(1) rotateY(0)}}
+.cel-h{font-size:34px;font-weight:800;margin-bottom:10px;letter-spacing:-.5px}
+.cel-p{font-size:16px;color:var(--w2);text-align:center;margin-bottom:8px;line-height:1.5}
+.cel-xp{font-size:24px;font-weight:800;color:var(--lime);margin-bottom:30px}
 .sparks{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.spark{
-  position:absolute;width:6px;height:6px;border-radius:50%;
-  animation:sparkFly 1.2s cubic-bezier(.34,1.56,.64,1) forwards;
-}
-@keyframes sparkFly{
-  0%{opacity:1;transform:translate(0,0) scale(1)}
-  100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(0)}
-}
+.spark{position:absolute;border-radius:50%;animation:sparkFly 1.5s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes sparkFly{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(0)}}
 
-/* === TIP CARD === */
-.tip-blob{margin:auto 0;padding:32px;text-align:center}
-.tip-em{font-size:56px;display:block;margin-bottom:16px;animation:tipBob 2s ease-in-out infinite alternate}
-@keyframes tipBob{0%{transform:translateY(0) rotate(-5deg)}100%{transform:translateY(-10px) rotate(5deg)}}
-.tip-tag{margin-bottom:20px}
-.tip-txt{font-size:16px;color:var(--t2);line-height:1.7}
-.tip-txt strong{color:var(--t1)}
-
-/* === COMMIT CARD === */
-.commit-blob{
-  padding:28px;text-align:center;
-  border:2px solid var(--neon);
-  background:linear-gradient(135deg,var(--neon-g),rgba(77,124,255,.05));
-  animation:commitGlow 3s ease-in-out infinite;
-}
-@keyframes commitGlow{
-  0%,100%{box-shadow:0 0 30px var(--neon-g)}
-  50%{box-shadow:0 0 60px var(--neon-g),0 0 100px rgba(77,124,255,.1)}
-}
-.commit-txt{font-family:'Space Grotesk';font-size:19px;font-weight:600;line-height:1.6}
-.commit-txt em{color:var(--neon);font-style:normal;font-weight:700}
-
-/* === SUMMARY === */
-.sum-wrap{flex:1;display:flex;flex-direction:column;justify-content:center}
-.sum-em{font-size:72px;display:block;text-align:center;margin-bottom:12px;animation:celebSpin .8s cubic-bezier(.34,1.56,.64,1)}
-.sum-h{font-family:'Space Grotesk';text-align:center}
-.sum-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border)}
-.sum-row:last-child{border:none}
-.sum-lbl{font-size:15px;color:var(--t2)}
-.sum-val{font-family:'Space Grotesk';font-size:16px;font-weight:700}
-.sum-msg{text-align:center;padding:16px;font-size:15px;color:var(--t2);line-height:1.6;margin:12px 0}
-
-/* === NOTIFICATION BANNER === */
-.notif{
-  position:fixed;top:0;left:0;right:0;z-index:999;
-  background:rgba(15,15,15,.96);backdrop-filter:blur(20px);
-  border-bottom:2px solid var(--neon);padding:16px 20px;
-  display:flex;align-items:center;gap:12px;cursor:pointer;
-  transform:translateY(-120%);transition:transform .5s cubic-bezier(.34,1.56,.64,1);
-  max-width:500px;margin:0 auto;
-}
+/* ═══ NOTIFICATION ═══ */
+.notif{position:fixed;top:0;left:0;right:0;z-index:999;
+background:rgba(10,10,15,.96);backdrop-filter:blur(24px);
+border-bottom:2px solid var(--lime);padding:18px 22px;
+display:flex;align-items:center;gap:14px;cursor:pointer;
+transform:translateY(-120%);transition:transform .6s cubic-bezier(.16,1,.3,1);
+max-width:520px;margin:0 auto}
 .notif.on{transform:translateY(0)}
-.notif-em{font-size:28px;animation:heartBeat 1s ease-in-out infinite}
-@keyframes heartBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
-.notif-t{flex:1}
-.notif-h{font-size:14px;font-weight:700}
-.notif-p{font-size:13px;color:var(--t2)}
-.notif-x{
-  width:32px;height:32px;border-radius:50%;border:none;
-  background:rgba(255,255,255,.1);color:var(--t2);font-size:16px;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-}
+.notif-em{font-size:30px;animation:heartB 1s ease-in-out infinite}
+@keyframes heartB{0%,100%{transform:scale(1)}50%{transform:scale(1.3)}}
+.notif-info{flex:1}
+.notif-h{font-size:15px;font-weight:700}
+.notif-p{font-size:13px;color:var(--w2)}
+.notif-x{width:34px;height:34px;border-radius:50%;border:none;
+background:var(--w4);color:var(--w2);font-size:16px;cursor:pointer;
+display:flex;align-items:center;justify-content:center}
 
-/* === BOOT === */
-.boot{
-  position:fixed;inset:0;z-index:9999;background:var(--bg);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  transition:opacity .8s;
-}
+/* ═══ SUMMARY ═══ */
+.sum-em{font-size:80px;display:block;text-align:center;margin-bottom:16px;animation:celSpin .8s cubic-bezier(.16,1,.3,1)}
+.sum-row{display:flex;justify-content:space-between;align-items:center;padding:15px 0;border-bottom:1px solid var(--w4)}
+.sum-row:last-child{border:none}
+.sum-lbl{font-size:15px;color:var(--w2)}
+.sum-val{font-size:16px;font-weight:700}
+.sum-msg{text-align:center;padding:18px;font-size:15px;color:var(--w2);line-height:1.65}
+
+/* ═══ BOOT ═══ */
+.boot{position:fixed;inset:0;z-index:9999;background:var(--bg);
+display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .8s}
 .boot.bye{opacity:0;pointer-events:none}
-.boot-ring{width:80px;height:80px;animation:bootS 1.5s linear infinite}
-@keyframes bootS{to{transform:rotate(360deg)}}
-.boot-name{
-  font-family:'Space Grotesk';font-size:32px;font-weight:700;
-  margin-top:20px;letter-spacing:-1px;
-  background:linear-gradient(135deg,var(--neon),var(--blue));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.boot-sub{color:var(--t3);font-size:14px;margin-top:8px}
+.boot-anim{width:100px;height:100px;position:relative;animation:bootRot 2s linear infinite}
+@keyframes bootRot{to{transform:rotate(360deg)}}
+.boot-anim::before{content:'';position:absolute;inset:10px;border-radius:50%;
+border:3px solid transparent;border-top-color:var(--lime);border-right-color:var(--blue);animation:bootRot 1.5s linear infinite reverse}
+.boot-anim::after{content:'';position:absolute;inset:25px;border-radius:50%;background:var(--lime);
+box-shadow:0 0 40px var(--lime-g2)}
+.boot-txt{font-size:36px;font-weight:800;margin-top:28px;letter-spacing:-1px;
+background:linear-gradient(135deg,var(--lime),var(--cyan));
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.boot-sub{font-size:14px;color:var(--w3);margin-top:10px}
 
-/* === OFFLINE === */
-.offline{
-  position:fixed;bottom:calc(var(--safe-b) + 12px);left:50%;
-  transform:translateX(-50%);background:var(--orange);color:#0f0f0f;
-  padding:8px 20px;border-radius:50px;font-size:13px;font-weight:700;
-  z-index:800;display:none;
-}
-.offline.on{display:block;animation:slideIn .4s cubic-bezier(.34,1.56,.64,1)}
+.offline{position:fixed;bottom:calc(var(--safe-b) + 14px);left:50%;transform:translateX(-50%);
+background:var(--orange);color:#0a0a0f;padding:8px 22px;border-radius:50px;
+font-size:13px;font-weight:700;z-index:800;display:none}
+.offline.on{display:block;animation:slideIn .4s cubic-bezier(.16,1,.3,1)}
 @keyframes slideIn{from{transform:translateX(-50%) translateY(30px)}to{transform:translateX(-50%) translateY(0)}}
 
-/* SCROLLABLE FIX */
-.scr{-webkit-overflow-scrolling:touch}
-
-@media(max-width:380px){
-  .hero{font-size:28px}.big-num{font-size:56px}
-  .dur-val .big-num{font-size:56px}
-  .ex-wrap{width:200px;height:200px}
-  .celeb-em{font-size:72px}.celeb-h{font-size:26px}
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:380px){h1{font-size:30px}.dur-big{font-size:54px}.next-big{font-size:48px}
+.ex-ring-wrap{width:220px;height:220px}.cel-em{font-size:72px}.cel-h{font-size:28px}}
+@media(min-width:521px){
+.scr{left:50%;right:auto;transform:translateX(-50%) translateZ(-60px) rotateY(8deg)}
+.scr.on{transform:translateX(-50%) translateZ(0) rotateY(0)}
+.scr.out{transform:translateX(-50%) translateZ(60px) rotateY(-8deg)}
 }
 </style>
 </head>
 <body>
 
-<!-- BOOT -->
 <div class="boot" id="boot">
-  <svg class="boot-ring" viewBox="0 0 80 80">
-    <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(200,255,0,.1)" stroke-width="4"/>
-    <circle cx="40" cy="40" r="26" fill="none" stroke="rgba(200,255,0,.2)" stroke-width="3" stroke-dasharray="12 8"/>
-    <circle cx="40" cy="40" r="18" fill="none" stroke="rgba(200,255,0,.4)" stroke-width="2.5" stroke-dasharray="8 6"/>
-    <circle cx="40" cy="40" r="8" fill="var(--neon)"/>
-  </svg>
-  <div class="boot-name">Circulate</div>
-  <div class="boot-sub">Preparing your flight companion…</div>
+  <div class="boot-anim"></div>
+  <div class="boot-txt">Circulate</div>
+  <div class="boot-sub">Preparing your flight health companion…</div>
 </div>
 
-<div class="offline" id="offline-b">✈️ Offline Mode — All Good</div>
-<div class="mesh"></div>
+<div class="offline" id="offb">✈️ Offline — All Good</div>
 
-<!-- ======================== ONBOARD ======================== -->
+<div class="ambient">
+  <div class="amb-orb amb-1"></div>
+  <div class="amb-orb amb-2"></div>
+  <div class="amb-orb amb-3"></div>
+</div>
+<div class="grid-overlay"></div>
+
+<!-- ════════════ ONBOARD ════════════ -->
 <div id="s-onb" class="scr on">
-  <div class="pill pill-neon" style="align-self:flex-start;margin-bottom:8px">✦ DVT Prevention</div>
-  <h1 class="hero">Move smart.<br>Fly <span class="pop">safe.</span></h1>
-  <p class="desc">Personalized movement breaks, gamified hydration tracking, and real-time flight progress — all designed to keep your blood flowing at 35,000 feet.</p>
+  <!-- Hero Illustration: person in airplane seat -->
+  <div class="illust">
+    <div class="illust-3d">
+      <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Airplane window -->
+        <rect x="20" y="30" width="360" height="240" rx="30" fill="#12121a" stroke="rgba(255,255,255,.06)" stroke-width="2"/>
+        <!-- Window -->
+        <ellipse cx="320" cy="100" rx="35" ry="45" fill="#1a1a3e"/>
+        <ellipse cx="320" cy="100" rx="28" ry="38" fill="#0d1030"/>
+        <circle cx="315" cy="85" r="8" fill="#2d2d6e" opacity=".6"/>
+        <circle cx="325" cy="95" r="5" fill="#3d3d8e" opacity=".4"/>
+        <!-- Stars through window -->
+        <circle cx="310" cy="78" r="1.5" fill="#fff" opacity=".6"/>
+        <circle cx="330" cy="88" r="1" fill="#fff" opacity=".4"/>
+        <circle cx="318" cy="110" r="1.2" fill="#fff" opacity=".5"/>
+        <!-- Seat -->
+        <rect x="80" y="140" width="120" height="100" rx="12" fill="#1e1e38"/>
+        <rect x="85" y="145" width="110" height="30" rx="8" fill="#252548"/>
+        <!-- Seat back -->
+        <rect x="185" y="90" width="25" height="150" rx="10" fill="#1e1e38"/>
+        <!-- Person body -->
+        <circle cx="140" cy="115" r="22" fill="#ffb07c"/><!-- Head -->
+        <path d="M120 137 Q140 150 160 137 L165 200 H115 Z" fill="#6c8aff"/><!-- Torso -->
+        <!-- Arms -->
+        <path d="M118 150 Q100 170 105 195" stroke="#ffb07c" stroke-width="8" stroke-linecap="round" fill="none"/>
+        <path d="M162 150 Q180 170 175 195" stroke="#ffb07c" stroke-width="8" stroke-linecap="round" fill="none"/>
+        <!-- Legs -->
+        <path d="M125 200 L115 255" stroke="#3d3d8e" stroke-width="10" stroke-linecap="round"/>
+        <path d="M155 200 L165 255" stroke="#3d3d8e" stroke-width="10" stroke-linecap="round"/>
+        <!-- Feet with glow (circulation!) -->
+        <ellipse cx="110" cy="260" rx="16" ry="8" fill="#b8ff57" opacity=".8"/>
+        <ellipse cx="170" cy="260" rx="16" ry="8" fill="#b8ff57" opacity=".8"/>
+        <!-- Circulation arrows around legs -->
+        <g opacity=".7">
+          <path d="M100 220 Q85 240 100 255" stroke="#b8ff57" stroke-width="2" fill="none" stroke-dasharray="4 3">
+            <animate attributeName="stroke-dashoffset" values="20;0" dur="1.5s" repeatCount="indefinite"/>
+          </path>
+          <path d="M180 220 Q195 240 180 255" stroke="#b8ff57" stroke-width="2" fill="none" stroke-dasharray="4 3">
+            <animate attributeName="stroke-dashoffset" values="20;0" dur="1.5s" repeatCount="indefinite"/>
+          </path>
+          <!-- Upward flow -->
+          <path d="M108 250 Q95 235 108 215" stroke="#5eead4" stroke-width="1.5" fill="none" stroke-dasharray="3 4" opacity=".5">
+            <animate attributeName="stroke-dashoffset" values="0;20" dur="2s" repeatCount="indefinite"/>
+          </path>
+          <path d="M172 250 Q185 235 172 215" stroke="#5eead4" stroke-width="1.5" fill="none" stroke-dasharray="3 4" opacity=".5">
+            <animate attributeName="stroke-dashoffset" values="0;20" dur="2s" repeatCount="indefinite"/>
+          </path>
+        </g>
+        <!-- Smile -->
+        <path d="M132 120 Q140 128 148 120" stroke="#e86b3a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <!-- Eyes -->
+        <circle cx="132" cy="110" r="3" fill="#1a1a3e"/>
+        <circle cx="148" cy="110" r="3" fill="#1a1a3e"/>
+        <!-- Hair -->
+        <path d="M118 105 Q120 85 140 82 Q160 85 162 105" fill="#4a3728"/>
+        <!-- Cloud outside window -->
+        <g opacity=".3">
+          <ellipse cx="310" cy="125" rx="15" ry="6" fill="#fff">
+            <animate attributeName="cx" values="310;340;310" dur="8s" repeatCount="indefinite"/>
+          </ellipse>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="pill pill-lime" style="align-self:flex-start;margin-bottom:10px">✦ DVT Prevention</div>
+  <h1>Stay <span class="gradient">healthy</span> at altitude</h1>
+  <p class="sub" style="margin-bottom:28px">Smart movement reminders, real-time progress tracking, and gentle gamification — all designed for your comfort at 35,000 ft.</p>
 
   <div style="margin-bottom:24px">
-    <div class="pill pill-blue" style="margin-bottom:14px">✈ Flight Duration</div>
-    <div class="dur-picker">
-      <button class="dur-circle" onclick="dur(-1)">−</button>
-      <div class="dur-val">
-        <div class="big-num" id="dv" style="color:var(--neon)">4<small style="color:var(--t2)">h</small></div>
+    <div class="micro" style="margin-bottom:14px">✈️ FLIGHT DURATION</div>
+    <div class="tilt-card" id="dur-card"><div class="shine"></div>
+      <div class="dur-wrap">
+        <button class="dur-ring" onclick="dur(-1)">−</button>
+        <div class="dur-center">
+          <div class="dur-big" id="dv">4</div>
+          <div class="dur-unit">hours</div>
+        </div>
+        <button class="dur-ring" onclick="dur(1)">+</button>
       </div>
-      <button class="dur-circle" onclick="dur(1)">+</button>
     </div>
   </div>
 
   <div style="margin-bottom:28px">
-    <div class="pill pill-pink" style="margin-bottom:14px">♡ Risk Factors</div>
+    <div class="micro" style="margin-bottom:14px">♡ RISK FACTORS (if any)</div>
     <div class="chips" id="chips">
-      <button class="chip" data-r="age"><span class="ico">👤</span>Age 50+</button>
-      <button class="chip" data-r="clot"><span class="ico">🩸</span>Prior clot</button>
-      <button class="chip" data-r="preg"><span class="ico">🤰</span>Pregnancy</button>
-      <button class="chip" data-r="surg"><span class="ico">🏥</span>Surgery</button>
-      <button class="chip" data-r="obese"><span class="ico">⚖️</span>Obesity</button>
-      <button class="chip" data-r="hrt"><span class="ico">💊</span>OC/HRT</button>
+      <button class="chip" data-r="age"><span class="ci">👤</span>Age 50+</button>
+      <button class="chip" data-r="clot"><span class="ci">🩸</span>Prior clot</button>
+      <button class="chip" data-r="preg"><span class="ci">🤰</span>Pregnancy</button>
+      <button class="chip" data-r="surg"><span class="ci">🏥</span>Surgery</button>
+      <button class="chip" data-r="obese"><span class="ci">⚖️</span>Obesity</button>
+      <button class="chip" data-r="hrt"><span class="ci">💊</span>OC / HRT</button>
     </div>
   </div>
 
-  <button class="squishy sq-neon" onclick="goTip()">Let's Go ✈️</button>
-  <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--t3)">No account needed · 100% offline · Nothing leaves your device</div>
+  <button class="btn btn-glow" onclick="goTip()">Set Up My Flight ✈️</button>
+  <p style="text-align:center;margin-top:14px;font-size:12px;color:var(--w3)">No login · 100% offline · Your data never leaves your phone</p>
 </div>
 
-<!-- ======================== TIP ======================== -->
+<!-- ════════════ TIP ════════════ -->
 <div id="s-tip" class="scr">
-  <div class="blob tip-blob">
+  <div class="tilt-card tip-card"><div class="shine"></div>
     <span class="tip-em">💺</span>
-    <div class="tip-tag"><span class="pill pill-orange">🔑 Insider Tip</span></div>
+    <div class="pill pill-orange" style="margin-bottom:20px">🔑 Insider Tip</div>
     <p class="tip-txt">
-      Before you sit down — if you can, grab an <strong>aisle seat</strong>.
-      It sounds small, but it makes standing up, stretching, and walking to the lavatory <strong>dramatically easier</strong>.
-      That one choice multiplies the impact of everything we'll do together.
+      Before you board — if you have any choice, pick an <strong>aisle seat</strong>.
+      It makes standing, stretching, and walking to the lavatory <strong>dramatically easier</strong>.
+      That single choice multiplies the benefit of every exercise you'll do.
     </p>
   </div>
-  <button class="squishy sq-neon" onclick="goCommit()" style="margin-top:20px">Got It →</button>
+  <button class="btn btn-glow" onclick="goCommit()" style="margin-top:20px">Got It, Let's Go →</button>
 </div>
 
-<!-- ======================== COMMIT ======================== -->
+<!-- ════════════ COMMIT ════════════ -->
 <div id="s-commit" class="scr">
   <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
-    <div class="pill pill-neon" style="align-self:center;margin-bottom:20px">📋 Your Plan</div>
-    <div class="blob commit-blob">
+    <div style="text-align:center;margin-bottom:24px">
+      <div class="pill pill-lime" style="margin-bottom:16px">📋 Your Personal Plan</div>
+    </div>
+    <div class="tilt-card commit-card"><div class="shine"></div>
       <p class="commit-txt" id="ctxt"></p>
     </div>
-    <p class="social-line" id="stxt"></p>
-    <button class="squishy sq-neon" onclick="goDash()" style="margin-top:12px">Begin Flight 🚀</button>
+    <p class="social" id="stxt"></p>
+    <button class="btn btn-glow" onclick="goDash()" style="margin-top:12px">Begin Flight 🚀</button>
   </div>
 </div>
 
-<!-- ======================== DASHBOARD ======================== -->
+<!-- ════════════ DASHBOARD ════════════ -->
 <div id="s-dash" class="scr">
-  <!-- Header -->
   <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px">
     <div>
-      <div class="pill pill-neon" style="margin-bottom:8px">✈ In Flight</div>
-      <h2 style="font-family:'Space Grotesk';font-size:24px;font-weight:700;letter-spacing:-.5px">Stay <span class="pop">circulating</span></h2>
+      <div class="pill pill-lime" style="margin-bottom:8px">✈ In Flight</div>
+      <h2>Stay <span class="gradient">circulating</span></h2>
     </div>
     <div style="text-align:right">
-      <div style="font-size:11px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:1px">Score</div>
-      <div style="font-family:'Space Grotesk';font-size:36px;font-weight:700;color:var(--neon);line-height:1" id="dxp">0</div>
-      <div style="font-size:11px;color:var(--t3)">XP</div>
+      <div class="micro">Score</div>
+      <div style="font-size:38px;font-weight:800;color:var(--lime);line-height:1" id="dxp">0</div>
+      <div style="font-size:11px;color:var(--w3)">XP</div>
     </div>
   </div>
 
-  <div id="strk-w" style="display:none">
-    <div class="streak-b">🔥 <span id="strk-n">0</span> streak — keep it alive!</div>
-  </div>
+  <div id="stk-w" style="display:none"><div class="streak">🔥 <span id="stk-n">0</span> streak</div></div>
 
-  <!-- Timeline -->
-  <div class="blob" style="padding:18px 20px;margin-bottom:16px">
-    <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:2px">
-      <span>Flight Progress</span>
-      <span style="color:var(--t2)" id="el-lbl">0h 00m</span>
+  <div class="tilt-card" style="padding:18px 22px;margin-bottom:16px"><div class="shine"></div>
+    <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:2px">
+      <span>Flight Progress</span><span style="color:var(--w2)" id="el-l">0h 00m</span>
     </div>
-    <div class="wave-tl">
-      <div class="wave-fill" id="wf" style="width:0%"></div>
+    <div class="tl-outer">
+      <div class="tl-fill" id="wf" style="width:0%"></div>
       <div id="wdots"></div>
     </div>
-    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--t3);font-weight:500">
-      <span>🛫 Takeoff</span>
-      <span id="ll">🛬 Landing</span>
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--w3);font-weight:500">
+      <span>🛫</span><span id="ll">🛬</span>
     </div>
   </div>
 
-  <!-- Stats -->
-  <div class="stat-grid">
-    <div class="blob stat-blob">
-      <span class="stat-icon">✅</span>
-      <div class="stat-n" style="color:var(--neon)" id="sd">0</div>
-      <div class="stat-l">Completed</div>
+  <div class="pods">
+    <div class="tilt-card pod"><div class="shine"></div>
+      <span class="pod-icon" style="--d:0s">✅</span>
+      <div class="pod-num" style="color:var(--lime)" id="sd">0</div>
+      <div class="pod-lbl">Completed</div>
     </div>
-    <div class="blob stat-blob">
-      <span class="stat-icon">⏳</span>
-      <div class="stat-n" style="color:var(--blue)" id="sr">0</div>
-      <div class="stat-l">Remaining</div>
+    <div class="tilt-card pod"><div class="shine"></div>
+      <span class="pod-icon" style="--d:-.8s">⏳</span>
+      <div class="pod-num" style="color:var(--blue)" id="sr">0</div>
+      <div class="pod-lbl">Remaining</div>
     </div>
   </div>
 
-  <!-- Next CP -->
-  <div class="blob next-blob" id="nc" onclick="goEx()">
-    <div class="pulse-dot" id="nc-dot">🫀</div>
-    <div style="font-size:13px;color:var(--t2);font-weight:500" id="nc-lbl">Next movement break in</div>
-    <div class="big-num" id="nc-time" style="color:var(--neon);margin:8px 0;font-size:54px">--:--</div>
-    <div style="font-size:14px;color:var(--t2)" id="nc-sub">Tap when ready</div>
+  <div class="tilt-card next-card" id="nc" onclick="goEx()"><div class="shine"></div>
+    <div class="beacon" id="nc-dot">🫀</div>
+    <div style="font-size:13px;color:var(--w2);font-weight:500" id="nc-l">Next movement break</div>
+    <div class="next-big" id="nc-t">--:--</div>
+    <div style="font-size:14px;color:var(--w2)" id="nc-s">Tap when ready</div>
   </div>
 
-  <!-- Hydration -->
-  <div class="blob juice" onclick="logH2O()">
-    <div class="juice-bottle">
-      <div class="juice-water" id="jf" style="height:0%">
-        <div class="juice-wave"></div>
-      </div>
+  <div class="tilt-card hydro" onclick="logH2O()"><div class="shine"></div>
+    <div class="hydro-3d">
+      <div class="hydro-water" id="jf" style="height:0%"><div class="hydro-wave"></div></div>
     </div>
-    <div class="juice-info">
-      <div class="juice-n">💧 <span id="jn">0</span> glasses</div>
-      <div class="juice-hint">Tap to log water</div>
+    <div class="hydro-info">
+      <div class="hydro-n">💧 <span id="jn">0</span> glasses</div>
+      <div class="hydro-hint">Tap to log water</div>
     </div>
-    <button class="juice-plus">+</button>
+    <button class="hydro-plus" onclick="event.stopPropagation();logH2O()">+</button>
   </div>
 
-  <p class="social-line" id="dsoc"></p>
-  <button class="squishy sq-danger" onclick="endFlight()" style="font-size:14px;padding:14px;margin-top:4px">End Flight</button>
+  <p class="social" id="dsoc"></p>
+  <button class="btn btn-red btn-sm" onclick="endFlight()">End Flight</button>
 </div>
 
-<!-- ======================== EXERCISE ======================== -->
+<!-- ════════════ EXERCISE ════════════ -->
 <div id="s-ex" class="scr">
   <div style="text-align:center;margin-bottom:16px">
-    <div class="pill pill-blue" style="margin-bottom:8px" id="exl">Checkpoint 1</div>
-    <div class="ex-name" style="font-family:'Space Grotesk';font-size:26px;font-weight:700;letter-spacing:-.5px" id="exn">Ankle Circles</div>
+    <div class="pill pill-blue" style="margin-bottom:10px" id="exl">Checkpoint 1</div>
+    <h2 id="exn" style="letter-spacing:-.5px">Ankle Circles</h2>
   </div>
 
-  <div class="ex-wrap">
-    <svg viewBox="0 0 240 240">
-      <defs>
-        <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" style="stop-color:var(--purple)"/>
-          <stop offset="50%" style="stop-color:var(--blue)"/>
-          <stop offset="100%" style="stop-color:var(--neon)"/>
-        </linearGradient>
-      </defs>
-      <circle class="ex-bg" cx="120" cy="120" r="110"/>
-      <circle class="ex-fill" id="exr" cx="120" cy="120" r="110"/>
+  <div class="ex-ring-wrap">
+    <svg viewBox="0 0 260 260">
+      <defs><linearGradient id="exGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#a78bfa"/><stop offset="50%" style="stop-color:#6c8aff"/>
+        <stop offset="100%" style="stop-color:#b8ff57"/></linearGradient></defs>
+      <circle class="exr-bg" cx="130" cy="130" r="115.25"/>
+      <circle class="exr-fill" id="exr" cx="130" cy="130" r="115.25"/>
     </svg>
-    <div class="ex-anim-box" id="exs"></div>
-    <div class="ex-big-t" id="ext">60</div>
+    <div class="ex-inner" id="exs"></div>
+    <div class="ex-timer" id="ext">60</div>
   </div>
 
-  <p style="text-align:center;font-size:16px;color:var(--t2);line-height:1.6;margin-bottom:12px" id="exi">Rotate ankles slowly</p>
-  <div class="blob" style="padding:14px 18px;margin-bottom:20px;border-color:rgba(168,85,247,.2);background:rgba(168,85,247,.05)">
-    <div style="font-size:13px;color:var(--t2);line-height:1.6"><strong style="color:var(--purple)">⚡ Why it works:</strong> <span id="exw"></span></div>
+  <p style="text-align:center;font-size:16px;color:var(--w2);line-height:1.65;margin-bottom:14px" id="exi"></p>
+  <div class="tilt-card" style="padding:16px 20px;margin-bottom:22px;border-color:rgba(167,139,250,.2);background:rgba(167,139,250,.04)"><div class="shine"></div>
+    <div style="font-size:13px;color:var(--w2);line-height:1.6"><strong style="color:var(--violet)">⚡ Why it works:</strong> <span id="exw"></span></div>
   </div>
 
-  <div class="ex-controls" style="display:flex;gap:10px">
-    <button class="squishy sq-neon" id="exb" onclick="toggleEx()" style="flex:1">▶ Start</button>
-    <button class="squishy sq-dark" onclick="skipEx()" style="flex:0 0 80px;font-size:14px">Skip</button>
+  <div style="display:flex;gap:12px">
+    <button class="btn btn-glow" id="exb" onclick="toggleEx()" style="flex:1">▶ Start</button>
+    <button class="btn btn-glass btn-sm" onclick="skipEx()" style="flex:0 0 80px;font-size:14px">Skip</button>
   </div>
 </div>
 
-<!-- ======================== SUMMARY ======================== -->
+<!-- ════════════ SUMMARY ════════════ -->
 <div id="s-sum" class="scr">
-  <div class="sum-wrap">
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
     <span class="sum-em" id="sme">🎉</span>
-    <h1 class="hero sum-h" id="smh">Great Flight!</h1>
-    <p class="desc" style="text-align:center" id="sms">You took care of yourself</p>
+    <h1 style="text-align:center;margin-bottom:6px" id="smh">Great Flight!</h1>
+    <p class="sub" style="text-align:center;margin-bottom:28px" id="sms">You protected your circulation</p>
 
-    <div class="blob" style="margin-bottom:16px;border-color:var(--neon);border-width:2px">
-      <div class="sum-row"><span class="sum-lbl">Circulation Score</span><span class="sum-val" style="color:var(--neon)" id="sx">0 XP</span></div>
+    <div class="tilt-card" style="margin-bottom:16px;border:2px solid var(--lime)"><div class="shine"></div>
+      <div class="sum-row"><span class="sum-lbl">Circulation Score</span><span class="sum-val" style="color:var(--lime)" id="sx">0 XP</span></div>
       <div class="sum-row"><span class="sum-lbl">Checkpoints</span><span class="sum-val" id="sc">0/0</span></div>
-      <div class="sum-row"><span class="sum-lbl">Best Streak</span><span class="sum-val" id="ss">0 🔥</span></div>
+      <div class="sum-row"><span class="sum-lbl">Best Streak</span><span class="sum-val" id="ssv">0 🔥</span></div>
       <div class="sum-row"><span class="sum-lbl">Hydration</span><span class="sum-val" id="sh">0 💧</span></div>
       <div class="sum-row"><span class="sum-lbl">Flight</span><span class="sum-val" id="sdu">0h</span></div>
     </div>
 
-    <div class="blob sum-msg" id="smm"></div>
-    <button class="squishy sq-neon" onclick="reset()">New Flight ✈️</button>
+    <div class="tilt-card sum-msg" id="smm"><div class="shine"></div></div>
+    <button class="btn btn-glow" onclick="reset()" style="margin-top:16px">New Flight ✈️</button>
   </div>
 </div>
 
-<!-- CELEB OVERLAY -->
-<div class="celeb-overlay" id="celeb">
+<!-- CELEBRATION -->
+<div class="celeb" id="celeb">
   <div class="sparks" id="sparks"></div>
-  <span class="celeb-em" id="ce">✨</span>
-  <div class="celeb-h" style="font-family:'Space Grotesk'" id="ch">Done!</div>
-  <div class="celeb-p" id="cp">Nice work</div>
-  <div class="celeb-xp" id="cx">+25 XP</div>
-  <button class="squishy sq-neon" style="max-width:260px" onclick="closeC()">Continue</button>
+  <span class="cel-em" id="ce">✨</span>
+  <div class="cel-h" id="cH">Done!</div>
+  <div class="cel-p" id="cP">Nice</div>
+  <div class="cel-xp" id="cX">+25 XP</div>
+  <button class="btn btn-glow" style="max-width:260px" onclick="closeC()">Continue</button>
 </div>
 
 <!-- NOTIF -->
 <div class="notif" id="notif" onclick="handleN()">
   <span class="notif-em">🫀</span>
-  <div class="notif-t">
-    <div class="notif-h" id="nh">Protect your circulation</div>
-    <div class="notif-p" id="nb">Movement break ready</div>
-  </div>
+  <div class="notif-info"><div class="notif-h" id="nh">Protect circulation</div><div class="notif-p" id="nb">Tap to start</div></div>
   <button class="notif-x" onclick="event.stopPropagation();hideN()">✕</button>
 </div>
 
-
 <script>
-// ═══════ AUDIO ═══════
+// ═══ AUDIO ═══
 let AC;
 function ga(){if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();return AC}
-
-function tn(f,d,v=.1,t='sine',dl=0){
-  try{const a=ga(),o=a.createOscillator(),g=a.createGain();
-  o.type=t;o.frequency.setValueAtTime(f,a.currentTime+dl);
-  g.gain.setValueAtTime(0,a.currentTime+dl);
-  g.gain.linearRampToValueAtTime(v,a.currentTime+dl+.01);
-  g.gain.exponentialRampToValueAtTime(.001,a.currentTime+dl+d);
-  o.connect(g);g.connect(a.destination);
-  o.start(a.currentTime+dl);o.stop(a.currentTime+dl+d+.05)}catch(e){}}
-
+function tn(f,d,v=.1,t='sine',dl=0){try{const a=ga(),o=a.createOscillator(),g=a.createGain();o.type=t;o.frequency.setValueAtTime(f,a.currentTime+dl);g.gain.setValueAtTime(0,a.currentTime+dl);g.gain.linearRampToValueAtTime(v,a.currentTime+dl+.01);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+dl+d);o.connect(g);g.connect(a.destination);o.start(a.currentTime+dl);o.stop(a.currentTime+dl+d+.05)}catch(e){}}
 const SFX={
-  tap:()=>{tn(900,.06,.07);tn(1200,.05,.04,'sine',.03)},
-  on:()=>{tn(700,.1,.1);tn(1050,.08,.07,'sine',.05)},
-  off:()=>{tn(400,.08,.06)},
-  go:()=>{[523,659,784,1046,1318].forEach((f,i)=>tn(f,.15,.09,'sine',i*.08))},
-  tick:()=>{tn(1400,.03,.03,'square')},
-  h2o:()=>{tn(880,.1,.08);tn(1046,.12,.06,'sine',.07);tn(1318,.14,.05,'sine',.14)},
-  win:()=>{[523,659,784,1046,1318,1568].forEach((f,i)=>tn(f,.18,.1,'sine',i*.07))},
-  warn:()=>{tn(440,.2,.12,'sawtooth');tn(330,.25,.08,'sawtooth',.15)},
-  boom:()=>{for(let i=0;i<10;i++)tn(200+i*100,.18,.07,'sine',i*.05)},
-  end:()=>{[784,659,523,392,523,659,784,1046].forEach((f,i)=>tn(f,.16,.08,'sine',i*.09))}
-};
-
-// ═══════ HAPTICS ═══════
-const HX={
-  tap:()=>vb([8]),sel:()=>vb([12,8,12]),ok:()=>vb([20,10,20,10,40]),
-  warn:()=>vb([30,20,30]),win:()=>vb([15,10,15,10,15,10,60]),
-  h2o:()=>vb([10,5,20]),tick:()=>vb([3]),
-};
+tap:()=>{tn(900,.06,.06);tn(1200,.05,.04,'sine',.03)},
+on:()=>{tn(700,.1,.09);tn(1050,.08,.06,'sine',.05)},
+off:()=>{tn(400,.08,.05)},
+go:()=>{[523,659,784,1046,1318].forEach((f,i)=>tn(f,.15,.08,'sine',i*.08))},
+tick:()=>{tn(1400,.03,.03,'square')},
+h2o:()=>{tn(880,.1,.07);tn(1046,.12,.05,'sine',.07);tn(1318,.14,.04,'sine',.14)},
+win:()=>{[523,659,784,1046,1318,1568].forEach((f,i)=>tn(f,.16,.08,'sine',i*.06))},
+warn:()=>{tn(440,.2,.1,'sawtooth');tn(330,.25,.07,'sawtooth',.15)},
+boom:()=>{for(let i=0;i<10;i++)tn(200+i*100,.16,.06,'sine',i*.04)},
+end:()=>{[784,659,523,392,523,659,784,1046].forEach((f,i)=>tn(f,.14,.07,'sine',i*.08))}};
+// ═══ HAPTICS ═══
+const HX={tap:()=>vb([8]),sel:()=>vb([12,6,12]),ok:()=>vb([18,8,18,8,35]),
+warn:()=>vb([25,15,25]),win:()=>vb([12,8,12,8,12,8,50]),h2o:()=>vb([8,4,16]),tick:()=>vb([3])};
 function vb(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
 
-// ═══════ STATE ═══════
-let S={dur:4,risks:[],intv:90,start:null,cps:[],done:0,cur:0,
-  streak:0,best:0,xp:0,water:0,phase:'onb',
-  exOn:false,exT:60,exTR:null,exAR:null,mainR:null};
-
-// ═══════ EXERCISES ═══════
-const EX=[
-  {n:'Ankle Circles',d:60,
-   i:'Lift one foot and trace slow, wide circles with your ankle. Switch feet halfway.',
-   w:'Ankle rotation activates your calf muscle pump, pushing stagnant venous blood back toward your heart.',
-   svg:svA},
-  {n:'Calf Raises',d:60,
-   i:'Press feet flat, lift heels as high as possible, lower slowly. Repeat rhythmically.',
-   w:'Calf contractions create the most powerful venous pump in your body, squeezing deep leg veins.',
-   svg:svC},
-  {n:'Seated March',d:75,
-   i:'Alternate lifting each knee toward your chest in a slow, steady march.',
-   w:'Hip flexion and thigh activation dramatically improve blood return from your lower extremities.',
-   svg:svM},
-  {n:'Toe Raises',d:60,
-   i:'Keep heels planted and pull toes toward your shin. Hold 2 seconds, release. Repeat.',
-   w:'Engages the anterior tibialis to drive circulation through the front compartment of your lower leg.',
-   svg:svT},
-  {n:'Foot Pumps',d:60,
-   i:'Alternate pointing toes down and flexing up — like pressing a gas pedal rhythmically.',
-   w:'Simultaneous calf and shin activation creates comprehensive venous pumping throughout your lower legs.',
-   svg:svP},
-  {n:'Knee Extensions',d:75,
-   i:'Extend one leg straight out, hold 3 seconds, lower. Alternate legs slowly.',
-   w:'Quad contraction with leg elevation uses gravity to drain pooled blood from your calves.',
-   svg:svK}
-];
-
-function svA(){return`<svg viewBox="0 0 140 140" style="width:100%;height:100%"><line x1="70" y1="10" x2="70" y2="60" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/><circle cx="70" cy="60" r="7" fill="rgba(255,255,255,.5)"/><g id="af"><line x1="70" y1="60" x2="70" y2="100" stroke="var(--neon)" stroke-width="5" stroke-linecap="round"/><line x1="70" y1="100" x2="92" y2="116" stroke="var(--neon)" stroke-width="4" stroke-linecap="round"/><circle cx="92" cy="116" r="4" fill="var(--neon)"/></g><circle cx="70" cy="70" r="30" fill="none" stroke="rgba(200,255,0,.12)" stroke-width="1.5" stroke-dasharray="5 4"/></svg>`}
-function svC(){return`<svg viewBox="0 0 140 140" style="width:100%;height:100%"><rect x="25" y="5" width="90" height="15" rx="5" fill="rgba(255,255,255,.1)"/><line x1="48" y1="20" x2="48" y2="72" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/><line x1="92" y1="20" x2="92" y2="72" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/><circle cx="48" cy="72" r="6" fill="rgba(255,255,255,.4)"/><circle cx="92" cy="72" r="6" fill="rgba(255,255,255,.4)"/><line x1="48" y1="72" x2="48" y2="108" stroke="var(--neon)" stroke-width="5" stroke-linecap="round"/><line x1="92" y1="72" x2="92" y2="108" stroke="var(--neon)" stroke-width="5" stroke-linecap="round"/><g id="ch"><ellipse cx="48" cy="120" rx="14" ry="6" fill="var(--neon)"/><ellipse cx="92" cy="120" rx="14" ry="6" fill="var(--neon)"/></g></svg>`}
-function svM(){return`<svg viewBox="0 0 140 140" style="width:100%;height:100%"><rect x="10" y="8" width="120" height="13" rx="4" fill="rgba(255,255,255,.1)"/><circle cx="70" cy="40" r="13" fill="rgba(255,255,255,.35)"/><line x1="70" y1="53" x2="70" y2="80" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/><g id="ml"><line x1="64" y1="80" x2="46" y2="108" stroke="var(--neon)" stroke-width="4.5" stroke-linecap="round"/><line x1="46" y1="108" x2="42" y2="128" stroke="var(--neon)" stroke-width="4" stroke-linecap="round"/></g><g id="mr"><line x1="76" y1="80" x2="94" y2="108" stroke="var(--neon)" stroke-width="4.5" stroke-linecap="round"/><line x1="94" y1="108" x2="98" y2="128" stroke="var(--neon)" stroke-width="4" stroke-linecap="round"/></g></svg>`}
-function svT(){return`<svg viewBox="0 0 140 140" style="width:100%;height:100%"><line x1="70" y1="8" x2="70" y2="60" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/><circle cx="70" cy="60" r="7" fill="rgba(255,255,255,.5)"/><line x1="70" y1="60" x2="70" y2="100" stroke="var(--neon)" stroke-width="5" stroke-linecap="round"/><g id="tf"><line x1="70" y1="100" x2="50" y2="124" stroke="var(--neon)" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="124" r="5" fill="var(--neon)"/></g></svg>`}
-function svP(){return`<svg viewBox="0 0 140 140" style="width:100%;height:100%"><line x1="70" y1="8" x2="70" y2="56" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/><circle cx="70" cy="56" r="7" fill="rgba(255,255,255,.5)"/><line x1="70" y1="56" x2="70" y2="94" stroke="var(--neon)" stroke-width="5" stroke-linecap="round"/><g id="pf"><line x1="70" y1="94" x2="96" y2="116" stroke="var(--neon)" stroke-width="4.5" stroke-linecap="round"/><line x1="96" y1="116" x2="116" y2="118" stroke="var(--neon)" stroke-width="3.5" stroke-linecap="round"/></g></svg>`}
-function svK(){return`<svg viewBox="0 0 140 140" style="width:100%;height:100%"><rect x="8" y="8" width="124" height="13" rx="4" fill="rgba(255,255,255,.1)"/><circle cx="70" cy="40" r="13" fill="rgba(255,255,255,.35)"/><line x1="70" y1="53" x2="70" y2="80" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/><line x1="60" y1="80" x2="42" y2="112" stroke="rgba(255,255,255,.35)" stroke-width="4.5" stroke-linecap="round"/><line x1="42" y1="112" x2="38" y2="132" stroke="rgba(255,255,255,.35)" stroke-width="4" stroke-linecap="round"/><g id="ke"><line x1="80" y1="80" x2="104" y2="92" stroke="var(--neon)" stroke-width="4.5" stroke-linecap="round"/><line x1="104" y1="92" x2="126" y2="90" stroke="var(--neon)" stroke-width="4" stroke-linecap="round"/><circle cx="126" cy="90" r="4" fill="var(--neon)"/></g></svg>`}
-
-// ═══════ SVG ANIM ═══════
-let at=0;
-function startA(i){
-  at=0;cancelA();
-  function loop(){
-    at+=.035;const s=Math.sin(at),c=Math.cos(at),t=(Math.sin(at*1.5)+1)/2;
-    switch(i%EX.length){
-      case 0:{const e=document.getElementById('af');if(e){const dx=c*2*16,dy=Math.sin(at*2)*12;e.setAttribute('transform',`translate(${dx},${dy})`);}break}
-      case 1:{const e=document.getElementById('ch');if(e){const l=Math.max(0,s)*22;e.setAttribute('transform',`translate(0,${-l})`);}break}
-      case 2:{const l=document.getElementById('ml'),r=document.getElementById('mr');if(l&&r){const a=Math.max(0,s)*24,b=Math.max(0,-s)*24;l.setAttribute('transform',`translate(0,${-a})rotate(${a*.7},64,80)`);r.setAttribute('transform',`translate(0,${-b})rotate(${-b*.7},76,80)`);}break}
-      case 3:{const e=document.getElementById('tf');if(e){const a=Math.max(0,s)*35;e.setAttribute('transform',`rotate(${-a},70,100)`);}break}
-      case 4:{const e=document.getElementById('pf');if(e){const a=s*32;e.setAttribute('transform',`rotate(${a},70,94)`);}break}
-      case 5:{const e=document.getElementById('ke');if(e){const a=-40*t;e.setAttribute('transform',`rotate(${a},80,80)`);}break}
-    }
-    S.exAR=requestAnimationFrame(loop);
-  }
-  loop();
-}
-function cancelA(){if(S.exAR){cancelAnimationFrame(S.exAR);S.exAR=null}}
-
-// ═══════ CELEBS ═══════
-const CELEBS=[
-  {e:'🔥',t:'On Fire!',s:'Your circulation is pumping beautifully'},
-  {e:'⚡',t:'Powered Up!',s:'Fresh blood, fresh energy in your legs'},
-  {e:'💪',t:'Beast Mode!',s:'Your veins are loving this'},
-  {e:'🫀',t:'Heart Happy!',s:'Cardiovascular system says thank you'},
-  {e:'🌟',t:'Legendary!',s:'Top-tier circulation protection'},
-  {e:'🚀',t:'To The Moon!',s:'DVT risk? Not on your watch'},
-  {e:'🏆',t:'Champion!',s:'Mastering in-flight wellness'},
-  {e:'💫',t:'Spectacular!',s:'Your legs will thank you after landing'},
-  {e:'🎯',t:'Bullseye!',s:'Precision health at 35,000 feet'},
-  {e:'👑',t:'Royalty!',s:'Flying like a king/queen of circulation'},
-];
-
-// ═══════ ROUTER ═══════
-let curS='s-onb';
-function show(id){
-  const c=document.getElementById(curS),n=document.getElementById(id);
-  if(c===n)return;
-  c.classList.remove('on');n.classList.add('on');curS=id;HX.tap();
-}
-
-// ═══════ ONBOARD ═══════
-document.getElementById('chips').addEventListener('click',e=>{
-  const c=e.target.closest('.chip');if(!c)return;
-  c.classList.toggle('on');
-  const r=c.dataset.r;
-  if(S.risks.includes(r)){S.risks=S.risks.filter(x=>x!==r);SFX.off();HX.tap()}
-  else{S.risks.push(r);SFX.on();HX.sel()}
+// ═══ 3D TILT ═══
+document.addEventListener('pointermove',e=>{
+  document.querySelectorAll('.tilt-card').forEach(c=>{
+    const r=c.getBoundingClientRect();
+    if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)return;
+    const x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+    const rx=(y-.5)*8,ry=(x-.5)*-8;
+    c.style.transform=`perspective(800px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    c.style.setProperty('--mx',(x*100)+'%');c.style.setProperty('--my',(y*100)+'%');
+  });
+});
+document.addEventListener('pointerleave',()=>{
+  document.querySelectorAll('.tilt-card').forEach(c=>{c.style.transform='';});
+},true);
+document.addEventListener('pointerup',()=>{
+  document.querySelectorAll('.tilt-card').forEach(c=>{c.style.transform='';});
 });
 
-function dur(d){
-  S.dur=Math.max(1,Math.min(20,S.dur+d));
-  const el=document.getElementById('dv');
-  el.innerHTML=`${S.dur}<small style="color:var(--t2)">h</small>`;
-  el.classList.add('bounce');setTimeout(()=>el.classList.remove('bounce'),500);
-  SFX.tap();HX.tap();
-}
+// ═══ STATE ═══
+let S={dur:4,risks:[],intv:90,start:null,cps:[],done:0,cur:0,streak:0,best:0,xp:0,water:0,phase:'onb',exOn:false,exT:60,exTR:null,exAR:null,mainR:null};
+
+// ═══ EXERCISES ═══
+const EX=[
+  {n:'Ankle Circles',d:60,i:'Lift one foot slightly, trace slow wide circles with your ankle. Switch halfway.',
+   w:'Ankle rotation activates the calf muscle pump — your body\'s built-in mechanism for pushing blood back to your heart.',svg:svA},
+  {n:'Calf Raises',d:60,i:'Press feet flat, raise heels as high as you can. Lower slowly. Find a steady rhythm.',
+   w:'Calf contractions squeeze deep leg veins, creating the most powerful venous pump in the human body.',svg:svC},
+  {n:'Seated March',d:75,i:'Alternate lifting each knee toward your chest in a slow, controlled march.',
+   w:'Hip flexion activates large muscle groups in your thighs, dramatically improving blood return from your legs.',svg:svM},
+  {n:'Toe Raises',d:60,i:'Keep heels planted, pull toes toward your shin. Hold 2 seconds, release. Repeat.',
+   w:'Engages the anterior tibialis muscle to promote circulation through the front compartment of your lower leg.',svg:svT},
+  {n:'Foot Pumps',d:60,i:'Point toes down, then flex up — like pressing and releasing a gas pedal.',
+   w:'Alternating calf and shin activation creates a comprehensive pumping mechanism throughout both lower legs.',svg:svP},
+  {n:'Knee Extensions',d:75,i:'Extend one leg straight out, hold 3 seconds, lower slowly. Alternate legs.',
+   w:'Quadriceps contraction combined with leg elevation uses gravity to drain pooled blood from your calves.',svg:svK}
+];
+
+// ═══ SVG GENERATORS (detailed, anatomical-style) ═══
+function svA(){return`<svg viewBox="0 0 160 160" style="width:100%;height:100%">
+<g opacity=".4"><rect x="55" y="5" width="50" height="60" rx="8" fill="#1e1e38"/></g>
+<line x1="80" y1="15" x2="80" y2="65" stroke="rgba(255,255,255,.3)" stroke-width="6" stroke-linecap="round"/>
+<circle cx="80" cy="68" r="8" fill="rgba(255,255,255,.15)" stroke="#b8ff57" stroke-width="2"/>
+<g id="af">
+  <line x1="80" y1="68" x2="80" y2="112" stroke="#b8ff57" stroke-width="6" stroke-linecap="round"/>
+  <line x1="80" y1="112" x2="105" y2="132" stroke="#b8ff57" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="112" cy="137" rx="10" ry="5" fill="#b8ff57" opacity=".7"/>
+</g>
+<circle cx="80" cy="80" r="32" fill="none" stroke="rgba(184,255,87,.1)" stroke-width="1.5" stroke-dasharray="6 4"/>
+<circle cx="80" cy="80" r="24" fill="none" stroke="rgba(184,255,87,.06)" stroke-width="1"/>
+</svg>`}
+
+function svC(){return`<svg viewBox="0 0 160 160" style="width:100%;height:100%">
+<rect x="25" y="5" width="110" height="16" rx="6" fill="#1e1e38"/>
+<rect x="30" y="21" width="100" height="8" rx="4" fill="rgba(255,255,255,.04)"/>
+<line x1="55" y1="29" x2="55" y2="80" stroke="rgba(255,255,255,.3)" stroke-width="6" stroke-linecap="round"/>
+<line x1="105" y1="29" x2="105" y2="80" stroke="rgba(255,255,255,.3)" stroke-width="6" stroke-linecap="round"/>
+<circle cx="55" cy="83" r="6" fill="rgba(255,255,255,.2)"/>
+<circle cx="105" cy="83" r="6" fill="rgba(255,255,255,.2)"/>
+<line x1="55" y1="83" x2="55" y2="120" stroke="#b8ff57" stroke-width="6" stroke-linecap="round"/>
+<line x1="105" y1="83" x2="105" y2="120" stroke="#b8ff57" stroke-width="6" stroke-linecap="round"/>
+<g id="ch"><ellipse cx="55" cy="132" rx="16" ry="7" fill="#b8ff57" opacity=".8"/>
+<ellipse cx="105" cy="132" rx="16" ry="7" fill="#b8ff57" opacity=".8"/></g>
+</svg>`}
+
+function svM(){return`<svg viewBox="0 0 160 160" style="width:100%;height:100%">
+<rect x="10" y="8" width="140" height="14" rx="5" fill="#1e1e38"/>
+<circle cx="80" cy="42" r="14" fill="#ffb07c"/>
+<path d="M68 50 Q80 58 92 50" stroke="#e86b3a" stroke-width="2" fill="none"/>
+<circle cx="74" cy="38" r="2.5" fill="#1a1a3e"/><circle cx="86" cy="38" r="2.5" fill="#1a1a3e"/>
+<line x1="80" y1="56" x2="80" y2="86" stroke="#6c8aff" stroke-width="8" stroke-linecap="round"/>
+<g id="ml"><line x1="74" y1="86" x2="54" y2="118" stroke="#b8ff57" stroke-width="5.5" stroke-linecap="round"/>
+<line x1="54" y1="118" x2="48" y2="142" stroke="#b8ff57" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="44" cy="146" rx="10" ry="5" fill="#b8ff57" opacity=".6"/></g>
+<g id="mr"><line x1="86" y1="86" x2="106" y2="118" stroke="#b8ff57" stroke-width="5.5" stroke-linecap="round"/>
+<line x1="106" y1="118" x2="112" y2="142" stroke="#b8ff57" stroke-width="5" stroke-linecap="round"/>
+<ellipse cx="116" cy="146" rx="10" ry="5" fill="#b8ff57" opacity=".6"/></g>
+</svg>`}
+
+function svT(){return`<svg viewBox="0 0 160 160" style="width:100%;height:100%">
+<line x1="80" y1="8" x2="80" y2="65" stroke="rgba(255,255,255,.3)" stroke-width="6" stroke-linecap="round"/>
+<circle cx="80" cy="68" r="8" fill="rgba(255,255,255,.15)" stroke="#5eead4" stroke-width="2"/>
+<line x1="80" y1="68" x2="80" y2="110" stroke="#b8ff57" stroke-width="6" stroke-linecap="round"/>
+<g id="tf"><line x1="80" y1="110" x2="58" y2="138" stroke="#b8ff57" stroke-width="5" stroke-linecap="round"/>
+<circle cx="54" cy="142" r="7" fill="#b8ff57" opacity=".7"/>
+<circle cx="54" cy="142" r="12" fill="none" stroke="rgba(184,255,87,.15)" stroke-width="1.5"/></g>
+</svg>`}
+
+function svP(){return`<svg viewBox="0 0 160 160" style="width:100%;height:100%">
+<line x1="80" y1="8" x2="80" y2="62" stroke="rgba(255,255,255,.3)" stroke-width="6" stroke-linecap="round"/>
+<circle cx="80" cy="65" r="8" fill="rgba(255,255,255,.15)" stroke="#6c8aff" stroke-width="2"/>
+<line x1="80" y1="65" x2="80" y2="104" stroke="#b8ff57" stroke-width="6" stroke-linecap="round"/>
+<g id="pf"><line x1="80" y1="104" x2="108" y2="128" stroke="#b8ff57" stroke-width="5" stroke-linecap="round"/>
+<line x1="108" y1="128" x2="130" y2="130" stroke="#b8ff57" stroke-width="4" stroke-linecap="round"/>
+<ellipse cx="135" cy="131" rx="8" ry="4" fill="#b8ff57" opacity=".6"/></g>
+<path d="M50 125 Q80 118 110 125" fill="none" stroke="rgba(184,255,87,.1)" stroke-width="1.5" stroke-dasharray="4 3"/>
+</svg>`}
+
+function svK(){return`<svg viewBox="0 0 160 160" style="width:100%;height:100%">
+<rect x="8" y="8" width="144" height="14" rx="5" fill="#1e1e38"/>
+<circle cx="80" cy="42" r="14" fill="#ffb07c"/>
+<circle cx="74" cy="38" r="2.5" fill="#1a1a3e"/><circle cx="86" cy="38" r="2.5" fill="#1a1a3e"/>
+<line x1="80" y1="56" x2="80" y2="86" stroke="#6c8aff" stroke-width="8" stroke-linecap="round"/>
+<line x1="70" y1="86" x2="50" y2="120" stroke="rgba(255,255,255,.3)" stroke-width="5.5" stroke-linecap="round"/>
+<line x1="50" y1="120" x2="44" y2="144" stroke="rgba(255,255,255,.3)" stroke-width="5" stroke-linecap="round"/>
+<g id="ke"><line x1="90" y1="86" x2="118" y2="100" stroke="#b8ff57" stroke-width="5.5" stroke-linecap="round"/>
+<line x1="118" y1="100" x2="144" y2="98" stroke="#b8ff57" stroke-width="5" stroke-linecap="round"/>
+<circle cx="148" cy="98" r="5" fill="#b8ff57" opacity=".7"/></g>
+</svg>`}
+
+// ═══ ANIM ═══
+let at=0;
+function startA(i){at=0;cancelA();function loop(){at+=.035;const s=Math.sin(at);
+switch(i%EX.length){
+case 0:{const e=document.getElementById('af');if(e){const dx=Math.cos(at*2)*16,dy=Math.sin(at*2)*12;e.setAttribute('transform',`translate(${dx},${dy})`);}break}
+case 1:{const e=document.getElementById('ch');if(e){const l=Math.max(0,s)*24;e.setAttribute('transform',`translate(0,${-l})`);}break}
+case 2:{const l=document.getElementById('ml'),r=document.getElementById('mr');if(l&&r){const a=Math.max(0,s)*26,b=Math.max(0,-s)*26;l.setAttribute('transform',`translate(0,${-a})rotate(${a*.7},74,86)`);r.setAttribute('transform',`translate(0,${-b})rotate(${-b*.7},86,86)`);}break}
+case 3:{const e=document.getElementById('tf');if(e){const a=Math.max(0,s)*38;e.setAttribute('transform',`rotate(${-a},80,110)`);}break}
+case 4:{const e=document.getElementById('pf');if(e){const a=s*35;e.setAttribute('transform',`rotate(${a},80,104)`);}break}
+case 5:{const e=document.getElementById('ke');if(e){const t=(Math.sin(at*1.5)+1)/2;e.setAttribute('transform',`rotate(${-42*t},90,86)`);}break}
+}S.exAR=requestAnimationFrame(loop)}loop()}
+function cancelA(){if(S.exAR){cancelAnimationFrame(S.exAR);S.exAR=null}}
+
+// ═══ CELEBS ═══
+const CELEBS=[
+{e:'🔥',t:'On Fire!',s:'Circulation pumping beautifully'},
+{e:'⚡',t:'Powered Up!',s:'Fresh blood flowing through your legs'},
+{e:'💪',t:'Beast Mode!',s:'Your veins are absolutely loving this'},
+{e:'🫀',t:'Heart Happy!',s:'Cardiovascular system says thanks'},
+{e:'🌟',t:'Legendary!',s:'Top-tier DVT prevention'},
+{e:'🚀',t:'Liftoff!',s:'DVT risk? Not on your watch'},
+{e:'🏆',t:'Champion!',s:'In-flight wellness mastered'},
+{e:'💫',t:'Spectacular!',s:'Your legs will thank you at landing'},
+{e:'🎯',t:'Bullseye!',s:'Precision health at 35,000 feet'},
+{e:'👑',t:'Royalty!',s:'Flying like a wellness king'}];
+
+// ═══ ROUTER ═══
+let curS='s-onb';
+function show(id){const c=document.getElementById(curS),n=document.getElementById(id);
+if(c===n)return;c.classList.add('out');c.classList.remove('on');
+setTimeout(()=>{c.classList.remove('out')},600);
+n.classList.add('on');curS=id;HX.tap()}
+
+// ═══ ONBOARD ═══
+document.getElementById('chips').addEventListener('click',e=>{
+const c=e.target.closest('.chip');if(!c)return;c.classList.toggle('on');
+const r=c.dataset.r;
+if(S.risks.includes(r)){S.risks=S.risks.filter(x=>x!==r);SFX.off();HX.tap()}
+else{S.risks.push(r);SFX.on();HX.sel()}});
+
+function dur(d){S.dur=Math.max(1,Math.min(20,S.dur+d));
+const el=document.getElementById('dv');el.textContent=S.dur;
+el.classList.add('pop');setTimeout(()=>el.classList.remove('pop'),500);
+SFX.tap();HX.tap()}
 
 function calcI(){const n=S.risks.length;return n===0?90:n<=2?60:45}
-function buildCP(){
-  const t=S.dur*60,i=S.intv,c=[];let m=i;
-  while(m<t){c.push({t:m,done:false,ei:c.length%EX.length});m+=i}
-  return c;
-}
+function buildCP(){const t=S.dur*60,iv=S.intv,c=[];let m=iv;
+while(m<t){c.push({t:m,done:false,ei:c.length%EX.length});m+=iv}return c}
 
-function goTip(){
-  S.intv=calcI();S.cps=buildCP();S.start=Date.now();
-  S.done=0;S.cur=0;S.streak=0;S.best=0;S.xp=0;S.water=0;
-  saveS();reqN();SFX.go();HX.ok();show('s-tip');
-}
+function goTip(){S.intv=calcI();S.cps=buildCP();S.start=Date.now();
+S.done=0;S.cur=0;S.streak=0;S.best=0;S.xp=0;S.water=0;
+saveS();reqNP();SFX.go();HX.ok();show('s-tip')}
+
 function goCommit(){
-  document.getElementById('ctxt').innerHTML=
-    `Move every <em>${S.intv} minutes</em> · ${S.cps.length} breaks across ${S.dur} hours · <em>Protect your circulation</em>`;
-  const b=Math.max(3,S.cps.length-1);
-  document.getElementById('stxt').textContent=
-    `Most travelers on flights this long complete ${b}–${b+1} movement breaks.`;
-  SFX.tap();HX.tap();show('s-commit');
-}
+document.getElementById('ctxt').innerHTML=`Move every <em>${S.intv} min</em> · ${S.cps.length} breaks across ${S.dur}h · <em>Protect your veins</em>`;
+const b=Math.max(3,S.cps.length-1);
+document.getElementById('stxt').textContent=`Most travelers on flights this long complete ${b}–${b+1} movement breaks.`;
+SFX.tap();HX.tap();show('s-commit')}
+
 function goDash(){S.phase='dash';saveS();SFX.boom();HX.win();show('s-dash');updateD();startM()}
 
-// ═══════ DASHBOARD ═══════
+// ═══ DASHBOARD ═══
 function updateD(){
-  const now=Date.now(),el=now-S.start,tot=S.dur*3600000;
-  let p=Math.min(1,el/tot);
-  if(S.done>0&&p<.93)p=Math.min(.97,p+.015*S.done);
-  document.getElementById('wf').style.width=(p*100).toFixed(2)+'%';
-  const em=Math.floor(el/60000),eh=Math.floor(em/60),emm=em%60;
-  document.getElementById('el-lbl').textContent=`${eh}h ${String(emm).padStart(2,'0')}m`;
-  document.getElementById('ll').textContent=`🛬 ${S.dur}h`;
+const now=Date.now(),el=now-S.start,tot=S.dur*3600000;
+let p=Math.min(1,el/tot);if(S.done>0&&p<.93)p=Math.min(.97,p+.015*S.done);
+document.getElementById('wf').style.width=(p*100).toFixed(2)+'%';
+const em=Math.floor(el/60000),eh=Math.floor(em/60),emm=em%60;
+document.getElementById('el-l').textContent=`${eh}h ${String(emm).padStart(2,'0')}m`;
+document.getElementById('ll').textContent=`🛬 ${S.dur}h`;
+const dc=document.getElementById('wdots');dc.innerHTML='';
+S.cps.forEach((c,i)=>{const pct=(c.t/(S.dur*60))*100,d=document.createElement('div');
+d.className='tl-dot'+(c.done?' done':i===S.cur?' now':'');d.style.left=pct+'%';dc.appendChild(d)});
+document.getElementById('sd').textContent=S.done;
+document.getElementById('sr').textContent=Math.max(0,S.cps.length-S.done);
+document.getElementById('dxp').textContent=S.xp;
+if(S.streak>=2){document.getElementById('stk-w').style.display='block';document.getElementById('stk-n').textContent=S.streak}
+else document.getElementById('stk-w').style.display='none';
+document.getElementById('jf').style.height=Math.min(100,(S.water/8)*100)+'%';
+document.getElementById('jn').textContent=S.water;
+updateNC();
+const sp=document.getElementById('dsoc');
+if(S.done===0){const b=Math.max(3,S.cps.length-1);sp.textContent=`Most travelers on flights this long do ${b}–${b+1} movement breaks.`}
+else if(S.done<S.cps.length)sp.textContent=`${S.done}/${S.cps.length} done — your veins are protected.`;
+else sp.textContent=`All ${S.cps.length} checkpoints complete. Outstanding.`}
 
-  const dc=document.getElementById('wdots');dc.innerHTML='';
-  S.cps.forEach((c,i)=>{
-    const pct=(c.t/(S.dur*60))*100,d=document.createElement('div');
-    d.className='wave-dot'+(c.done?' done':i===S.cur?' now':'');
-    d.style.left=pct+'%';dc.appendChild(d);
-  });
+let lastAl=-1;
+function updateNC(){const cp=S.cps[S.cur],t=document.getElementById('nc-t'),l=document.getElementById('nc-l'),s=document.getElementById('nc-s');
+if(!cp||S.cur>=S.cps.length){t.textContent='✓';l.textContent='All done!';s.textContent='Your veins are happy';return}
+const rem=(cp.t*60000)-(Date.now()-S.start);
+if(rem<=0){t.textContent='NOW';l.textContent='🚨 Protect your circulation';s.textContent='Tap to start';
+if(rem>-6000&&lastAl!==S.cur){lastAl=S.cur;trigAl(S.cur)}}
+else{const rm=Math.floor(rem/60000),rs=Math.floor((rem%60000)/1000);
+t.textContent=`${rm}:${String(rs).padStart(2,'0')}`;l.textContent='Next movement break';
+s.textContent=rem<120000?'Almost time!':'Tap when ready'}}
 
-  document.getElementById('sd').textContent=S.done;
-  document.getElementById('sr').textContent=Math.max(0,S.cps.length-S.done);
-  document.getElementById('dxp').textContent=S.xp;
+function startM(){if(S.mainR)clearInterval(S.mainR);
+S.mainR=setInterval(()=>{if(S.phase==='dash')updateD();
+if(Date.now()-S.start>=S.dur*3600000)endFlight()},1000)}
 
-  if(S.streak>=2){document.getElementById('strk-w').style.display='block';document.getElementById('strk-n').textContent=S.streak}
-  else document.getElementById('strk-w').style.display='none';
+// ═══ EXERCISE ═══
+function goEx(){const cp=S.cps[S.cur];if(!cp)return;const ex=EX[cp.ei];
+S.exT=ex.d;S.exOn=false;
+document.getElementById('exl').textContent=`Checkpoint ${S.cur+1} of ${S.cps.length}`;
+document.getElementById('exn').textContent=ex.n;
+document.getElementById('exi').textContent=ex.i;
+document.getElementById('exw').textContent=ex.w;
+document.getElementById('ext').textContent=ex.d;
+document.getElementById('exb').textContent='▶ Start';
+document.getElementById('exr').style.strokeDashoffset='723.82';
+document.getElementById('exs').innerHTML=ex.svg();
+S.phase='ex';saveS();SFX.tap();HX.tap();show('s-ex')}
 
-  document.getElementById('jf').style.height=Math.min(100,(S.water/8)*100)+'%';
-  document.getElementById('jn').textContent=S.water;
-  updateNC();
+function toggleEx(){if(S.exOn){S.exOn=false;clearInterval(S.exTR);cancelA();
+document.getElementById('exb').textContent='▶ Resume';SFX.tap();HX.tap()}
+else{S.exOn=true;document.getElementById('exb').textContent='⏸ Pause';SFX.tap();HX.sel();
+const cp=S.cps[S.cur],ex=EX[cp.ei];startA(cp.ei);
+S.exTR=setInterval(()=>{S.exT--;
+const el=document.getElementById('ext');el.textContent=S.exT;
+document.getElementById('exr').style.strokeDashoffset=723.82*(S.exT/ex.d);
+if(S.exT%10===0&&S.exT>0){SFX.tick();HX.tick()}
+if(S.exT<=3&&S.exT>0){SFX.tick();HX.tap()}
+if(S.exT<=0){clearInterval(S.exTR);cancelA();compCP()}},1000)}}
 
-  const sp=document.getElementById('dsoc');
-  if(S.done===0){const b=Math.max(3,S.cps.length-1);sp.textContent=`Most travelers on flights this long do ${b}–${b+1} movement breaks.`}
-  else if(S.done<S.cps.length)sp.textContent=`${S.done} of ${S.cps.length} done — real protection happening.`;
-  else sp.textContent=`All ${S.cps.length} checkpoints complete. Outstanding.`;
-}
+function skipEx(){clearInterval(S.exTR);cancelA();S.exOn=false;
+S.xp+=10;S.cps[S.cur].done=true;S.done++;S.streak=0;S.cur++;saveS();
+SFX.tap();HX.tap();S.phase='dash';show('s-dash');updateD()}
 
-let lastA=-1;
-function updateNC(){
-  const cp=S.cps[S.cur],t=document.getElementById('nc-time'),l=document.getElementById('nc-lbl'),s=document.getElementById('nc-sub');
-  if(!cp||S.cur>=S.cps.length){t.textContent='✓';l.textContent='All checkpoints done!';s.textContent='Your veins are very happy';return}
-  const rem=(cp.t*60000)-(Date.now()-S.start);
-  if(rem<=0){t.textContent='NOW';l.textContent='🚨 Protect your circulation';s.textContent='Tap to start movement break';
-    if(rem>-6000&&lastA!==S.cur){lastA=S.cur;trigA(S.cur)}
-  }else{const rm=Math.floor(rem/60000),rs=Math.floor((rem%60000)/1000);
-    t.textContent=`${rm}:${String(rs).padStart(2,'0')}`;
-    l.textContent='Next movement break in';s.textContent=rem<120000?'Almost time!':'Tap when ready';
-  }
-}
+function compCP(){S.cps[S.cur].done=true;S.done++;S.streak++;
+if(S.streak>S.best)S.best=S.streak;
+let xp=25;if(S.streak>=3)xp+=10;if(S.streak>=5)xp+=20;if(S.water>=3)xp+=5;
+S.xp+=xp;S.cur++;saveS();SFX.win();HX.win();showCeleb(xp)}
 
-function startM(){
-  if(S.mainR)clearInterval(S.mainR);
-  S.mainR=setInterval(()=>{
-    if(S.phase==='dash')updateD();
-    if(Date.now()-S.start>=S.dur*3600000)endFlight();
-  },1000);
-}
-
-// ═══════ EXERCISE ═══════
-function goEx(){
-  const cp=S.cps[S.cur];if(!cp)return;
-  const ex=EX[cp.ei];S.exT=ex.d;S.exOn=false;
-  document.getElementById('exl').textContent=`Checkpoint ${S.cur+1} of ${S.cps.length}`;
-  document.getElementById('exn').textContent=ex.n;
-  document.getElementById('exi').textContent=ex.i;
-  document.getElementById('exw').textContent=ex.w;
-  document.getElementById('ext').textContent=ex.d;
-  document.getElementById('exb').textContent='▶ Start';
-  document.getElementById('exr').style.strokeDashoffset='691.15';
-  document.getElementById('exs').innerHTML=ex.svg();
-  S.phase='ex';saveS();SFX.tap();HX.tap();show('s-ex');
-}
-
-function toggleEx(){
-  if(S.exOn){
-    S.exOn=false;clearInterval(S.exTR);cancelA();
-    document.getElementById('exb').textContent='▶ Resume';SFX.tap();HX.tap();
-  }else{
-    S.exOn=true;document.getElementById('exb').textContent='⏸ Pause';SFX.tap();HX.sel();
-    const cp=S.cps[S.cur],ex=EX[cp.ei];startA(cp.ei);
-    S.exTR=setInterval(()=>{
-      S.exT--;const el=document.getElementById('ext');
-      el.textContent=S.exT;el.classList.add('bounce');setTimeout(()=>el.classList.remove('bounce'),500);
-      document.getElementById('exr').style.strokeDashoffset=691.15*(S.exT/ex.d);
-      if(S.exT%10===0&&S.exT>0){SFX.tick();HX.tick()}
-      if(S.exT<=3&&S.exT>0){SFX.tick();HX.tap()}
-      if(S.exT<=0){clearInterval(S.exTR);cancelA();compCP()}
-    },1000);
-  }
-}
-
-function skipEx(){
-  clearInterval(S.exTR);cancelA();S.exOn=false;
-  S.xp+=10;S.cps[S.cur].done=true;S.done++;S.streak=0;S.cur++;saveS();
-  SFX.tap();HX.tap();S.phase='dash';show('s-dash');updateD();
-}
-
-function compCP(){
-  S.cps[S.cur].done=true;S.done++;S.streak++;
-  if(S.streak>S.best)S.best=S.streak;
-  let xp=25;if(S.streak>=3)xp+=10;if(S.streak>=5)xp+=20;if(S.water>=3)xp+=5;
-  S.xp+=xp;S.cur++;saveS();SFX.win();HX.win();showC(xp);
-}
-
-// ═══════ CELEB ═══════
-function showC(xp){
-  const c=CELEBS[Math.floor(Math.random()*CELEBS.length)];
-  document.getElementById('ce').textContent=c.e;
-  document.getElementById('ch').textContent=c.t;
-  let sub=c.s;if(S.streak>=3)sub+=` · ${S.streak} streak! 🔥`;
-  document.getElementById('cp').textContent=sub;
-  document.getElementById('cx').textContent=`+${xp} XP`;
-  mkSparks();document.getElementById('celeb').classList.add('on');
-  xpToast(`+${xp} XP`);
-}
+function showCeleb(xp){const c=CELEBS[Math.floor(Math.random()*CELEBS.length)];
+document.getElementById('ce').textContent=c.e;document.getElementById('cH').textContent=c.t;
+let sub=c.s;if(S.streak>=3)sub+=` · ${S.streak} streak! 🔥`;
+document.getElementById('cP').textContent=sub;document.getElementById('cX').textContent=`+${xp} XP`;
+mkSparks();document.getElementById('celeb').classList.add('on');xpT(`+${xp}`)}
 function closeC(){document.getElementById('celeb').classList.remove('on');S.phase='dash';show('s-dash');updateD();SFX.tap();HX.tap()}
 
-function mkSparks(){
-  const p=document.getElementById('sparks');p.innerHTML='';
-  const cols=['#c8ff00','#4d7cff','#ff4d8d','#ff8a00','#a855f7','#00e5ff','#34d399'];
-  for(let i=0;i<30;i++){
-    const e=document.createElement('div');e.className='spark';
-    const sx=(Math.random()-.5)*500,sy=-(Math.random()*500+50);
-    e.style.cssText=`left:50%;top:50%;background:${cols[i%cols.length]};
-      --sx:${sx}px;--sy:${sy}px;width:${4+Math.random()*6}px;height:${4+Math.random()*6}px;
-      animation-delay:${Math.random()*.3}s;animation-duration:${.8+Math.random()*.6}s;
-      border-radius:${Math.random()>.5?'50%':'2px'}`;
-    p.appendChild(e);
-  }
-}
+function mkSparks(){const p=document.getElementById('sparks');p.innerHTML='';
+const cols=['#b8ff57','#6c8aff','#ff6eb4','#ffa64d','#a78bfa','#5eead4','#fff'];
+for(let i=0;i<35;i++){const e=document.createElement('div');e.className='spark';
+const sx=(Math.random()-.5)*500,sy=-(Math.random()*500+80);
+e.style.cssText=`left:50%;top:50%;background:${cols[i%cols.length]};
+--sx:${sx}px;--sy:${sy}px;width:${4+Math.random()*8}px;height:${4+Math.random()*8}px;
+animation-delay:${Math.random()*.3}s;animation-duration:${.8+Math.random()*.8}s;
+border-radius:${Math.random()>.5?'50%':'3px'}`;p.appendChild(e)}}
 
-function xpToast(t){
-  const e=document.createElement('div');e.className='xp-toast';e.textContent=t;
-  document.body.appendChild(e);setTimeout(()=>e.remove(),800);
-}
+function xpT(t){const e=document.createElement('div');e.className='xp-t';e.textContent=t;
+document.body.appendChild(e);setTimeout(()=>e.remove(),900)}
 
-// ═══════ HYDRATION ═══════
-function logH2O(){
-  S.water++;S.xp+=5;saveS();updateD();SFX.h2o();HX.h2o();xpToast('+5 💧');
-}
+// ═══ HYDRATION ═══
+function logH2O(){S.water++;S.xp+=5;saveS();updateD();SFX.h2o();HX.h2o();xpT('+5 💧')}
 
-// ═══════ NOTIFS ═══════
-let nP='default';
-function reqN(){if('Notification'in window)Notification.requestPermission().then(p=>nP=p)}
-
-const alertM=['Protect your circulation now','Your veins need movement','Keep blood flowing — move!',
-  'Time to activate circulation','Don\'t let blood pool — quick break!'];
-
-function trigA(i){
-  const m=alertM[i%alertM.length];
-  if(nP==='granted'&&document.hidden)try{new Notification('Circulate',{body:m})}catch(e){}
-  showN(m,'Tap to start your movement break');SFX.warn();HX.warn();
-}
-
-let nT;
-function showN(t,b){
-  document.getElementById('nh').textContent=t;
-  document.getElementById('nb').textContent=b;
-  document.getElementById('notif').classList.add('on');
-  clearTimeout(nT);nT=setTimeout(hideN,9000);
-}
+// ═══ NOTIFS ═══
+let nP='default';function reqNP(){if('Notification'in window)Notification.requestPermission().then(p=>nP=p)}
+const alertM=['Protect your circulation now','Your veins need movement','Keep blood flowing','Activate circulation','Quick break — protect your legs'];
+function trigAl(i){const m=alertM[i%alertM.length];
+if(nP==='granted'&&document.hidden)try{new Notification('Circulate',{body:m})}catch(e){}
+showN(m,'Tap to start');SFX.warn();HX.warn()}
+let nTO;
+function showN(t,b){document.getElementById('nh').textContent=t;document.getElementById('nb').textContent=b;
+document.getElementById('notif').classList.add('on');clearTimeout(nTO);nTO=setTimeout(hideN,9000)}
 function hideN(){document.getElementById('notif').classList.remove('on')}
 function handleN(){hideN();if(S.phase==='dash')goEx()}
 
-// ═══════ END FLIGHT ═══════
-function endFlight(){
-  if(S.mainR)clearInterval(S.mainR);S.phase='sum';saveS();
-  const r=S.cps.length>0?S.done/S.cps.length:0;
-  document.getElementById('sx').textContent=S.xp+' XP';
-  document.getElementById('sc').textContent=`${S.done}/${S.cps.length}`;
-  document.getElementById('ss').textContent=`${S.best} 🔥`;
-  document.getElementById('sh').textContent=`${S.water} 💧`;
-  document.getElementById('sdu').textContent=`${S.dur}h`;
+// ═══ END ═══
+function endFlight(){if(S.mainR)clearInterval(S.mainR);S.phase='sum';saveS();
+const r=S.cps.length>0?S.done/S.cps.length:0;
+document.getElementById('sx').textContent=S.xp+' XP';
+document.getElementById('sc').textContent=`${S.done}/${S.cps.length}`;
+document.getElementById('ssv').textContent=`${S.best} 🔥`;
+document.getElementById('sh').textContent=`${S.water} 💧`;
+document.getElementById('sdu').textContent=`${S.dur}h`;
+if(r>=.8){document.getElementById('sme').textContent='🏆';document.getElementById('smh').textContent='Outstanding!';
+document.getElementById('sms').textContent=`${Math.round(r*100)}% — absolute legend.`;
+document.getElementById('smm').textContent='Maximum protection from takeoff to landing. Your veins had a five-star flight. ✈️'}
+else if(r>=.5){document.getElementById('sme').textContent='🌟';document.getElementById('smh').textContent='Well Done!';
+document.getElementById('sms').textContent='Solid protection.';
+document.getElementById('smm').textContent='Every movement break made a real difference. Your legs are safer because of you. ✈️'}
+else{document.getElementById('sme').textContent='✈️';document.getElementById('smh').textContent='Flight Complete';
+document.getElementById('sms').textContent='Every bit counts.';
+document.getElementById('smm').textContent='Even a few breaks help. Try a shorter interval next time — it adds up. Safe travels! ✈️'}
+SFX.end();HX.ok();show('s-sum')}
 
-  if(r>=.8){
-    document.getElementById('sme').textContent='🏆';
-    document.getElementById('smh').textContent='Outstanding!';
-    document.getElementById('sms').textContent=`${Math.round(r*100)}% completion — absolute legend.`;
-    document.getElementById('smm').textContent='Your veins had a five-star flight. Maximum protection from takeoff to landing. Safe travels! ✈️';
-  }else if(r>=.5){
-    document.getElementById('sme').textContent='🌟';
-    document.getElementById('smh').textContent='Well Done!';
-    document.getElementById('sms').textContent='Solid circulation protection.';
-    document.getElementById('smm').textContent='Every movement break made a real, measurable difference. Your legs stayed safer because of you. ✈️';
-  }else{
-    document.getElementById('sme').textContent='✈️';
-    document.getElementById('smh').textContent='Flight Complete';
-    document.getElementById('sms').textContent='Every bit counts.';
-    document.getElementById('smm').textContent='Even a few breaks help. Next time, try a shorter interval — it adds up fast. Safe travels! ✈️';
-  }
-  SFX.end();HX.ok();show('s-sum');
-}
+// ═══ RESET ═══
+function reset(){clearInterval(S.mainR);clearInterval(S.exTR);cancelA();localStorage.removeItem('cx3');
+S={dur:4,risks:[],intv:90,start:null,cps:[],done:0,cur:0,streak:0,best:0,xp:0,water:0,phase:'onb',exOn:false,exT:60,exTR:null,exAR:null,mainR:null};
+lastAl=-1;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+document.getElementById('dv').textContent='4';SFX.tap();HX.tap();show('s-onb')}
 
-// ═══════ RESET ═══════
-function reset(){
-  clearInterval(S.mainR);clearInterval(S.exTR);cancelA();
-  localStorage.removeItem('cx2');
-  S={dur:4,risks:[],intv:90,start:null,cps:[],done:0,cur:0,streak:0,best:0,
-     xp:0,water:0,phase:'onb',exOn:false,exT:60,exTR:null,exAR:null,mainR:null};
-  lastA=-1;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
-  document.getElementById('dv').innerHTML='4<small style="color:var(--t2)">h</small>';
-  SFX.tap();HX.tap();show('s-onb');
-}
+// ═══ SAVE/LOAD ═══
+function saveS(){try{localStorage.setItem('cx3',JSON.stringify({dur:S.dur,risks:S.risks,intv:S.intv,start:S.start,
+cps:S.cps,done:S.done,cur:S.cur,streak:S.streak,best:S.best,xp:S.xp,water:S.water,phase:S.phase}))}catch(e){}}
+function loadS(){try{const d=localStorage.getItem('cx3');if(!d)return false;const p=JSON.parse(d);
+if(!p||!p.start)return false;Object.assign(S,p);S.exOn=false;S.exTR=null;S.exAR=null;S.mainR=null;return true}catch(e){return false}}
 
-// ═══════ SAVE/LOAD ═══════
-function saveS(){try{localStorage.setItem('cx2',JSON.stringify({
-  dur:S.dur,risks:S.risks,intv:S.intv,start:S.start,cps:S.cps,done:S.done,
-  cur:S.cur,streak:S.streak,best:S.best,xp:S.xp,water:S.water,phase:S.phase
-}))}catch(e){}}
+// ═══ OFFLINE ═══
+function chkO(){const b=document.getElementById('offb');navigator.onLine?b.classList.remove('on'):b.classList.add('on')}
+window.addEventListener('online',chkO);window.addEventListener('offline',chkO);
 
-function loadS(){try{
-  const d=localStorage.getItem('cx2');if(!d)return false;
-  const p=JSON.parse(d);if(!p||!p.start)return false;
-  Object.assign(S,p);S.exOn=false;S.exTR=null;S.exAR=null;S.mainR=null;return true;
-}catch(e){return false}}
-
-// ═══════ OFFLINE ═══════
-function chkOnl(){const b=document.getElementById('offline-b');navigator.onLine?b.classList.remove('on'):b.classList.add('on')}
-window.addEventListener('online',chkOnl);window.addEventListener('offline',chkOnl);
-
-// ═══════ SW ═══════
-if('serviceWorker'in navigator){
-  const sw=`const V='cx2-v1';
+// ═══ SW ═══
+if('serviceWorker'in navigator){const sw=`const V='cx3-v1';
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(['${location.href}']).catch(()=>{})));self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))));self.clients.claim()});
 self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{if(res.status===200){const c=res.clone();caches.open(V).then(ca=>ca.put(e.request,c))}return res}).catch(()=>caches.match(e.request)))})`;
-  navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{});
-}
+navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{})}
 
-// ═══════ BOOT ═══════
-window.addEventListener('load',()=>{
-  chkOnl();
-  setTimeout(()=>{
-    document.getElementById('boot').classList.add('bye');
-    if(loadS()){
-      document.getElementById('s-onb').classList.remove('on');
-      switch(S.phase){
-        case'dash':case'ex':document.getElementById('s-dash').classList.add('on');curS='s-dash';updateD();startM();break;
-        case'sum':document.getElementById('s-sum').classList.add('on');curS='s-sum';endFlight();break;
-        default:document.getElementById('s-onb').classList.add('on');curS='s-onb';
-      }
-    }
-    setTimeout(()=>{const b=document.getElementById('boot');if(b)b.remove()},800);
-  },1000);
-});
+// ═══ BOOT ═══
+window.addEventListener('load',()=>{chkO();
+setTimeout(()=>{document.getElementById('boot').classList.add('bye');
+if(loadS()){document.getElementById('s-onb').classList.remove('on');
+switch(S.phase){case'dash':case'ex':document.getElementById('s-dash').classList.add('on');curS='s-dash';updateD();startM();break;
+case'sum':document.getElementById('s-sum').classList.add('on');curS='s-sum';endFlight();break;
+default:document.getElementById('s-onb').classList.add('on');curS='s-onb'}}
+setTimeout(()=>{const b=document.getElementById('boot');if(b)b.remove()},800)},1200)})
 </script>
 </body>
 </html>
