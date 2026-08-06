@@ -1,0 +1,1502 @@
+
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0e1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Circulate</title>
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiQ2lyY3VsYXRlIiwic2hvcnRfbmFtZSI6IkNpcmN1bGF0ZSIsInN0YXJ0X3VybCI6Ii4iLCJkaXNwbGF5Ijoic3RhbmRhbG9uZSIsImJhY2tncm91bmRfY29sb3IiOiIjMGEwZTFhIiwidGhlbWVfY29sb3IiOiIjMGEwZTFhIiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbCw8c3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDUxMiA1MTInPjxyZWN0IHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJyByeD0nMTI4JyBmaWxsPScjMGEwZTFhJy8+PGNpcmNsZSBjeD0nMjU2JyBjeT0nMjU2JyByPScxMjAnIGZpbGw9J25vbmUnIHN0cm9rZT0nIzAwZDRhYScgc3Ryb2tlLXdpZHRoPScxNicgc3Ryb2tlLWRhc2hhcnJheT0nNjAgMjAnLz48Y2lyY2xlIGN4PScyNTYnIGN5PScyNTYnIHI9JzQwJyBmaWxsPScjMDBkNGFhJy8+PC9zdmc+Iiwic2l6ZXMiOiI1MTJ4NTEyIiwidHlwZSI6ImltYWdlL3N2Zyt4bWwifV19">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #111827;
+  --bg-card: rgba(255,255,255,0.06);
+  --bg-card-hover: rgba(255,255,255,0.1);
+  --border-card: rgba(255,255,255,0.08);
+  --accent: #00d4aa;
+  --accent-glow: rgba(0,212,170,0.3);
+  --accent-dim: rgba(0,212,170,0.15);
+  --text-primary: #f0f4f8;
+  --text-secondary: rgba(240,244,248,0.6);
+  --text-muted: rgba(240,244,248,0.35);
+  --danger: #ff6b6b;
+  --warning: #fbbf24;
+  --glass-bg: rgba(17,24,39,0.7);
+  --glass-border: rgba(255,255,255,0.12);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+html, body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  touch-action: manipulation;
+}
+
+body { position: relative; }
+
+.screen {
+  display: none;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 24px 20px calc(24px + var(--safe-bottom));
+  animation: fadeIn 0.4s ease-out;
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.screen.active { display: flex; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+@keyframes ripple { 0% { transform: scale(0); opacity: 0.5; } 100% { transform: scale(4); opacity: 0; } }
+@keyframes confetti1 { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-120px) translateX(40px) rotate(360deg); opacity: 0; } }
+@keyframes confetti2 { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-100px) translateX(-50px) rotate(-270deg); opacity: 0; } }
+@keyframes confetti3 { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-140px) translateX(20px) rotate(180deg); opacity: 0; } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes scoreUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-40px); opacity: 0; } }
+@keyframes glow { 0%, 100% { box-shadow: 0 0 20px var(--accent-glow); } 50% { box-shadow: 0 0 40px var(--accent-glow), 0 0 60px rgba(0,212,170,0.15); } }
+
+.logo-mark {
+  width: 56px; height: 56px; margin: 0 auto 16px;
+}
+.logo-mark svg { width: 100%; height: 100%; }
+
+h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; text-align: center; margin-bottom: 6px; }
+h2 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 4px; }
+h3 { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+
+.subtitle { color: var(--text-secondary); font-size: 15px; text-align: center; line-height: 1.5; margin-bottom: 32px; font-weight: 400; }
+
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius);
+  padding: 20px;
+  transition: all var(--transition);
+}
+.glass-card:hover { background: var(--bg-card-hover); }
+
+.glass-card-solid {
+  background: var(--glass-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+/* Onboarding */
+.onboard-section { margin-bottom: 28px; animation: slideUp 0.5s ease-out backwards; }
+.onboard-section:nth-child(2) { animation-delay: 0.1s; }
+.onboard-section:nth-child(3) { animation-delay: 0.2s; }
+
+.section-label { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 12px; }
+
+.duration-selector {
+  display: flex; align-items: center; gap: 16px; justify-content: center;
+}
+.dur-btn {
+  width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid var(--border-card);
+  background: var(--bg-card); color: var(--text-primary); font-size: 22px; font-weight: 300;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: all var(--transition); user-select: none;
+}
+.dur-btn:active { background: var(--accent-dim); border-color: var(--accent); transform: scale(0.92); }
+.dur-display { font-size: 40px; font-weight: 700; min-width: 100px; text-align: center; letter-spacing: -1px; }
+.dur-display span { font-size: 16px; font-weight: 400; color: var(--text-secondary); }
+
+.risk-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.risk-chip {
+  padding: 10px 16px; border-radius: 50px; border: 1.5px solid var(--border-card);
+  background: var(--bg-card); font-size: 14px; font-weight: 500; cursor: pointer;
+  transition: all var(--transition); user-select: none; color: var(--text-primary);
+  display: flex; align-items: center; gap: 6px;
+}
+.risk-chip:active { transform: scale(0.95); }
+.risk-chip.selected {
+  border-color: var(--accent); background: var(--accent-dim);
+  box-shadow: 0 0 12px rgba(0,212,170,0.2);
+}
+.risk-chip .chip-icon { font-size: 16px; }
+
+.btn-primary {
+  width: 100%; padding: 16px; border: none; border-radius: var(--radius);
+  background: var(--accent); color: #0a0e1a; font-size: 16px; font-weight: 600;
+  cursor: pointer; transition: all var(--transition); font-family: inherit;
+  letter-spacing: -0.2px; position: relative; overflow: hidden;
+}
+.btn-primary:active { transform: scale(0.97); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-primary .ripple-effect {
+  position: absolute; border-radius: 50%; background: rgba(255,255,255,0.3);
+  width: 20px; height: 20px; animation: ripple 0.6s ease-out;
+  pointer-events: none;
+}
+
+.btn-secondary {
+  width: 100%; padding: 14px; border: 1.5px solid var(--border-card);
+  border-radius: var(--radius); background: var(--bg-card); color: var(--text-primary);
+  font-size: 15px; font-weight: 500; cursor: pointer; transition: all var(--transition);
+  font-family: inherit;
+}
+.btn-secondary:active { transform: scale(0.97); background: var(--bg-card-hover); }
+
+/* Pre-flight tip */
+.tip-card {
+  margin: auto 0; padding: 28px 24px; text-align: center;
+}
+.tip-icon { font-size: 40px; margin-bottom: 16px; display: block; }
+.tip-title { font-size: 15px; font-weight: 600; color: var(--accent); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.8px; }
+.tip-text { font-size: 16px; line-height: 1.6; color: var(--text-primary); font-weight: 400; }
+
+/* Commitment card */
+.commitment-card {
+  text-align: center; padding: 24px; margin-bottom: 20px;
+  border: 1.5px solid var(--accent); background: var(--accent-dim);
+  animation: glow 3s ease-in-out infinite;
+}
+.commitment-text { font-size: 18px; font-weight: 600; line-height: 1.5; }
+.commitment-text em { color: var(--accent); font-style: normal; font-weight: 700; }
+
+/* Dashboard */
+.dash-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+.dash-title { font-size: 15px; color: var(--text-secondary); font-weight: 400; }
+.dash-score { font-size: 13px; font-weight: 600; color: var(--accent); display: flex; align-items: center; gap: 4px; }
+.dash-score .score-val { font-size: 20px; font-weight: 700; }
+
+.score-popup {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  font-size: 32px; font-weight: 700; color: var(--accent);
+  pointer-events: none; animation: scoreUp 1s ease-out forwards; z-index: 100;
+}
+
+/* Timeline */
+.timeline-container { margin-bottom: 20px; }
+.timeline-bar-wrap { position: relative; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; margin: 16px 0 8px; }
+.timeline-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), #00e5c3); transition: width 1s ease-out; position: relative; }
+.timeline-bar-fill::after {
+  content: ''; position: absolute; right: -4px; top: -3px;
+  width: 12px; height: 12px; border-radius: 50%; background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+.timeline-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); font-weight: 500; }
+.timeline-checkpoints { position: absolute; top: 0; left: 0; right: 0; height: 100%; }
+.timeline-checkpoint {
+  position: absolute; top: -5px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--bg-secondary); border: 2px solid rgba(255,255,255,0.15);
+  transform: translateX(-50%); transition: all var(--transition);
+}
+.timeline-checkpoint.completed { border-color: var(--accent); background: var(--accent); }
+.timeline-checkpoint.active { border-color: var(--accent); animation: pulse 2s infinite; }
+
+/* Stats grid */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.stat-card { text-align: center; padding: 16px 12px; }
+.stat-value { font-size: 28px; font-weight: 700; margin-bottom: 2px; }
+.stat-value.accent { color: var(--accent); }
+.stat-label { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+
+/* Hydration */
+.hydration-section { margin-bottom: 20px; }
+.hydration-card { display: flex; align-items: center; gap: 16px; cursor: pointer; }
+.hydration-visual {
+  width: 52px; height: 72px; border-radius: 10px; border: 2px solid var(--border-card);
+  position: relative; overflow: hidden; flex-shrink: 0; background: rgba(0,0,0,0.3);
+}
+.hydration-fill {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(180deg, #0ea5e9, #0284c7);
+  transition: height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border-radius: 0 0 8px 8px;
+}
+.hydration-info { flex: 1; }
+.hydration-count { font-size: 20px; font-weight: 700; }
+.hydration-hint { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+.hydration-btn {
+  width: 44px; height: 44px; border-radius: 50%; border: none;
+  background: var(--accent-dim); color: var(--accent); font-size: 24px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all var(--transition); font-weight: 300;
+}
+.hydration-btn:active { transform: scale(0.9); background: var(--accent); color: #0a0e1a; }
+
+/* Social proof */
+.social-proof {
+  text-align: center; font-size: 13px; color: var(--text-muted); font-style: italic;
+  margin-bottom: 20px; line-height: 1.5; padding: 0 12px;
+}
+
+/* Streak */
+.streak-badge {
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px;
+  border-radius: 50px; background: var(--accent-dim); border: 1px solid rgba(0,212,170,0.25);
+  font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 16px;
+}
+
+/* Next checkpoint */
+.next-checkpoint-card {
+  padding: 24px; text-align: center; margin-bottom: 20px;
+  border: 1px solid var(--accent); position: relative; overflow: hidden;
+}
+.next-checkpoint-card.urgent { animation: glow 2s ease-in-out infinite; }
+.next-timer { font-size: 48px; font-weight: 700; letter-spacing: -2px; margin: 8px 0; color: var(--accent); }
+.next-label { font-size: 14px; color: var(--text-secondary); font-weight: 400; }
+.next-cta { margin-top: 16px; font-size: 14px; color: var(--text-secondary); }
+
+/* Exercise screen */
+.exercise-header { text-align: center; margin-bottom: 24px; }
+.exercise-name { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+.exercise-duration { font-size: 14px; color: var(--text-secondary); }
+
+.exercise-visual {
+  width: 200px; height: 200px; margin: 0 auto 20px; position: relative;
+}
+
+.exercise-progress-ring {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+}
+.exercise-progress-ring circle {
+  fill: none; stroke-width: 4; stroke-linecap: round;
+}
+.exercise-progress-ring .ring-bg { stroke: rgba(255,255,255,0.08); }
+.exercise-progress-ring .ring-fill {
+  stroke: var(--accent); stroke-dasharray: 565.48; stroke-dashoffset: 565.48;
+  transform: rotate(-90deg); transform-origin: center;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.exercise-svg-container {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 120px; height: 120px;
+}
+
+.exercise-instruction {
+  text-align: center; font-size: 18px; font-weight: 500; margin-bottom: 8px; line-height: 1.4;
+}
+.exercise-why {
+  text-align: center; font-size: 13px; color: var(--text-secondary); line-height: 1.5;
+  padding: 12px 16px; background: var(--bg-card); border-radius: var(--radius-sm);
+  margin-bottom: 24px;
+}
+
+.exercise-timer-text { text-align: center; font-size: 36px; font-weight: 700; margin-bottom: 24px; color: var(--accent); }
+
+.exercise-controls { display: flex; gap: 12px; }
+.exercise-controls .btn-primary { flex: 1; }
+.exercise-controls .btn-secondary { flex: 0 0 auto; width: 56px; padding: 14px; text-align: center; }
+
+/* Celebration overlay */
+.celebration-overlay {
+  position: fixed; inset: 0; z-index: 200; display: none;
+  flex-direction: column; align-items: center; justify-content: center;
+  background: rgba(10,14,26,0.92); backdrop-filter: blur(16px);
+  animation: fadeIn 0.3s ease-out; padding: 24px;
+}
+.celebration-overlay.active { display: flex; }
+.celebration-emoji { font-size: 64px; margin-bottom: 20px; animation: float 2s ease-in-out infinite; }
+.celebration-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; text-align: center; }
+.celebration-subtitle { font-size: 15px; color: var(--text-secondary); text-align: center; margin-bottom: 8px; line-height: 1.5; }
+.celebration-xp { font-size: 18px; font-weight: 700; color: var(--accent); margin-bottom: 28px; }
+.celebration-confetti { position: absolute; top: 40%; left: 50%; }
+.confetti-piece {
+  position: absolute; width: 8px; height: 8px; border-radius: 2px;
+}
+.confetti-piece:nth-child(1) { background: var(--accent); animation: confetti1 1.2s ease-out forwards; }
+.confetti-piece:nth-child(2) { background: #fbbf24; animation: confetti2 1s ease-out 0.1s forwards; }
+.confetti-piece:nth-child(3) { background: #f472b6; animation: confetti3 1.1s ease-out 0.05s forwards; }
+.confetti-piece:nth-child(4) { background: #818cf8; animation: confetti1 0.9s ease-out 0.15s forwards; left: -20px; }
+.confetti-piece:nth-child(5) { background: #34d399; animation: confetti2 1.3s ease-out 0.08s forwards; left: 20px; }
+.confetti-piece:nth-child(6) { background: #fb923c; animation: confetti3 1s ease-out 0.2s forwards; left: -10px; }
+
+/* Notification banner */
+.notif-banner {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+  padding: 16px 20px calc(16px); background: var(--glass-bg);
+  backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border);
+  transform: translateY(-100%); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex; align-items: center; gap: 12px; cursor: pointer;
+  max-width: 480px; margin: 0 auto;
+}
+.notif-banner.show { transform: translateY(0); }
+.notif-banner .notif-icon { font-size: 24px; flex-shrink: 0; }
+.notif-banner .notif-text { flex: 1; }
+.notif-banner .notif-title { font-size: 14px; font-weight: 600; }
+.notif-banner .notif-body { font-size: 13px; color: var(--text-secondary); }
+.notif-banner .notif-close {
+  width: 28px; height: 28px; border-radius: 50%; border: none;
+  background: rgba(255,255,255,0.1); color: var(--text-secondary);
+  font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+
+/* Summary */
+.summary-header { text-align: center; margin-bottom: 32px; }
+.summary-emoji { font-size: 56px; margin-bottom: 12px; display: block; }
+.summary-stats { margin-bottom: 24px; }
+.summary-stat-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 0; border-bottom: 1px solid var(--border-card);
+}
+.summary-stat-row:last-child { border-bottom: none; }
+.summary-stat-label { font-size: 15px; color: var(--text-secondary); }
+.summary-stat-value { font-size: 17px; font-weight: 600; }
+.summary-stat-value.accent { color: var(--accent); }
+
+.summary-message {
+  text-align: center; padding: 20px; font-size: 15px; line-height: 1.6;
+  color: var(--text-secondary); margin-bottom: 24px;
+}
+
+/* Exercise SVG animations */
+.ankle-circle-svg .foot { transition: transform 0.05s linear; }
+.calf-raise-svg .heel { transition: transform 0.3s ease-in-out; }
+.knee-lift-svg .thigh { transition: transform 0.4s ease-in-out; }
+.seated-march-svg .leg-l, .seated-march-svg .leg-r { transition: transform 0.3s ease-in-out; }
+.toe-raise-svg .toes { transition: transform 0.3s ease-in-out; }
+
+@media (max-width: 380px) {
+  .screen { padding: 20px 16px calc(20px + var(--safe-bottom)); }
+  h1 { font-size: 24px; }
+  .dur-display { font-size: 34px; }
+  .exercise-visual { width: 160px; height: 160px; }
+  .exercise-svg-container { width: 96px; height: 96px; }
+}
+
+@media (min-width: 481px) {
+  .screen { padding: 32px 28px calc(32px + var(--safe-bottom)); }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- SCREEN: Onboarding -->
+<div id="screen-onboard" class="screen active">
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+    <div class="logo-mark">
+      <svg viewBox="0 0 56 56">
+        <circle cx="28" cy="28" r="22" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="12 5" opacity="0.5"/>
+        <circle cx="28" cy="28" r="14" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="8 4"/>
+        <circle cx="28" cy="28" r="5" fill="var(--accent)"/>
+      </svg>
+    </div>
+    <h1>Circulate</h1>
+    <p class="subtitle">Your in-flight circulation companion</p>
+
+    <div class="onboard-section">
+      <div class="section-label">Flight Duration</div>
+      <div class="duration-selector">
+        <button class="dur-btn" onclick="adjustDuration(-1)" aria-label="Decrease">−</button>
+        <div class="dur-display" id="dur-display">4 <span>hrs</span></div>
+        <button class="dur-btn" onclick="adjustDuration(1)" aria-label="Increase">+</button>
+      </div>
+    </div>
+
+    <div class="onboard-section">
+      <div class="section-label">Risk Factors <span style="font-weight:400; text-transform:none; letter-spacing:0;">(if any apply)</span></div>
+      <div class="risk-chips" id="risk-chips">
+        <button class="risk-chip" data-risk="age50"><span class="chip-icon">👤</span> Age 50+</button>
+        <button class="risk-chip" data-risk="prior-clot"><span class="chip-icon">🩸</span> Prior clot</button>
+        <button class="risk-chip" data-risk="pregnancy"><span class="chip-icon">🤰</span> Pregnancy</button>
+        <button class="risk-chip" data-risk="surgery"><span class="chip-icon">🏥</span> Recent surgery</button>
+        <button class="risk-chip" data-risk="obesity"><span class="chip-icon">⚖️</span> Obesity</button>
+        <button class="risk-chip" data-risk="hrt"><span class="chip-icon">💊</span> OC / HRT</button>
+      </div>
+    </div>
+
+    <button class="btn-primary" id="btn-start" onclick="startFlight()">Start My Flight</button>
+  </div>
+</div>
+
+<!-- SCREEN: Pre-flight tip -->
+<div id="screen-tip" class="screen">
+  <div class="tip-card glass-card-solid" style="margin:auto 0;">
+    <span class="tip-icon">💡</span>
+    <div class="tip-title">Insider tip</div>
+    <p class="tip-text">If you can, choose an <strong>aisle seat</strong>. It makes it significantly easier to stand, stretch, and move — without climbing over anyone. Small choice, real impact on your circulation.</p>
+  </div>
+  <div style="margin-top:24px;">
+    <button class="btn-primary" onclick="showCommitment()">Got it →</button>
+  </div>
+</div>
+
+<!-- SCREEN: Commitment -->
+<div id="screen-commit" class="screen">
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+    <div class="commitment-card glass-card">
+      <p class="commitment-text" id="commitment-text"></p>
+    </div>
+    <p class="social-proof" id="social-proof-text"></p>
+    <button class="btn-primary" onclick="showDashboard()">Begin Flight →</button>
+  </div>
+</div>
+
+<!-- SCREEN: Dashboard -->
+<div id="screen-dashboard" class="screen">
+  <div class="dash-header">
+    <div>
+      <h2 id="dash-greeting">In Flight</h2>
+      <div class="dash-title" id="dash-subtitle">Protecting your circulation</div>
+    </div>
+    <div class="dash-score">
+      <span>⚡</span>
+      <span class="score-val" id="dash-xp">0</span>
+      <span>XP</span>
+    </div>
+  </div>
+
+  <div id="streak-display" class="streak-badge" style="display:none;">
+    🔥 <span id="streak-count">0</span> checkpoint streak
+  </div>
+
+  <div class="timeline-container glass-card" style="padding:16px 20px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+      <span style="font-size:13px; font-weight:600;">Flight Progress</span>
+      <span style="font-size:13px; color:var(--text-secondary);" id="flight-elapsed"></span>
+    </div>
+    <div class="timeline-bar-wrap">
+      <div class="timeline-bar-fill" id="timeline-fill" style="width:0%"></div>
+      <div class="timeline-checkpoints" id="timeline-checkpoints"></div>
+    </div>
+    <div class="timeline-labels">
+      <span>Takeoff</span>
+      <span id="landing-label">Landing</span>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <div class="glass-card stat-card">
+      <div class="stat-value accent" id="stat-completed">0</div>
+      <div class="stat-label">Checkpoints Done</div>
+    </div>
+    <div class="glass-card stat-card">
+      <div class="stat-value" id="stat-remaining" style="color:var(--warning);">0</div>
+      <div class="stat-label">Remaining</div>
+    </div>
+  </div>
+
+  <div id="next-checkpoint-section">
+    <div class="next-checkpoint-card glass-card-solid" id="next-cp-card" onclick="startExercise()">
+      <div class="next-label" id="next-cp-label">Next movement break in</div>
+      <div class="next-timer" id="next-cp-timer">--:--</div>
+      <div class="next-cta" id="next-cp-cta">Tap when ready</div>
+    </div>
+  </div>
+
+  <div class="hydration-section">
+    <div class="glass-card hydration-card" onclick="logWater()">
+      <div class="hydration-visual">
+        <div class="hydration-fill" id="hydration-fill" style="height:0%"></div>
+      </div>
+      <div class="hydration-info">
+        <div class="hydration-count">💧 <span id="water-count">0</span> glasses</div>
+        <div class="hydration-hint">Tap to log water · Stay hydrated</div>
+      </div>
+      <button class="hydration-btn" aria-label="Log water">+</button>
+    </div>
+  </div>
+
+  <p class="social-proof" id="dash-social-proof"></p>
+
+  <button class="btn-secondary" onclick="endFlight()" style="margin-top:auto;">End Flight Early</button>
+</div>
+
+<!-- SCREEN: Exercise -->
+<div id="screen-exercise" class="screen">
+  <div class="exercise-header">
+    <div class="exercise-duration" id="ex-checkpoint-label">Checkpoint 1</div>
+    <div class="exercise-name" id="ex-name">Ankle Circles</div>
+  </div>
+
+  <div class="exercise-visual">
+    <svg class="exercise-progress-ring" viewBox="0 0 200 200">
+      <circle class="ring-bg" cx="100" cy="100" r="90"/>
+      <circle class="ring-fill" id="ex-ring-fill" cx="100" cy="100" r="90"/>
+    </svg>
+    <div class="exercise-svg-container" id="ex-svg-container"></div>
+  </div>
+
+  <div class="exercise-timer-text" id="ex-timer">60</div>
+  <p class="exercise-instruction" id="ex-instruction">Rotate your ankles slowly in circles</p>
+  <div class="exercise-why" id="ex-why">
+    <strong>Why this works:</strong> <span id="ex-why-text">Ankle rotation activates the calf muscle pump, pushing pooled blood back toward your heart.</span>
+  </div>
+
+  <div class="exercise-controls">
+    <button class="btn-primary" id="ex-start-btn" onclick="toggleExerciseTimer()">Start Exercise</button>
+    <button class="btn-secondary" onclick="skipExercise()" title="Skip" style="font-size:13px;">Skip</button>
+  </div>
+</div>
+
+<!-- SCREEN: Summary -->
+<div id="screen-summary" class="screen">
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:center;">
+    <div class="summary-header">
+      <span class="summary-emoji" id="summary-emoji">🎉</span>
+      <h1 id="summary-title">Great Flight!</h1>
+      <p class="subtitle" id="summary-subtitle">You took care of your circulation</p>
+    </div>
+
+    <div class="glass-card-solid summary-stats">
+      <div class="summary-stat-row">
+        <span class="summary-stat-label">Circulation Score</span>
+        <span class="summary-stat-value accent" id="sum-xp">0 XP</span>
+      </div>
+      <div class="summary-stat-row">
+        <span class="summary-stat-label">Checkpoints Completed</span>
+        <span class="summary-stat-value" id="sum-checkpoints">0</span>
+      </div>
+      <div class="summary-stat-row">
+        <span class="summary-stat-label">Longest Streak</span>
+        <span class="summary-stat-value" id="sum-streak">0</span>
+      </div>
+      <div class="summary-stat-row">
+        <span class="summary-stat-label">Water Logged</span>
+        <span class="summary-stat-value" id="sum-water">0 glasses</span>
+      </div>
+      <div class="summary-stat-row">
+        <span class="summary-stat-label">Flight Duration</span>
+        <span class="summary-stat-value" id="sum-duration">0h</span>
+      </div>
+    </div>
+
+    <div class="summary-message glass-card" id="summary-message">
+      Every movement break helped keep your blood flowing. Safe travels! ✈️
+    </div>
+
+    <button class="btn-primary" onclick="resetApp()">New Flight</button>
+  </div>
+</div>
+
+<!-- Celebration overlay -->
+<div class="celebration-overlay" id="celebration-overlay">
+  <div class="celebration-confetti">
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+    <div class="confetti-piece"></div>
+  </div>
+  <div class="celebration-emoji" id="celeb-emoji">✨</div>
+  <div class="celebration-title" id="celeb-title">Checkpoint Complete!</div>
+  <div class="celebration-subtitle" id="celeb-subtitle">Your circulation thanks you</div>
+  <div class="celebration-xp" id="celeb-xp">+25 XP</div>
+  <button class="btn-primary" style="max-width:280px;" onclick="closeCelebration()">Continue</button>
+</div>
+
+<!-- Notification banner -->
+<div class="notif-banner" id="notif-banner" onclick="handleNotifClick()">
+  <span class="notif-icon">🫀</span>
+  <div class="notif-text">
+    <div class="notif-title" id="notif-title">Time to protect your circulation</div>
+    <div class="notif-body" id="notif-body">Your next movement break is ready</div>
+  </div>
+  <button class="notif-close" onclick="event.stopPropagation(); hideNotifBanner();">✕</button>
+</div>
+
+
+<script>
+// ===== STATE =====
+let state = {
+  flightDuration: 4,
+  riskFactors: [],
+  intervalMin: 90,
+  startTime: null,
+  checkpoints: [],
+  completedCheckpoints: 0,
+  currentCheckpoint: 0,
+  streak: 0,
+  longestStreak: 0,
+  xp: 0,
+  waterCount: 0,
+  exerciseActive: false,
+  exerciseTimerRef: null,
+  exerciseTimeLeft: 60,
+  exerciseAnimRef: null,
+  mainTimerRef: null,
+  phase: 'onboard'
+};
+
+// ===== EXERCISES =====
+const exercises = [
+  {
+    name: 'Ankle Circles',
+    duration: 60,
+    instruction: 'Lift one foot slightly and rotate your ankle in slow circles. Switch feet halfway.',
+    why: 'Ankle rotation activates your calf muscle pump, pushing pooled venous blood back toward your heart.',
+    svg: () => generateAnkleCircleSVG()
+  },
+  {
+    name: 'Calf Raises',
+    duration: 60,
+    instruction: 'Keep feet flat on the floor, then lift your heels as high as you can. Lower slowly. Repeat.',
+    why: 'Calf contractions squeeze deep leg veins, creating a pumping action that prevents blood from stagnating.',
+    svg: () => generateCalfRaiseSVG()
+  },
+  {
+    name: 'Seated Marching',
+    duration: 75,
+    instruction: 'Alternate lifting your knees toward your chest in a slow marching motion.',
+    why: 'Hip flexion and thigh contraction improve blood return from your lower extremities to your core.',
+    svg: () => generateMarchSVG()
+  },
+  {
+    name: 'Toe Raises',
+    duration: 60,
+    instruction: 'Keep your heels on the floor and lift your toes as high as possible. Hold briefly, then lower.',
+    why: 'Toe raises engage the anterior tibialis muscle, promoting circulation in the front of your lower leg.',
+    svg: () => generateToeRaiseSVG()
+  },
+  {
+    name: 'Foot Pumps',
+    duration: 60,
+    instruction: 'Alternate between pointing your toes down and pulling them up toward your shin.',
+    why: 'This push-pull motion activates both calf and shin muscles, creating a comprehensive venous pump.',
+    svg: () => generateFootPumpSVG()
+  },
+  {
+    name: 'Knee Extensions',
+    duration: 75,
+    instruction: 'Extend one leg out straight, hold for 3 seconds, then lower. Alternate legs.',
+    why: 'Quadriceps contraction with leg elevation helps drain pooled blood from your calves using gravity.',
+    svg: () => generateKneeExtSVG()
+  }
+];
+
+// ===== CELEBRATION VARIANTS =====
+const celebrations = [
+  { emoji: '✨', title: 'Excellent!', subtitle: 'Your blood is flowing beautifully' },
+  { emoji: '💪', title: 'Strong Move!', subtitle: 'That\'s real protection for your veins' },
+  { emoji: '🫀', title: 'Heart Happy!', subtitle: 'Your cardiovascular system thanks you' },
+  { emoji: '🌟', title: 'Star Performance!', subtitle: 'Keeping that circulation strong' },
+  { emoji: '⚡', title: 'Powered Up!', subtitle: 'Fresh blood, fresh energy' },
+  { emoji: '🏆', title: 'Champion!', subtitle: 'You\'re mastering in-flight wellness' },
+  { emoji: '🎯', title: 'On Target!', subtitle: 'Every rep counts for your veins' },
+  { emoji: '🚀', title: 'Lift Off!', subtitle: 'Circulation levels: optimal' },
+  { emoji: '💫', title: 'Brilliant!', subtitle: 'Your legs are thanking you right now' },
+  { emoji: '🔥', title: 'On Fire!', subtitle: 'That streak is looking impressive' },
+];
+
+// ===== SVG GENERATORS =====
+function generateAnkleCircleSVG() {
+  return `<svg viewBox="0 0 120 120" class="ankle-circle-svg">
+    <line x1="60" y1="15" x2="60" y2="60" stroke="var(--text-secondary)" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="60" cy="60" r="6" fill="var(--text-secondary)"/>
+    <g class="foot" id="anim-foot">
+      <line x1="60" y1="60" x2="60" y2="95" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
+      <line x1="60" y1="95" x2="75" y2="105" stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round"/>
+    </g>
+    <circle cx="60" cy="60" r="25" fill="none" stroke="var(--accent)" stroke-width="1" stroke-dasharray="4 3" opacity="0.3"/>
+  </svg>`;
+}
+
+function generateCalfRaiseSVG() {
+  return `<svg viewBox="0 0 120 120" class="calf-raise-svg">
+    <rect x="30" y="8" width="60" height="12" rx="4" fill="var(--text-muted)" opacity="0.3"/>
+    <g id="anim-calf">
+      <line x1="45" y1="20" x2="45" y2="65" stroke="var(--text-secondary)" stroke-width="4" stroke-linecap="round"/>
+      <line x1="75" y1="20" x2="75" y2="65" stroke="var(--text-secondary)" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="45" cy="65" r="5" fill="var(--text-secondary)"/>
+      <circle cx="75" cy="65" r="5" fill="var(--text-secondary)"/>
+      <line x1="45" y1="65" x2="45" y2="100" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
+      <line x1="75" y1="65" x2="75" y2="100" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
+      <g class="heel" id="anim-heel">
+        <ellipse cx="45" cy="108" rx="10" ry="5" fill="var(--accent)"/>
+        <ellipse cx="75" cy="108" rx="10" ry="5" fill="var(--accent)"/>
+      </g>
+    </g>
+  </svg>`;
+}
+
+function generateMarchSVG() {
+  return `<svg viewBox="0 0 120 120" class="seated-march-svg">
+    <rect x="15" y="10" width="90" height="10" rx="4" fill="var(--text-muted)" opacity="0.3"/>
+    <rect x="20" y="20" width="80" height="6" rx="3" fill="var(--text-muted)" opacity="0.2"/>
+    <circle cx="60" cy="38" r="10" fill="var(--text-secondary)" opacity="0.5"/>
+    <line x1="60" y1="48" x2="60" y2="70" stroke="var(--text-secondary)" stroke-width="4" stroke-linecap="round"/>
+    <g class="leg-l" id="anim-leg-l">
+      <line x1="55" y1="70" x2="42" y2="95" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
+      <line x1="42" y1="95" x2="38" y2="112" stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round"/>
+    </g>
+    <g class="leg-r" id="anim-leg-r">
+      <line x1="65" y1="70" x2="78" y2="95" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
+      <line x1="78" y1="95" x2="82" y2="112" stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round"/>
+    </g>
+  </svg>`;
+}
+
+function generateToeRaiseSVG() {
+  return `<svg viewBox="0 0 120 120" class="toe-raise-svg">
+    <line x1="60" y1="10" x2="60" y2="55" stroke="var(--text-secondary)" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="60" cy="55" r="5" fill="var(--text-secondary)"/>
+    <line x1="60" y1="55" x2="60" y2="90" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="60" cy="90" r="4" fill="var(--accent)"/>
+    <g class="toes" id="anim-toes">
+      <line x1="60" y1="90" x2="45" y2="110" stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round"/>
+      <circle cx="45" cy="110" r="4" fill="var(--accent)" opacity="0.7"/>
+    </g>
+    <line x1="50" y1="90" x2="50" y2="92" stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="2 2" opacity="0.3"/>
+  </svg>`;
+}
+
+function generateFootPumpSVG() {
+  return `<svg viewBox="0 0 120 120" class="foot-pump-svg">
+    <line x1="60" y1="10" x2="60" y2="50" stroke="var(--text-secondary)" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="60" cy="50" r="5" fill="var(--text-secondary)"/>
+    <line x1="60" y1="50" x2="60" y2="82" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
+    <g id="anim-pump-foot">
+      <line x1="60" y1="82" x2="78" y2="98" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
+      <line x1="78" y1="98" x2="90" y2="100" stroke="var(--accent)" stroke-width="3" stroke-linecap="round"/>
+    </g>
+    <path d="M 40 85 Q 60 80, 80 85" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.3" stroke-dasharray="3 2"/>
+    <path d="M 40 100 Q 60 105, 80 100" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.3" stroke-dasharray="3 2"/>
+  </svg>`;
+}
+
+function generateKneeExtSVG() {
+  return `<svg viewBox="0 0 120 120" class="knee-ext-svg">
+    <rect x="10" y="10" width="100" height="10" rx="4" fill="var(--text-muted)" opacity="0.3"/>
+    <rect x="15" y="20" width="90" height="5" rx="2" fill="var(--text-muted)" opacity="0.2"/>
+    <circle cx="60" cy="35" r="9" fill="var(--text-secondary)" opacity="0.5"/>
+    <line x1="60" y1="44" x2="60" y2="65" stroke="var(--text-secondary)" stroke-width="4" stroke-linecap="round"/>
+    <g id="anim-knee-ext">
+      <line x1="55" y1="65" x2="42" y2="90" stroke="var(--text-secondary)" stroke-width="4" stroke-linecap="round"/>
+      <line x1="42" y1="90" x2="38" y2="110" stroke="var(--text-secondary)" stroke-width="3.5" stroke-linecap="round"/>
+    </g>
+    <g id="anim-knee-ext-active">
+      <line x1="65" y1="65" x2="85" y2="75" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
+      <line x1="85" y1="75" x2="105" y2="73" stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round"/>
+    </g>
+  </svg>`;
+}
+
+// ===== ANIMATION LOOPS =====
+let animPhase = 0;
+function animateExercise(exerciseIdx) {
+  animPhase = 0;
+  if (state.exerciseAnimRef) cancelAnimationFrame(state.exerciseAnimRef);
+
+  function loop() {
+    animPhase += 0.03;
+    const t = Math.sin(animPhase);
+    const idx = exerciseIdx % exercises.length;
+
+    switch(idx) {
+      case 0: { // ankle circles
+        const foot = document.getElementById('anim-foot');
+        if (foot) {
+          const angle = animPhase * 2;
+          const dx = Math.cos(angle) * 12;
+          const dy = Math.sin(angle) * 12;
+          foot.setAttribute('transform', `translate(${dx}, ${dy})`);
+        }
+        break;
+      }
+      case 1: { // calf raises
+        const heel = document.getElementById('anim-heel');
+        if (heel) {
+          const lift = Math.max(0, t) * 15;
+          heel.setAttribute('transform', `translate(0, ${-lift})`);
+        }
+        break;
+      }
+      case 2: { // marching
+        const ll = document.getElementById('anim-leg-l');
+        const lr = document.getElementById('anim-leg-r');
+        if (ll && lr) {
+          const liftL = Math.max(0, t) * 18;
+          const liftR = Math.max(0, -t) * 18;
+          ll.setAttribute('transform', `translate(0, ${-liftL}) rotate(${liftL * 0.8}, 55, 70)`);
+          lr.setAttribute('transform', `translate(0, ${-liftR}) rotate(${-liftR * 0.8}, 65, 70)`);
+        }
+        break;
+      }
+      case 3: { // toe raises
+        const toes = document.getElementById('anim-toes');
+        if (toes) {
+          const lift = Math.max(0, t) * 20;
+          toes.setAttribute('transform', `rotate(${-lift * 1.5}, 60, 90)`);
+        }
+        break;
+      }
+      case 4: { // foot pumps
+        const foot = document.getElementById('anim-pump-foot');
+        if (foot) {
+          const angle = t * 25;
+          foot.setAttribute('transform', `rotate(${angle}, 60, 82)`);
+        }
+        break;
+      }
+      case 5: { // knee ext
+        const leg = document.getElementById('anim-knee-ext-active');
+        if (leg) {
+          const extend = (Math.sin(animPhase * 1.5) + 1) / 2;
+          const angle = -40 * extend;
+          leg.setAttribute('transform', `rotate(${angle}, 65, 65)`);
+        }
+        break;
+      }
+    }
+    state.exerciseAnimRef = requestAnimationFrame(loop);
+  }
+  loop();
+}
+
+function stopExerciseAnim() {
+  if (state.exerciseAnimRef) {
+    cancelAnimationFrame(state.exerciseAnimRef);
+    state.exerciseAnimRef = null;
+  }
+}
+
+// ===== DURATION SELECTOR =====
+function adjustDuration(delta) {
+  state.flightDuration = Math.max(1, Math.min(20, state.flightDuration + delta));
+  document.getElementById('dur-display').innerHTML = `${state.flightDuration} <span>hrs</span>`;
+}
+
+// ===== RISK CHIPS =====
+document.getElementById('risk-chips').addEventListener('click', (e) => {
+  const chip = e.target.closest('.risk-chip');
+  if (!chip) return;
+  chip.classList.toggle('selected');
+  const risk = chip.dataset.risk;
+  if (state.riskFactors.includes(risk)) {
+    state.riskFactors = state.riskFactors.filter(r => r !== risk);
+  } else {
+    state.riskFactors.push(risk);
+  }
+});
+
+// ===== CALCULATE INTERVAL =====
+function calcInterval() {
+  const riskCount = state.riskFactors.length;
+  if (riskCount === 0) return 90;
+  if (riskCount <= 2) return 60;
+  return 45;
+}
+
+// ===== GENERATE CHECKPOINTS =====
+function generateCheckpoints() {
+  const totalMin = state.flightDuration * 60;
+  const interval = state.intervalMin;
+  const checkpoints = [];
+  let t = interval;
+  while (t < totalMin) {
+    checkpoints.push({
+      time: t,
+      completed: false,
+      exerciseIdx: checkpoints.length % exercises.length
+    });
+    t += interval;
+  }
+  return checkpoints;
+}
+
+// ===== NAVIGATION =====
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ===== START FLIGHT =====
+function startFlight() {
+  state.intervalMin = calcInterval();
+  state.checkpoints = generateCheckpoints();
+  state.startTime = Date.now();
+  state.completedCheckpoints = 0;
+  state.currentCheckpoint = 0;
+  state.streak = 0;
+  state.longestStreak = 0;
+  state.xp = 0;
+  state.waterCount = 0;
+  state.phase = 'tip';
+  saveState();
+  requestNotificationPermission();
+  showScreen('screen-tip');
+}
+
+// ===== PRE-FLIGHT TIP → COMMITMENT =====
+function showCommitment() {
+  const interval = state.intervalMin;
+  const commitText = document.getElementById('commitment-text');
+  commitText.innerHTML = `Your plan: move every <em>${interval} minutes</em> across your ${state.flightDuration}-hour flight. That's ${state.checkpoints.length} movement break${state.checkpoints.length !== 1 ? 's' : ''} to protect your circulation.`;
+
+  const socialText = document.getElementById('social-proof-text');
+  const breaks = Math.max(3, state.checkpoints.length - 1);
+  socialText.textContent = `Most travelers on flights this long do ${breaks}–${breaks + 1} movement breaks.`;
+
+  state.phase = 'commit';
+  saveState();
+  showScreen('screen-commit');
+}
+
+// ===== DASHBOARD =====
+function showDashboard() {
+  state.phase = 'dashboard';
+  saveState();
+  showScreen('screen-dashboard');
+  updateDashboard();
+  startMainTimer();
+}
+
+function updateDashboard() {
+  const now = Date.now();
+  const elapsed = now - state.startTime;
+  const totalMs = state.flightDuration * 60 * 60 * 1000;
+  let rawProgress = Math.min(1, elapsed / totalMs);
+
+  // Near-completion effect: show slightly ahead at checkpoints
+  if (state.completedCheckpoints > 0 && rawProgress < 0.95) {
+    const boost = Math.min(0.05, 0.02 * state.completedCheckpoints);
+    rawProgress = Math.min(0.98, rawProgress + boost);
+  }
+
+  const progressPct = (rawProgress * 100).toFixed(1);
+  document.getElementById('timeline-fill').style.width = progressPct + '%';
+
+  const elapsedMin = Math.floor(elapsed / 60000);
+  const elapsedH = Math.floor(elapsedMin / 60);
+  const elapsedM = elapsedMin % 60;
+  document.getElementById('flight-elapsed').textContent = `${elapsedH}h ${elapsedM.toString().padStart(2,'0')}m`;
+  document.getElementById('landing-label').textContent = `${state.flightDuration}h`;
+
+  // Checkpoint markers on timeline
+  const cpContainer = document.getElementById('timeline-checkpoints');
+  cpContainer.innerHTML = '';
+  state.checkpoints.forEach((cp, i) => {
+    const pct = (cp.time / (state.flightDuration * 60)) * 100;
+    const dot = document.createElement('div');
+    dot.className = 'timeline-checkpoint';
+    if (cp.completed) dot.classList.add('completed');
+    else if (i === state.currentCheckpoint) dot.classList.add('active');
+    dot.style.left = pct + '%';
+    cpContainer.appendChild(dot);
+  });
+
+  // Stats
+  document.getElementById('stat-completed').textContent = state.completedCheckpoints;
+  document.getElementById('stat-remaining').textContent = Math.max(0, state.checkpoints.length - state.completedCheckpoints);
+  document.getElementById('dash-xp').textContent = state.xp;
+
+  // Streak
+  if (state.streak >= 2) {
+    document.getElementById('streak-display').style.display = 'inline-flex';
+    document.getElementById('streak-count').textContent = state.streak;
+  } else {
+    document.getElementById('streak-display').style.display = 'none';
+  }
+
+  // Hydration
+  const waterPct = Math.min(100, (state.waterCount / 8) * 100);
+  document.getElementById('hydration-fill').style.height = waterPct + '%';
+  document.getElementById('water-count').textContent = state.waterCount;
+
+  // Next checkpoint timer
+  updateNextCheckpoint();
+
+  // Social proof
+  const spEl = document.getElementById('dash-social-proof');
+  if (state.completedCheckpoints > 0 && state.completedCheckpoints < state.checkpoints.length) {
+    spEl.textContent = `You've completed ${state.completedCheckpoints} of ${state.checkpoints.length} movement breaks — well on track.`;
+  } else if (state.completedCheckpoints === 0) {
+    const breaks = Math.max(3, state.checkpoints.length - 1);
+    spEl.textContent = `Most travelers on flights this long do ${breaks}–${breaks + 1} movement breaks.`;
+  } else {
+    spEl.textContent = 'All checkpoints complete — outstanding commitment to your health.';
+  }
+}
+
+function updateNextCheckpoint() {
+  const cp = state.checkpoints[state.currentCheckpoint];
+  const card = document.getElementById('next-cp-card');
+  const timer = document.getElementById('next-cp-timer');
+  const label = document.getElementById('next-cp-label');
+  const cta = document.getElementById('next-cp-cta');
+
+  if (!cp || state.currentCheckpoint >= state.checkpoints.length) {
+    timer.textContent = '✓';
+    label.textContent = 'All checkpoints complete';
+    cta.textContent = 'You\'re all done — great job!';
+    card.classList.remove('urgent');
+    return;
+  }
+
+  const elapsed = Date.now() - state.startTime;
+  const cpMs = cp.time * 60 * 1000;
+  const remaining = cpMs - elapsed;
+
+  if (remaining <= 0) {
+    timer.textContent = 'NOW';
+    label.textContent = 'Protect your circulation';
+    cta.textContent = 'Tap to start your movement break';
+    card.classList.add('urgent');
+
+    // Trigger notification
+    if (remaining > -5000) {
+      triggerCheckpointAlert(state.currentCheckpoint);
+    }
+  } else {
+    const remMin = Math.floor(remaining / 60000);
+    const remSec = Math.floor((remaining % 60000) / 1000);
+    timer.textContent = `${remMin}:${remSec.toString().padStart(2, '0')}`;
+    label.textContent = `Next movement break in`;
+    cta.textContent = remaining < 120000 ? 'Almost time — get ready' : 'Tap when ready';
+    card.classList.toggle('urgent', remaining < 60000);
+  }
+}
+
+// ===== MAIN TIMER =====
+function startMainTimer() {
+  if (state.mainTimerRef) clearInterval(state.mainTimerRef);
+  state.mainTimerRef = setInterval(() => {
+    if (state.phase === 'dashboard') {
+      updateDashboard();
+
+      // Auto-end flight
+      const elapsed = Date.now() - state.startTime;
+      const totalMs = state.flightDuration * 60 * 60 * 1000;
+      if (elapsed >= totalMs) {
+        endFlight();
+      }
+    }
+  }, 1000);
+}
+
+// ===== EXERCISE FLOW =====
+function startExercise() {
+  const cp = state.checkpoints[state.currentCheckpoint];
+  if (!cp) return;
+
+  const ex = exercises[cp.exerciseIdx];
+  state.exerciseTimeLeft = ex.duration;
+  state.exerciseActive = false;
+
+  document.getElementById('ex-checkpoint-label').textContent = `Checkpoint ${state.currentCheckpoint + 1} of ${state.checkpoints.length}`;
+  document.getElementById('ex-name').textContent = ex.name;
+  document.getElementById('ex-instruction').textContent = ex.instruction;
+  document.getElementById('ex-why-text').textContent = ex.why;
+  document.getElementById('ex-timer').textContent = ex.duration;
+  document.getElementById('ex-start-btn').textContent = 'Start Exercise';
+
+  // Reset ring
+  const ring = document.getElementById('ex-ring-fill');
+  ring.style.strokeDashoffset = '565.48';
+
+  // Set SVG
+  document.getElementById('ex-svg-container').innerHTML = ex.svg();
+
+  state.phase = 'exercise';
+  saveState();
+  showScreen('screen-exercise');
+}
+
+function toggleExerciseTimer() {
+  if (state.exerciseActive) {
+    // Pause
+    state.exerciseActive = false;
+    clearInterval(state.exerciseTimerRef);
+    stopExerciseAnim();
+    document.getElementById('ex-start-btn').textContent = 'Resume';
+  } else {
+    // Start / resume
+    state.exerciseActive = true;
+    document.getElementById('ex-start-btn').textContent = 'Pause';
+
+    const cp = state.checkpoints[state.currentCheckpoint];
+    const ex = exercises[cp.exerciseIdx];
+    const totalDuration = ex.duration;
+
+    animateExercise(cp.exerciseIdx);
+
+    state.exerciseTimerRef = setInterval(() => {
+      state.exerciseTimeLeft--;
+      document.getElementById('ex-timer').textContent = state.exerciseTimeLeft;
+
+      // Update ring
+      const ring = document.getElementById('ex-ring-fill');
+      const progress = 1 - (state.exerciseTimeLeft / totalDuration);
+      const offset = 565.48 * (1 - progress);
+      ring.style.strokeDashoffset = offset;
+
+      if (state.exerciseTimeLeft <= 0) {
+        clearInterval(state.exerciseTimerRef);
+        stopExerciseAnim();
+        completeCheckpoint();
+      }
+    }, 1000);
+  }
+}
+
+function skipExercise() {
+  clearInterval(state.exerciseTimerRef);
+  stopExerciseAnim();
+  state.exerciseActive = false;
+
+  // Give partial XP for showing up
+  state.xp += 10;
+  state.checkpoints[state.currentCheckpoint].completed = true;
+  state.completedCheckpoints++;
+  state.streak = 0; // streak breaks on skip
+  state.currentCheckpoint++;
+  saveState();
+  showDashboard();
+}
+
+function completeCheckpoint() {
+  state.exerciseActive = false;
+  const cp = state.checkpoints[state.currentCheckpoint];
+  cp.completed = true;
+  state.completedCheckpoints++;
+  state.streak++;
+  if (state.streak > state.longestStreak) state.longestStreak = state.streak;
+
+  // XP calculation
+  let xpGain = 25;
+  if (state.streak >= 3) xpGain += 10; // streak bonus
+  if (state.streak >= 5) xpGain += 15;
+  state.xp += xpGain;
+
+  // Hydration bonus XP
+  if (state.waterCount >= 3) {
+    xpGain += 5;
+    state.xp += 5;
+  }
+
+  state.currentCheckpoint++;
+  saveState();
+
+  // Show celebration
+  showCelebration(xpGain);
+}
+
+function showCelebration(xpGain) {
+  const celeb = celebrations[Math.floor(Math.random() * celebrations.length)];
+  document.getElementById('celeb-emoji').textContent = celeb.emoji;
+  document.getElementById('celeb-title').textContent = celeb.title;
+
+  let subtitle = celeb.subtitle;
+  if (state.streak >= 3) {
+    subtitle += ` · ${state.streak} checkpoint streak! 🔥`;
+  }
+  document.getElementById('celeb-subtitle').textContent = subtitle;
+  document.getElementById('celeb-xp').textContent = `+${xpGain} XP`;
+
+  const overlay = document.getElementById('celebration-overlay');
+  overlay.classList.add('active');
+
+  // Refresh confetti by re-triggering animation
+  const confettiContainer = overlay.querySelector('.celebration-confetti');
+  const clone = confettiContainer.cloneNode(true);
+  confettiContainer.parentNode.replaceChild(clone, confettiContainer);
+
+  // Audio cue
+  playTone(800, 0.1, 0.15);
+  setTimeout(() => playTone(1000, 0.1, 0.12), 150);
+  setTimeout(() => playTone(1200, 0.1, 0.1), 300);
+}
+
+function closeCelebration() {
+  document.getElementById('celebration-overlay').classList.remove('active');
+  showDashboard();
+}
+
+// ===== HYDRATION =====
+function logWater() {
+  state.waterCount++;
+  state.xp += 5;
+  saveState();
+  updateDashboard();
+  playTone(600, 0.08, 0.1);
+
+  // Float score popup
+  const popup = document.createElement('div');
+  popup.className = 'score-popup';
+  popup.textContent = '+5 XP';
+  document.body.appendChild(popup);
+  setTimeout(() => popup.remove(), 1000);
+}
+
+// ===== NOTIFICATIONS =====
+let notifPermission = 'default';
+
+function requestNotificationPermission() {
+  if ('Notification' in window) {
+    Notification.requestPermission().then(p => { notifPermission = p; });
+  }
+}
+
+let lastNotifCheckpoint = -1;
+function triggerCheckpointAlert(cpIdx) {
+  if (lastNotifCheckpoint === cpIdx) return;
+  lastNotifCheckpoint = cpIdx;
+
+  const messages = [
+    'Time to protect your circulation',
+    'Your veins need a quick movement break',
+    'Keep your blood flowing — move now',
+    'A 60-second break goes a long way',
+  ];
+  const msg = messages[cpIdx % messages.length];
+
+  if (notifPermission === 'granted' && document.hidden) {
+    try {
+      new Notification('Circulate', { body: msg, icon: '🫀', silent: false });
+    } catch(e) {}
+  }
+
+  // Always show in-app banner
+  showNotifBanner(msg);
+  playTone(500, 0.15, 0.2);
+}
+
+function showNotifBanner(msg) {
+  document.getElementById('notif-title').textContent = msg;
+  document.getElementById('notif-body').textContent = 'Tap to start your movement break';
+  document.getElementById('notif-banner').classList.add('show');
+  setTimeout(() => hideNotifBanner(), 8000);
+}
+
+function hideNotifBanner() {
+  document.getElementById('notif-banner').classList.remove('show');
+}
+
+function handleNotifClick() {
+  hideNotifBanner();
+  if (state.phase === 'dashboard') {
+    startExercise();
+  }
+}
+
+// ===== AUDIO =====
+let audioCtx;
+function playTone(freq, duration, volume = 0.1) {
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    gain.gain.value = volume;
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+  } catch(e) {}
+}
+
+// ===== END FLIGHT =====
+function endFlight() {
+  if (state.mainTimerRef) clearInterval(state.mainTimerRef);
+  state.phase = 'summary';
+  saveState();
+
+  // Summary data
+  const completionRate = state.checkpoints.length > 0
+    ? state.completedCheckpoints / state.checkpoints.length
+    : 0;
+
+  document.getElementById('sum-xp').textContent = state.xp + ' XP';
+  document.getElementById('sum-checkpoints').textContent = `${state.completedCheckpoints} / ${state.checkpoints.length}`;
+  document.getElementById('sum-streak').textContent = state.longestStreak;
+  document.getElementById('sum-water').textContent = state.waterCount + ' glasses';
+  document.getElementById('sum-duration').textContent = state.flightDuration + 'h';
+
+  // Dynamic messaging
+  const emojis = ['🎉', '✨', '💪', '🌟'];
+  const titles = ['Great Flight!', 'Well Done!', 'Excellent Work!', 'Mission Complete!'];
+
+  if (completionRate >= 0.8) {
+    document.getElementById('summary-emoji').textContent = '🏆';
+    document.getElementById('summary-title').textContent = 'Outstanding!';
+    document.getElementById('summary-subtitle').textContent = 'You went above and beyond for your circulation';
+    document.getElementById('summary-message').textContent = 'You completed ' + Math.round(completionRate * 100) + '% of your movement breaks. Your veins had a great flight. ✈️';
+  } else if (completionRate >= 0.5) {
+    document.getElementById('summary-emoji').textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    document.getElementById('summary-title').textContent = titles[Math.floor(Math.random() * titles.length)];
+    document.getElementById('summary-subtitle').textContent = 'You took meaningful steps for your health';
+    document.getElementById('summary-message').textContent = 'Every movement break helped keep your blood flowing. Safe travels! ✈️';
+  } else {
+    document.getElementById('summary-emoji').textContent = '✈️';
+    document.getElementById('summary-title').textContent = 'Flight Complete';
+    document.getElementById('summary-subtitle').textContent = 'Every bit of movement counts';
+    document.getElementById('summary-message').textContent = 'Even a few movement breaks make a real difference. Consider setting shorter intervals next time for easier check-ins.';
+  }
+
+  showScreen('screen-summary');
+}
+
+// ===== RESET =====
+function resetApp() {
+  if (state.mainTimerRef) clearInterval(state.mainTimerRef);
+  if (state.exerciseTimerRef) clearInterval(state.exerciseTimerRef);
+  stopExerciseAnim();
+  localStorage.removeItem('circulate_state');
+
+  state = {
+    flightDuration: 4, riskFactors: [], intervalMin: 90, startTime: null,
+    checkpoints: [], completedCheckpoints: 0, currentCheckpoint: 0,
+    streak: 0, longestStreak: 0, xp: 0, waterCount: 0,
+    exerciseActive: false, exerciseTimerRef: null, exerciseTimeLeft: 60,
+    exerciseAnimRef: null, mainTimerRef: null, phase: 'onboard'
+  };
+
+  // Reset chip selections
+  document.querySelectorAll('.risk-chip').forEach(c => c.classList.remove('selected'));
+  document.getElementById('dur-display').innerHTML = '4 <span>hrs</span>';
+
+  lastNotifCheckpoint = -1;
+  showScreen('screen-onboard');
+}
+
+// ===== PERSISTENCE =====
+function saveState() {
+  const s = {
+    flightDuration: state.flightDuration,
+    riskFactors: state.riskFactors,
+    intervalMin: state.intervalMin,
+    startTime: state.startTime,
+    checkpoints: state.checkpoints,
+    completedCheckpoints: state.completedCheckpoints,
+    currentCheckpoint: state.currentCheckpoint,
+    streak: state.streak,
+    longestStreak: state.longestStreak,
+    xp: state.xp,
+    waterCount: state.waterCount,
+    phase: state.phase
+  };
+  try { localStorage.setItem('circulate_state', JSON.stringify(s)); } catch(e) {}
+}
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('circulate_state');
+    if (!saved) return false;
+    const s = JSON.parse(saved);
+    if (!s || !s.startTime) return false;
+
+    Object.assign(state, s);
+    state.exerciseActive = false;
+    state.exerciseTimerRef = null;
+    state.exerciseAnimRef = null;
+    state.mainTimerRef = null;
+
+    return true;
+  } catch(e) { return false; }
+}
+
+// ===== INIT =====
+function init() {
+  if (loadState()) {
+    switch(state.phase) {
+      case 'dashboard':
+      case 'exercise':
+        showDashboard();
+        break;
+      case 'summary':
+        endFlight();
+        break;
+      case 'tip':
+        showScreen('screen-tip');
+        break;
+      case 'commit':
+        showCommitment();
+        break;
+      default:
+        showScreen('screen-onboard');
+    }
+  } else {
+    showScreen('screen-onboard');
+  }
+}
+
+// ===== RIPPLE EFFECT ON PRIMARY BUTTONS =====
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.btn-primary');
+  if (!btn) return;
+  const rect = btn.getBoundingClientRect();
+  const ripple = document.createElement('span');
+  ripple.className = 'ripple-effect';
+  ripple.style.left = (e.clientX - rect.left - 10) + 'px';
+  ripple.style.top = (e.clientY - rect.top - 10) + 'px';
+  btn.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 600);
+});
+
+// ===== SERVICE WORKER =====
+if ('serviceWorker' in navigator) {
+  const swCode = `
+    const CACHE_NAME = 'circulate-v1';
+    const ASSETS = [self.location.href.replace(/\\/sw\\.js.*/, '')];
+
+    self.addEventListener('install', e => {
+      e.waitUntil(
+        caches.open(CACHE_NAME).then(cache => {
+          return cache.addAll(ASSETS).catch(() => {});
+        })
+      );
+      self.skipWaiting();
+    });
+
+    self.addEventListener('activate', e => {
+      e.waitUntil(
+        caches.keys().then(keys =>
+          Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+        )
+      );
+      self.clients.claim();
+    });
+
+    self.addEventListener('fetch', e => {
+      e.respondWith(
+        caches.match(e.request).then(r => r || fetch(e.request).then(response => {
+          if (response.status === 200) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
+          }
+          return response;
+        }).catch(() => caches.match(e.request)))
+      );
+    });
+  `;
+
+  const swBlob = new Blob([swCode], { type: 'application/javascript' });
+  const swUrl = URL.createObjectURL(swBlob);
+  navigator.serviceWorker.register(swUrl).catch(() => {});
+}
+
+// Boot
+init();
+</script>
+</body>
+</html>
+```
