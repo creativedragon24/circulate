@@ -3,1473 +3,1069 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#080b14">
+<meta name="theme-color" content="#0f0f0f">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Circulate">
-<meta name="description" content="Premium in-flight DVT prevention companion">
 <title>Circulate ✈️</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;700&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 
 :root{
-  --bg:#080b14;
-  --bg2:#0d1120;
-  --bg3:#111827;
-  --accent:#00e5ff;
-  --accent2:#7c3aed;
-  --accent3:#f59e0b;
-  --glow:rgba(0,229,255,.25);
-  --glow2:rgba(124,58,237,.2);
-  --glass:rgba(255,255,255,.04);
-  --glass2:rgba(255,255,255,.08);
-  --border:rgba(255,255,255,.07);
-  --border2:rgba(0,229,255,.25);
-  --t1:#f8fafc;
-  --t2:rgba(248,250,252,.6);
-  --t3:rgba(248,250,252,.35);
-  --r:18px;
-  --r2:12px;
-  --ease:cubic-bezier(.34,1.56,.64,1);
-  --ease2:cubic-bezier(.4,0,.2,1);
-  --safe-t:env(safe-area-inset-top,0px);
+  --bg:#0f0f0f;
+  --card:rgba(255,255,255,.05);
+  --card2:rgba(255,255,255,.03);
+  --border:rgba(255,255,255,.08);
+  --neon:#c8ff00;
+  --neon-g:rgba(200,255,0,.15);
+  --neon-g2:rgba(200,255,0,.4);
+  --blue:#4d7cff;
+  --blue-g:rgba(77,124,255,.2);
+  --pink:#ff4d8d;
+  --pink-g:rgba(255,77,141,.15);
+  --orange:#ff8a00;
+  --orange-g:rgba(255,138,0,.15);
+  --cyan:#00e5ff;
+  --purple:#a855f7;
+  --t1:#ffffff;
+  --t2:rgba(255,255,255,.55);
+  --t3:rgba(255,255,255,.3);
+  --r:24px;
+  --r2:16px;
+  --r3:12px;
   --safe-b:env(safe-area-inset-bottom,0px);
 }
 
-html{scroll-behavior:smooth;height:100%}
-body{
-  font-family:'Inter',system-ui,sans-serif;
-  background:var(--bg);
-  color:var(--t1);
-  min-height:100vh;
-  min-height:100dvh;
-  overflow:hidden;
+html,body{
+  font-family:'DM Sans','Space Grotesk',system-ui,sans-serif;
+  background:var(--bg);color:var(--t1);
+  min-height:100dvh;overflow:hidden;
   -webkit-font-smoothing:antialiased;
-  position:relative;
   touch-action:manipulation;
 }
 
-/* BACKGROUND ORBS */
-.bg-orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
-.orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.12;animation:orbFloat 8s ease-in-out infinite}
-.orb1{width:400px;height:400px;background:var(--accent);top:-100px;right:-100px;animation-delay:0s}
-.orb2{width:300px;height:300px;background:var(--accent2);bottom:-80px;left:-80px;animation-delay:-3s}
-.orb3{width:200px;height:200px;background:var(--accent3);top:40%;left:30%;animation-delay:-5s}
-
-@keyframes orbFloat{
-  0%,100%{transform:translateY(0) scale(1)}
-  50%{transform:translateY(-30px) scale(1.05)}
+/* === ANIMATED BG MESH === */
+.mesh{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 20%,rgba(200,255,0,.04) 0%,transparent 70%),
+    radial-gradient(ellipse 50% 60% at 80% 80%,rgba(77,124,255,.04) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 40% at 50% 50%,rgba(255,77,141,.03) 0%,transparent 70%);
+}
+.mesh::after{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='1' cy='1' r='1' fill='rgba(255,255,255,0.03)'/%3E%3C/svg%3E");
+  opacity:.5;
 }
 
-/* SCREENS */
-.screen{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;
-  padding:calc(var(--safe-t) + 24px) 22px calc(var(--safe-b) + 24px);
-  z-index:1;overflow-y:auto;
-  opacity:0;pointer-events:none;
-  transition:opacity .4s var(--ease2),transform .4s var(--ease2);
-  transform:translateY(16px);
-  max-width:520px;margin:0 auto;width:100%;
-  left:0;right:0;
+/* === SCREENS === */
+.scr{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  padding:20px 20px calc(20px + var(--safe-b));
+  z-index:1;overflow-y:auto;overflow-x:hidden;
+  opacity:0;pointer-events:none;transform:scale(.96);
+  transition:all .45s cubic-bezier(.4,0,.2,1);
+  max-width:500px;margin:0 auto;left:0;right:0;
   scrollbar-width:none;
 }
-.screen::-webkit-scrollbar{display:none}
-.screen.active{opacity:1;pointer-events:all;transform:translateY(0)}
-.screen.exit{opacity:0;transform:translateY(-16px)}
+.scr::-webkit-scrollbar{display:none}
+.scr.on{opacity:1;pointer-events:all;transform:scale(1)}
 
-/* TYPOGRAPHY */
-.logo{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-.logo-icon{width:40px;height:40px;position:relative}
-.logo-icon svg{width:100%;height:100%}
-.logo-text{font-size:22px;font-weight:800;letter-spacing:-0.5px;
-  background:linear-gradient(135deg,var(--accent),#818cf8);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+/* === PILL BADGE === */
+.pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 14px;border-radius:50px;font-size:12px;font-weight:600;
+  letter-spacing:.5px;text-transform:uppercase;
+}
+.pill-neon{background:var(--neon-g);color:var(--neon);border:1px solid rgba(200,255,0,.2)}
+.pill-blue{background:var(--blue-g);color:var(--blue);border:1px solid rgba(77,124,255,.2)}
+.pill-pink{background:var(--pink-g);color:var(--pink);border:1px solid rgba(255,77,141,.2)}
+.pill-orange{background:var(--orange-g);color:var(--orange);border:1px solid rgba(255,138,0,.2)}
 
-h1{font-size:30px;font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:8px}
-h2{font-size:22px;font-weight:700;letter-spacing:-.5px}
-.gradient-text{background:linear-gradient(135deg,var(--accent),#818cf8);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.sub{color:var(--t2);font-size:15px;line-height:1.6;font-weight:400}
+/* === HERO TEXT === */
+.hero{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;line-height:1.1;letter-spacing:-1.5px;margin:16px 0 12px}
+.hero .pop{
+  background:linear-gradient(135deg,var(--neon),#a3ff00);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.desc{color:var(--t2);font-size:15px;line-height:1.65;margin-bottom:28px}
 
-/* CARDS */
-.card{
-  background:var(--glass);
-  border:1px solid var(--border);
-  border-radius:var(--r);
-  padding:20px;
-  backdrop-filter:blur(24px);
-  -webkit-backdrop-filter:blur(24px);
-  transition:all .25s var(--ease2);
-  position:relative;overflow:hidden;
+/* === BLOB CARD (no boring rectangles) === */
+.blob{
+  position:relative;padding:24px;margin-bottom:16px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);overflow:hidden;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
 }
-.card::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,.06) 0%,transparent 60%);
-  pointer-events:none;border-radius:inherit;
-}
-.card-glow{border-color:var(--border2);box-shadow:0 0 30px var(--glow),inset 0 1px 0 rgba(255,255,255,.1)}
-.card-hover{cursor:pointer}
-.card-hover:active{transform:scale(.97);background:var(--glass2)}
-
-/* BUTTONS */
-.btn{
-  width:100%;padding:17px 24px;border:none;border-radius:var(--r);
-  font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;
-  letter-spacing:-.2px;transition:all .25s var(--ease);
-  position:relative;overflow:hidden;display:flex;align-items:center;
-  justify-content:center;gap:8px;
-}
-.btn-primary{
-  background:linear-gradient(135deg,var(--accent),#0ea5e9);
-  color:#080b14;box-shadow:0 8px 32px rgba(0,229,255,.3);
-}
-.btn-primary:active{transform:scale(.96);box-shadow:0 4px 16px rgba(0,229,255,.2)}
-.btn-ghost{
-  background:var(--glass2);border:1px solid var(--border);color:var(--t1);
-}
-.btn-ghost:active{transform:scale(.96);background:rgba(255,255,255,.12)}
-.btn-danger{
-  background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.25);
-  color:#fca5a5;
-}
-.btn-danger:active{transform:scale(.96)}
-
-/* RIPPLE */
-.ripple{
-  position:absolute;border-radius:50%;
-  background:rgba(255,255,255,.2);
-  transform:scale(0);animation:rippleAnim .5s ease-out forwards;
+.blob::before{
+  content:'';position:absolute;top:-50%;right:-50%;
+  width:100%;height:100%;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,255,0,.06),transparent 70%);
   pointer-events:none;
 }
-@keyframes rippleAnim{to{transform:scale(4);opacity:0}}
+.blob:active{transform:scale(.97)}
 
-/* SECTION LABEL */
-.label{
-  font-size:11px;font-weight:700;text-transform:uppercase;
-  letter-spacing:1.5px;color:var(--t3);margin-bottom:12px;
-  display:flex;align-items:center;gap:6px;
+/* === SQUISHY BUTTONS === */
+.squishy{
+  width:100%;padding:18px;border:none;border-radius:var(--r);
+  font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;
+  cursor:pointer;transition:all .2s cubic-bezier(.34,1.56,.64,1);
+  position:relative;overflow:hidden;display:flex;align-items:center;
+  justify-content:center;gap:8px;letter-spacing:-.3px;
 }
-.label::before{content:'';width:16px;height:1px;background:var(--t3)}
+.squishy:active{transform:scale(.93) rotate(-1deg)}
+.sq-neon{
+  background:var(--neon);color:#0f0f0f;
+  box-shadow:0 8px 40px rgba(200,255,0,.3),0 2px 8px rgba(200,255,0,.2);
+}
+.sq-neon:active{box-shadow:0 2px 16px rgba(200,255,0,.2)}
+.sq-dark{
+  background:rgba(255,255,255,.08);color:var(--t1);
+  border:1.5px solid var(--border);
+}
+.sq-danger{
+  background:rgba(255,77,141,.1);color:var(--pink);
+  border:1.5px solid rgba(255,77,141,.2);
+}
+.sq-blue{
+  background:var(--blue);color:white;
+  box-shadow:0 8px 40px rgba(77,124,255,.3);
+}
 
-/* DURATION PICKER */
-.dur-wrap{
-  display:flex;align-items:center;justify-content:center;gap:20px;
-  padding:8px 0;
+/* === BOUNCY NUMBERS === */
+.big-num{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:72px;font-weight:700;line-height:1;
+  letter-spacing:-4px;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
 }
-.dur-btn{
-  width:52px;height:52px;border-radius:50%;border:1.5px solid var(--border);
-  background:var(--glass2);color:var(--t1);font-size:24px;font-weight:300;
+.big-num.bounce{animation:numBounce .5s cubic-bezier(.34,1.56,.64,1)}
+@keyframes numBounce{
+  0%{transform:scale(1)}30%{transform:scale(1.3) rotate(-3deg)}
+  60%{transform:scale(.9) rotate(2deg)}100%{transform:scale(1) rotate(0)}
+}
+
+/* === WOBBLY DURATION PICKER === */
+.dur-picker{display:flex;align-items:center;justify-content:center;gap:24px;padding:20px 0}
+.dur-circle{
+  width:60px;height:60px;border-radius:50%;
+  background:rgba(255,255,255,.06);border:2px solid var(--border);
   display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .2s var(--ease);flex-shrink:0;
+  font-size:28px;font-weight:300;color:var(--t1);cursor:pointer;
+  transition:all .25s cubic-bezier(.34,1.56,.64,1);
 }
-.dur-btn:active{background:var(--accent);border-color:var(--accent);color:#080b14;transform:scale(.9)}
-.dur-num{
-  font-size:52px;font-weight:900;letter-spacing:-3px;min-width:120px;
-  text-align:center;color:var(--t1);line-height:1;
+.dur-circle:active{
+  transform:scale(.8) rotate(-10deg);
+  background:var(--neon);border-color:var(--neon);color:#0f0f0f;
 }
-.dur-num small{font-size:18px;font-weight:400;color:var(--t2);letter-spacing:0}
+.dur-val{text-align:center}
+.dur-val .big-num{color:var(--neon)}
+.dur-val small{font-size:18px;color:var(--t2);font-weight:400}
 
-/* RISK CHIPS */
-.chips{display:flex;flex-wrap:wrap;gap:9px}
+/* === CHIPS (fun bouncy pills) === */
+.chips{display:flex;flex-wrap:wrap;gap:10px}
 .chip{
-  padding:11px 16px;border-radius:50px;
-  border:1.5px solid var(--border);background:var(--glass);
-  font-size:14px;font-weight:500;cursor:pointer;
-  transition:all .2s var(--ease);color:var(--t1);
-  display:flex;align-items:center;gap:7px;
+  padding:12px 18px;border-radius:50px;
+  border:1.5px solid var(--border);background:var(--card2);
+  font-size:14px;font-weight:600;cursor:pointer;
+  transition:all .25s cubic-bezier(.34,1.56,.64,1);
+  color:var(--t2);display:flex;align-items:center;gap:8px;
   user-select:none;
 }
-.chip:active{transform:scale(.93)}
+.chip:active{transform:scale(.88) rotate(-5deg)}
 .chip.on{
-  border-color:var(--accent);background:rgba(0,229,255,.12);
-  color:var(--accent);box-shadow:0 0 16px rgba(0,229,255,.15);
+  border-color:var(--neon);background:var(--neon-g);color:var(--neon);
+  box-shadow:0 0 20px rgba(200,255,0,.15);
+  transform:scale(1.02);
 }
-.chip .ce{font-size:16px}
+.chip .ico{font-size:18px}
 
-/* TIMELINE */
-.tl-wrap{position:relative;height:8px;background:rgba(255,255,255,.06);border-radius:4px;margin:14px 0 6px}
-.tl-fill{
-  height:100%;border-radius:4px;
-  background:linear-gradient(90deg,var(--accent2),var(--accent));
-  transition:width 1.2s var(--ease2);position:relative;
-  box-shadow:0 0 12px var(--glow);
+/* === WAVY TIMELINE === */
+.wave-tl{
+  position:relative;height:10px;border-radius:5px;
+  background:rgba(255,255,255,.05);margin:16px 0 8px;
+  overflow:visible;
 }
-.tl-fill::after{
-  content:'✈';position:absolute;right:-14px;top:-10px;
-  font-size:18px;filter:drop-shadow(0 0 8px var(--accent));
-  animation:planeWobble 2s ease-in-out infinite;
+.wave-fill{
+  height:100%;border-radius:5px;position:relative;
+  background:linear-gradient(90deg,var(--purple),var(--blue),var(--neon));
+  background-size:200% 100%;animation:waveGrad 4s ease-in-out infinite;
+  transition:width 1s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 0 20px rgba(200,255,0,.2);
 }
-@keyframes planeWobble{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-.tl-dot{
+@keyframes waveGrad{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.wave-fill::after{
+  content:'✈️';position:absolute;right:-14px;top:-12px;
+  font-size:22px;animation:planeFloat 2s ease-in-out infinite;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.5));
+}
+@keyframes planeFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-6px) rotate(2deg)}}
+.wave-dot{
   position:absolute;top:50%;transform:translate(-50%,-50%);
-  width:14px;height:14px;border-radius:50%;
-  background:var(--bg3);border:2px solid rgba(255,255,255,.15);
-  transition:all .3s var(--ease);
+  width:16px;height:16px;border-radius:50%;
+  background:var(--bg);border:2.5px solid rgba(255,255,255,.12);
+  transition:all .4s cubic-bezier(.34,1.56,.64,1);z-index:2;
 }
-.tl-dot.done{background:var(--accent);border-color:var(--accent);box-shadow:0 0 10px var(--glow)}
-.tl-dot.now{border-color:var(--accent);animation:dotPulse 1.5s ease-in-out infinite}
-@keyframes dotPulse{0%,100%{box-shadow:0 0 0 0 var(--glow)}50%{box-shadow:0 0 0 8px transparent}}
+.wave-dot.done{background:var(--neon);border-color:var(--neon);transform:translate(-50%,-50%) scale(1.15);box-shadow:0 0 12px var(--neon-g2)}
+.wave-dot.now{border-color:var(--neon);animation:dotBreath 1.5s ease-in-out infinite}
+@keyframes dotBreath{0%,100%{box-shadow:0 0 0 0 var(--neon-g2)}50%{box-shadow:0 0 0 10px transparent}}
 
-/* STATS */
-.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-.stat{text-align:center;padding:18px 12px}
-.stat-val{font-size:32px;font-weight:800;line-height:1;margin-bottom:4px}
-.stat-lbl{font-size:12px;color:var(--t2);font-weight:500;letter-spacing:.3px}
+/* === STAT BLOBS === */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.stat-blob{
+  padding:20px 16px;text-align:center;position:relative;overflow:hidden;
+}
+.stat-blob .stat-icon{font-size:24px;margin-bottom:8px;display:block}
+.stat-blob .stat-n{font-family:'Space Grotesk';font-size:34px;font-weight:700;line-height:1}
+.stat-blob .stat-l{font-size:12px;color:var(--t2);margin-top:4px;font-weight:500}
 
-/* STREAK */
-.streak{
-  display:inline-flex;align-items:center;gap:7px;
-  padding:8px 16px;border-radius:50px;
-  background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);
-  font-size:13px;font-weight:700;color:var(--accent3);
-  margin-bottom:16px;
+/* === JUICE METER (hydration) === */
+.juice{
+  display:flex;align-items:center;gap:16px;cursor:pointer;
+  padding:20px;
 }
-
-/* NEXT CP CARD */
-.next-card{
-  cursor:pointer;text-align:center;padding:28px 24px;
-  margin-bottom:16px;
+.juice-bottle{
+  width:44px;height:88px;border-radius:22px;
+  border:2.5px solid var(--border);position:relative;
+  overflow:hidden;flex-shrink:0;background:rgba(0,0,0,.3);
 }
-.next-card .big-time{
-  font-size:56px;font-weight:900;letter-spacing:-3px;
-  color:var(--accent);line-height:1;margin:8px 0;
-  text-shadow:0 0 40px var(--glow);
-}
-.next-card .pulse-ring{
-  width:80px;height:80px;border-radius:50%;
-  border:2px solid var(--accent);margin:0 auto 12px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:28px;position:relative;
-}
-.next-card .pulse-ring::before{
-  content:'';position:absolute;inset:-6px;border-radius:50%;
-  border:2px solid rgba(0,229,255,.3);animation:ringPulse 2s ease-in-out infinite;
-}
-.next-card .pulse-ring::after{
-  content:'';position:absolute;inset:-14px;border-radius:50%;
-  border:2px solid rgba(0,229,255,.1);animation:ringPulse 2s ease-in-out infinite .4s;
-}
-@keyframes ringPulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.15);opacity:0}}
-
-/* HYDRATION */
-.hydro-card{display:flex;align-items:center;gap:16px;cursor:pointer}
-.hydro-tube{
-  width:36px;height:80px;border-radius:18px;
-  border:2px solid var(--border2);position:relative;overflow:hidden;
-  flex-shrink:0;background:rgba(0,0,0,.3);
-}
-.hydro-fill{
+.juice-water{
   position:absolute;bottom:0;left:0;right:0;
   background:linear-gradient(180deg,#38bdf8,#0284c7);
-  transition:height .7s var(--ease);border-radius:0 0 16px 16px;
+  transition:height .7s cubic-bezier(.34,1.56,.64,1);
+  border-radius:0 0 20px 20px;
 }
-.hydro-ripple{
-  position:absolute;top:0;left:0;right:0;height:4px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
-  animation:waterShimmer 2s linear infinite;
+.juice-wave{
+  position:absolute;top:-3px;left:-10%;width:120%;height:8px;
+  background:radial-gradient(ellipse,rgba(255,255,255,.3) 0%,transparent 70%);
+  animation:jwave 1.5s ease-in-out infinite;
 }
-@keyframes waterShimmer{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
-.hydro-info{flex:1}
-.hydro-count{font-size:22px;font-weight:800}
-.hydro-hint{font-size:13px;color:var(--t2);margin-top:2px}
-.hydro-add{
-  width:46px;height:46px;border-radius:50%;border:none;
-  background:rgba(56,189,248,.15);color:#38bdf8;
-  font-size:26px;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;transition:all .2s var(--ease);flex-shrink:0;
+@keyframes jwave{0%,100%{transform:translateX(-5%)}50%{transform:translateX(5%)}}
+.juice-info{flex:1}
+.juice-n{font-family:'Space Grotesk';font-size:24px;font-weight:700}
+.juice-hint{font-size:13px;color:var(--t2);margin-top:2px}
+.juice-plus{
+  width:50px;height:50px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,#0ea5e9,#38bdf8);
+  color:white;font-size:28px;font-weight:300;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .25s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 6px 24px rgba(14,165,233,.3);flex-shrink:0;
 }
-.hydro-add:active{background:#38bdf8;color:#080b14;transform:scale(.9)}
+.juice-plus:active{transform:scale(.8) rotate(-15deg)}
 
-/* EXERCISE SCREEN */
-.ex-ring-wrap{width:220px;height:220px;margin:0 auto 20px;position:relative}
-.ex-ring-wrap svg{width:100%;height:100%;transform:rotate(-90deg)}
-.ex-ring-bg{fill:none;stroke:rgba(255,255,255,.06);stroke-width:6}
-.ex-ring-fill{
-  fill:none;stroke:var(--accent);stroke-width:6;stroke-linecap:round;
-  stroke-dasharray:659.73;stroke-dashoffset:659.73;
+/* === EXERCISE RING === */
+.ex-wrap{width:240px;height:240px;margin:0 auto 20px;position:relative}
+.ex-wrap svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ex-bg{fill:none;stroke:rgba(255,255,255,.05);stroke-width:8}
+.ex-fill{
+  fill:none;stroke:url(#ringGrad);stroke-width:8;stroke-linecap:round;
+  stroke-dasharray:691.15;stroke-dashoffset:691.15;
   transition:stroke-dashoffset 1s linear;
-  filter:drop-shadow(0 0 8px var(--accent));
+  filter:drop-shadow(0 0 12px rgba(200,255,0,.4));
 }
-.ex-anim{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  width:130px;height:130px;
+.ex-anim-box{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:140px;height:140px}
+.ex-big-t{
+  position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);
+  font-family:'Space Grotesk';font-size:52px;font-weight:700;
+  color:var(--neon);text-shadow:0 0 30px var(--neon-g2);letter-spacing:-3px;
 }
-.ex-big-num{
-  position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);
-  font-size:48px;font-weight:900;color:var(--accent);
-  text-shadow:0 0 30px var(--glow);letter-spacing:-2px;
-}
-.ex-name{font-size:24px;font-weight:800;text-align:center;margin-bottom:6px}
-.ex-inst{font-size:16px;color:var(--t2);text-align:center;line-height:1.6;margin-bottom:16px}
-.ex-why{
-  background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);
-  border-radius:var(--r2);padding:14px 16px;margin-bottom:20px;
-  font-size:13px;color:var(--t2);line-height:1.6;
-}
-.ex-why strong{color:#a78bfa}
-.ex-controls{display:flex;gap:10px}
-.ex-controls .btn-primary{flex:1}
-.ex-controls .btn-ghost{flex:0 0 72px;font-size:13px}
 
-/* CELEBRATION */
-.celeb{
+/* === STREAK BADGE === */
+.streak-b{
+  display:inline-flex;align-items:center;gap:6px;padding:8px 16px;
+  border-radius:50px;font-size:14px;font-weight:700;margin-bottom:14px;
+  background:linear-gradient(135deg,rgba(255,138,0,.15),rgba(255,77,141,.1));
+  border:1px solid rgba(255,138,0,.25);color:var(--orange);
+  animation:streakWiggle 3s ease-in-out infinite;
+}
+@keyframes streakWiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-2deg)}75%{transform:rotate(2deg)}}
+
+/* === NEXT CHECKPOINT CARD === */
+.next-blob{
+  padding:28px;text-align:center;cursor:pointer;
+  border-color:var(--neon);border-width:2px;
+  background:linear-gradient(135deg,rgba(200,255,0,.03),rgba(77,124,255,.03));
+}
+.next-blob .pulse-dot{
+  width:80px;height:80px;border-radius:50%;
+  margin:0 auto 16px;display:flex;align-items:center;justify-content:center;
+  font-size:32px;position:relative;
+  background:rgba(200,255,0,.08);border:2px solid rgba(200,255,0,.3);
+}
+.next-blob .pulse-dot::before,.next-blob .pulse-dot::after{
+  content:'';position:absolute;inset:-8px;border-radius:50%;
+  border:2px solid rgba(200,255,0,.15);
+  animation:pulseDot 2s ease-in-out infinite;
+}
+.next-blob .pulse-dot::after{inset:-18px;animation-delay:.4s;border-color:rgba(200,255,0,.08)}
+@keyframes pulseDot{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.2);opacity:0}}
+
+/* === SOCIAL LINE === */
+.social-line{
+  text-align:center;font-size:13px;color:var(--t3);font-style:italic;
+  line-height:1.6;padding:4px 16px;margin-bottom:12px;
+}
+
+/* === XP TOAST === */
+.xp-toast{
+  position:fixed;top:40%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Space Grotesk';font-size:36px;font-weight:700;
+  color:var(--neon);pointer-events:none;z-index:999;
+  text-shadow:0 0 30px var(--neon-g2);
+  animation:xpPop .8s cubic-bezier(.34,1.56,.64,1) forwards;
+}
+@keyframes xpPop{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(0) rotate(-20deg)}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.4) rotate(5deg)}
+  100%{opacity:0;transform:translate(-50%,-80%) scale(.8) rotate(0)}
+}
+
+/* === CELEBRATION === */
+.celeb-overlay{
   position:fixed;inset:0;z-index:500;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  background:rgba(8,11,20,.95);backdrop-filter:blur(24px);
-  opacity:0;pointer-events:none;transition:opacity .35s var(--ease2);
-  padding:32px;
+  background:rgba(15,15,15,.97);
+  opacity:0;pointer-events:none;transition:all .4s;padding:32px;
 }
-.celeb.show{opacity:1;pointer-events:all}
-.celeb-emoji{font-size:80px;margin-bottom:20px;display:block;animation:celebFloat 1.5s var(--ease) infinite alternate}
-@keyframes celebFloat{0%{transform:scale(1) rotate(-3deg)}100%{transform:scale(1.12) rotate(3deg)}}
-.celeb-title{font-size:30px;font-weight:900;margin-bottom:8px;text-align:center;letter-spacing:-.5px}
-.celeb-sub{font-size:16px;color:var(--t2);text-align:center;margin-bottom:6px;line-height:1.5}
+.celeb-overlay.on{opacity:1;pointer-events:all}
+.celeb-em{font-size:96px;animation:celebSpin 1s cubic-bezier(.34,1.56,.64,1);margin-bottom:20px}
+@keyframes celebSpin{
+  0%{transform:scale(0) rotate(-180deg)}
+  50%{transform:scale(1.3) rotate(10deg)}
+  100%{transform:scale(1) rotate(0)}
+}
+.celeb-h{font-family:'Space Grotesk';font-size:32px;font-weight:700;margin-bottom:8px;letter-spacing:-.5px}
+.celeb-p{font-size:16px;color:var(--t2);margin-bottom:6px;text-align:center;line-height:1.5}
 .celeb-xp{
-  font-size:20px;font-weight:800;color:var(--accent);
-  margin-bottom:28px;letter-spacing:-.3px;
+  font-family:'Space Grotesk';font-size:22px;font-weight:700;
+  color:var(--neon);margin-bottom:28px;
 }
-.particles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.particle{
-  position:absolute;width:8px;height:8px;border-radius:2px;
-  animation:particleFly 1.5s ease-out forwards;opacity:0;
+.sparks{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.spark{
+  position:absolute;width:6px;height:6px;border-radius:50%;
+  animation:sparkFly 1.2s cubic-bezier(.34,1.56,.64,1) forwards;
 }
-@keyframes particleFly{
-  0%{opacity:1;transform:translate(0,0) rotate(0deg) scale(1)}
-  100%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--dr)) scale(0)}
+@keyframes sparkFly{
+  0%{opacity:1;transform:translate(0,0) scale(1)}
+  100%{opacity:0;transform:translate(var(--sx),var(--sy)) scale(0)}
 }
 
-/* NOTIFICATION BANNER */
-.notif-bar{
-  position:fixed;top:0;left:0;right:0;z-index:999;
-  background:rgba(13,17,32,.95);backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border2);
-  padding:calc(var(--safe-t) + 12px) 20px 14px;
-  display:flex;align-items:center;gap:12px;
-  transform:translateY(-110%);transition:transform .5s var(--ease);
-  cursor:pointer;max-width:520px;margin:0 auto;
+/* === TIP CARD === */
+.tip-blob{margin:auto 0;padding:32px;text-align:center}
+.tip-em{font-size:56px;display:block;margin-bottom:16px;animation:tipBob 2s ease-in-out infinite alternate}
+@keyframes tipBob{0%{transform:translateY(0) rotate(-5deg)}100%{transform:translateY(-10px) rotate(5deg)}}
+.tip-tag{margin-bottom:20px}
+.tip-txt{font-size:16px;color:var(--t2);line-height:1.7}
+.tip-txt strong{color:var(--t1)}
+
+/* === COMMIT CARD === */
+.commit-blob{
+  padding:28px;text-align:center;
+  border:2px solid var(--neon);
+  background:linear-gradient(135deg,var(--neon-g),rgba(77,124,255,.05));
+  animation:commitGlow 3s ease-in-out infinite;
 }
-.notif-bar.show{transform:translateY(0)}
-.notif-ico{font-size:26px;flex-shrink:0;animation:heartbeat 1s ease-in-out infinite}
-@keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
-.notif-txt{flex:1}
-.notif-title{font-size:14px;font-weight:700}
-.notif-body{font-size:13px;color:var(--t2)}
+@keyframes commitGlow{
+  0%,100%{box-shadow:0 0 30px var(--neon-g)}
+  50%{box-shadow:0 0 60px var(--neon-g),0 0 100px rgba(77,124,255,.1)}
+}
+.commit-txt{font-family:'Space Grotesk';font-size:19px;font-weight:600;line-height:1.6}
+.commit-txt em{color:var(--neon);font-style:normal;font-weight:700}
+
+/* === SUMMARY === */
+.sum-wrap{flex:1;display:flex;flex-direction:column;justify-content:center}
+.sum-em{font-size:72px;display:block;text-align:center;margin-bottom:12px;animation:celebSpin .8s cubic-bezier(.34,1.56,.64,1)}
+.sum-h{font-family:'Space Grotesk';text-align:center}
+.sum-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border)}
+.sum-row:last-child{border:none}
+.sum-lbl{font-size:15px;color:var(--t2)}
+.sum-val{font-family:'Space Grotesk';font-size:16px;font-weight:700}
+.sum-msg{text-align:center;padding:16px;font-size:15px;color:var(--t2);line-height:1.6;margin:12px 0}
+
+/* === NOTIFICATION BANNER === */
+.notif{
+  position:fixed;top:0;left:0;right:0;z-index:999;
+  background:rgba(15,15,15,.96);backdrop-filter:blur(20px);
+  border-bottom:2px solid var(--neon);padding:16px 20px;
+  display:flex;align-items:center;gap:12px;cursor:pointer;
+  transform:translateY(-120%);transition:transform .5s cubic-bezier(.34,1.56,.64,1);
+  max-width:500px;margin:0 auto;
+}
+.notif.on{transform:translateY(0)}
+.notif-em{font-size:28px;animation:heartBeat 1s ease-in-out infinite}
+@keyframes heartBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+.notif-t{flex:1}
+.notif-h{font-size:14px;font-weight:700}
+.notif-p{font-size:13px;color:var(--t2)}
 .notif-x{
-  width:30px;height:30px;border-radius:50%;border:none;
-  background:rgba(255,255,255,.08);color:var(--t2);font-size:14px;
+  width:32px;height:32px;border-radius:50%;border:none;
+  background:rgba(255,255,255,.1);color:var(--t2);font-size:16px;
   cursor:pointer;display:flex;align-items:center;justify-content:center;
 }
 
-/* XP FLOAT */
-.xp-float{
-  position:fixed;left:50%;transform:translateX(-50%);
-  font-size:24px;font-weight:900;color:var(--accent);pointer-events:none;
-  z-index:400;animation:xpFloat .9s ease-out forwards;
-  text-shadow:0 0 20px var(--glow);
-}
-@keyframes xpFloat{0%{opacity:1;top:50%}100%{opacity:0;top:30%}}
-
-/* SOCIAL PROOF */
-.social{
-  text-align:center;font-size:13px;color:var(--t3);
-  font-style:italic;line-height:1.6;padding:0 8px;margin-bottom:16px;
-}
-
-/* COMMITMENT CARD */
-.commit-card{
-  text-align:center;padding:28px 24px;margin-bottom:20px;
-  border-color:var(--border2);
-  background:linear-gradient(135deg,rgba(0,229,255,.06),rgba(124,58,237,.06));
-  animation:glowPulse 3s ease-in-out infinite;
-}
-@keyframes glowPulse{0%,100%{box-shadow:0 0 24px var(--glow)}50%{box-shadow:0 0 48px var(--glow),0 0 80px var(--glow2)}}
-.commit-text{font-size:18px;font-weight:600;line-height:1.6}
-.commit-text em{color:var(--accent);font-style:normal;font-weight:800}
-
-/* TIP SCREEN */
-.tip-card{padding:32px 26px;text-align:center;margin:auto 0}
-.tip-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:6px 14px;border-radius:50px;
-  background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);
-  font-size:12px;font-weight:700;color:var(--accent3);
-  letter-spacing:.8px;text-transform:uppercase;margin-bottom:20px;
-}
-.tip-icon{font-size:52px;margin-bottom:16px;display:block;animation:orbFloat 3s ease-in-out infinite}
-.tip-text{font-size:16px;line-height:1.7;color:var(--t2)}
-.tip-text strong{color:var(--t1)}
-
-/* SUMMARY */
-.sum-header{text-align:center;margin-bottom:28px}
-.sum-emoji{font-size:64px;display:block;margin-bottom:12px;animation:orbFloat 2s ease-in-out infinite}
-.sum-row{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:15px 0;border-bottom:1px solid var(--border);
-}
-.sum-row:last-child{border:none}
-.sum-lbl{font-size:15px;color:var(--t2)}
-.sum-val{font-size:16px;font-weight:700}
-.sum-msg{
-  text-align:center;padding:20px;font-size:15px;line-height:1.6;
-  color:var(--t2);margin:16px 0;
-}
-
-/* SCROLL INDICATOR */
-.scroll-hint{
-  text-align:center;font-size:12px;color:var(--t3);
-  margin-top:8px;animation:bounce 2s ease-in-out infinite;
-}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
-
-/* LOADING */
+/* === BOOT === */
 .boot{
-  position:fixed;inset:0;z-index:9999;
-  background:var(--bg);display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  transition:opacity .6s ease;
+  position:fixed;inset:0;z-index:9999;background:var(--bg);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transition:opacity .8s;
 }
-.boot.hide{opacity:0;pointer-events:none}
-.boot-logo{
-  width:72px;height:72px;margin-bottom:20px;
-  animation:bootSpin 2s linear infinite;
+.boot.bye{opacity:0;pointer-events:none}
+.boot-ring{width:80px;height:80px;animation:bootS 1.5s linear infinite}
+@keyframes bootS{to{transform:rotate(360deg)}}
+.boot-name{
+  font-family:'Space Grotesk';font-size:32px;font-weight:700;
+  margin-top:20px;letter-spacing:-1px;
+  background:linear-gradient(135deg,var(--neon),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
-@keyframes bootSpin{to{transform:rotate(360deg)}}
-.boot-text{font-size:28px;font-weight:900;letter-spacing:-.5px;
-  background:linear-gradient(135deg,var(--accent),#818cf8);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.boot-sub{font-size:14px;color:var(--t3);margin-top:6px}
+.boot-sub{color:var(--t3);font-size:14px;margin-top:8px}
 
-/* OFFLINE BADGE */
-.offline-badge{
+/* === OFFLINE === */
+.offline{
   position:fixed;bottom:calc(var(--safe-b) + 12px);left:50%;
-  transform:translateX(-50%);
-  background:rgba(239,68,68,.9);padding:8px 20px;
-  border-radius:50px;font-size:13px;font-weight:600;
-  z-index:900;display:none;
+  transform:translateX(-50%);background:var(--orange);color:#0f0f0f;
+  padding:8px 20px;border-radius:50px;font-size:13px;font-weight:700;
+  z-index:800;display:none;
 }
-.offline-badge.show{display:block;animation:slideUp .3s var(--ease)}
-@keyframes slideUp{from{transform:translateX(-50%) translateY(20px)}to{transform:translateX(-50%) translateY(0)}}
+.offline.on{display:block;animation:slideIn .4s cubic-bezier(.34,1.56,.64,1)}
+@keyframes slideIn{from{transform:translateX(-50%) translateY(30px)}to{transform:translateX(-50%) translateY(0)}}
 
-@media(min-width:521px){
-  .screen{left:50%;right:auto;transform:translateX(-50%) translateY(16px)}
-  .screen.active{transform:translateX(-50%) translateY(0)}
-  .screen.exit{transform:translateX(-50%) translateY(-16px)}
-  .notif-bar{left:50%;right:auto;width:520px;transform:translateX(-50%) translateY(-110%)}
-  .notif-bar.show{transform:translateX(-50%) translateY(0)}
-}
+/* SCROLLABLE FIX */
+.scr{-webkit-overflow-scrolling:touch}
 
 @media(max-width:380px){
-  h1{font-size:26px}.dur-num{font-size:44px}.ex-name{font-size:20px}
-  .celeb-title{font-size:26px}.celeb-emoji{font-size:64px}
+  .hero{font-size:28px}.big-num{font-size:56px}
+  .dur-val .big-num{font-size:56px}
+  .ex-wrap{width:200px;height:200px}
+  .celeb-em{font-size:72px}.celeb-h{font-size:26px}
 }
 </style>
 </head>
 <body>
 
-<!-- BOOT SCREEN -->
+<!-- BOOT -->
 <div class="boot" id="boot">
-  <svg class="boot-logo" viewBox="0 0 72 72">
-    <circle cx="36" cy="36" r="30" fill="none" stroke="rgba(0,229,255,.2)" stroke-width="3"/>
-    <circle cx="36" cy="36" r="22" fill="none" stroke="rgba(0,229,255,.4)" stroke-width="2.5" stroke-dasharray="10 6"/>
-    <circle cx="36" cy="36" r="14" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6 4"/>
-    <circle cx="36" cy="36" r="5" fill="var(--accent)"/>
+  <svg class="boot-ring" viewBox="0 0 80 80">
+    <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(200,255,0,.1)" stroke-width="4"/>
+    <circle cx="40" cy="40" r="26" fill="none" stroke="rgba(200,255,0,.2)" stroke-width="3" stroke-dasharray="12 8"/>
+    <circle cx="40" cy="40" r="18" fill="none" stroke="rgba(200,255,0,.4)" stroke-width="2.5" stroke-dasharray="8 6"/>
+    <circle cx="40" cy="40" r="8" fill="var(--neon)"/>
   </svg>
-  <div class="boot-text">Circulate</div>
-  <div class="boot-sub">Loading your flight companion…</div>
+  <div class="boot-name">Circulate</div>
+  <div class="boot-sub">Preparing your flight companion…</div>
 </div>
 
-<!-- OFFLINE BADGE -->
-<div class="offline-badge" id="offline-badge">✈ Offline Mode — Works Perfectly</div>
+<div class="offline" id="offline-b">✈️ Offline Mode — All Good</div>
+<div class="mesh"></div>
 
-<!-- BG ORBS -->
-<div class="bg-orbs">
-  <div class="orb orb1"></div>
-  <div class="orb orb2"></div>
-  <div class="orb orb3"></div>
-</div>
+<!-- ======================== ONBOARD ======================== -->
+<div id="s-onb" class="scr on">
+  <div class="pill pill-neon" style="align-self:flex-start;margin-bottom:8px">✦ DVT Prevention</div>
+  <h1 class="hero">Move smart.<br>Fly <span class="pop">safe.</span></h1>
+  <p class="desc">Personalized movement breaks, gamified hydration tracking, and real-time flight progress — all designed to keep your blood flowing at 35,000 feet.</p>
 
-<!-- SCREEN: ONBOARD -->
-<div id="s-onboard" class="screen">
-  <div class="logo" style="margin-bottom:24px">
-    <div class="logo-icon">
-      <svg viewBox="0 0 40 40">
-        <circle cx="20" cy="20" r="17" fill="none" stroke="rgba(0,229,255,.3)" stroke-width="2" stroke-dasharray="8 4"/>
-        <circle cx="20" cy="20" r="11" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 3"/>
-        <circle cx="20" cy="20" r="4" fill="var(--accent)"/>
-      </svg>
+  <div style="margin-bottom:24px">
+    <div class="pill pill-blue" style="margin-bottom:14px">✈ Flight Duration</div>
+    <div class="dur-picker">
+      <button class="dur-circle" onclick="dur(-1)">−</button>
+      <div class="dur-val">
+        <div class="big-num" id="dv" style="color:var(--neon)">4<small style="color:var(--t2)">h</small></div>
+      </div>
+      <button class="dur-circle" onclick="dur(1)">+</button>
     </div>
-    <span class="logo-text">Circulate</span>
   </div>
-
-  <h1>Your <span class="gradient-text">in-flight</span> health companion</h1>
-  <p class="sub" style="margin-bottom:32px">Personalized DVT prevention that actually keeps you moving. Science-backed, judgment-free.</p>
 
   <div style="margin-bottom:28px">
-    <div class="label">Flight Duration</div>
-    <div class="dur-wrap">
-      <button class="dur-btn" onclick="dur(-1)" aria-label="Decrease">−</button>
-      <div class="dur-num" id="dur-val">4<small>h</small></div>
-      <button class="dur-btn" onclick="dur(+1)" aria-label="Increase">+</button>
-    </div>
-  </div>
-
-  <div style="margin-bottom:32px">
-    <div class="label">Risk Factors <span style="font-weight:400;letter-spacing:0;text-transform:none">(select all that apply)</span></div>
+    <div class="pill pill-pink" style="margin-bottom:14px">♡ Risk Factors</div>
     <div class="chips" id="chips">
-      <button class="chip" data-r="age">    <span class="ce">👤</span> Age 50+</button>
-      <button class="chip" data-r="clot">   <span class="ce">🩸</span> Prior clot</button>
-      <button class="chip" data-r="preg">   <span class="ce">🤰</span> Pregnancy</button>
-      <button class="chip" data-r="surg">   <span class="ce">🏥</span> Recent surgery</button>
-      <button class="chip" data-r="obese">  <span class="ce">⚖️</span> Obesity</button>
-      <button class="chip" data-r="hrt">    <span class="ce">💊</span> OC / HRT</button>
+      <button class="chip" data-r="age"><span class="ico">👤</span>Age 50+</button>
+      <button class="chip" data-r="clot"><span class="ico">🩸</span>Prior clot</button>
+      <button class="chip" data-r="preg"><span class="ico">🤰</span>Pregnancy</button>
+      <button class="chip" data-r="surg"><span class="ico">🏥</span>Surgery</button>
+      <button class="chip" data-r="obese"><span class="ico">⚖️</span>Obesity</button>
+      <button class="chip" data-r="hrt"><span class="ico">💊</span>OC/HRT</button>
     </div>
   </div>
 
-  <button class="btn btn-primary" onclick="goTip()">
-    <span>Set Up My Flight</span> <span>→</span>
-  </button>
+  <button class="squishy sq-neon" onclick="goTip()">Let's Go ✈️</button>
+  <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--t3)">No account needed · 100% offline · Nothing leaves your device</div>
 </div>
 
-<!-- SCREEN: TIP -->
-<div id="s-tip" class="screen">
-  <div class="tip-card card">
-    <div class="tip-badge">✦ Insider Knowledge</div>
-    <span class="tip-icon">💺</span>
-    <p class="tip-text">
-      Before you board — if you have any choice at all, grab an <strong>aisle seat</strong>.
-      You'll be able to stand, stretch, and move without disturbing anyone.
-      It's the single easiest thing you can do right now to protect your legs.
+<!-- ======================== TIP ======================== -->
+<div id="s-tip" class="scr">
+  <div class="blob tip-blob">
+    <span class="tip-em">💺</span>
+    <div class="tip-tag"><span class="pill pill-orange">🔑 Insider Tip</span></div>
+    <p class="tip-txt">
+      Before you sit down — if you can, grab an <strong>aisle seat</strong>.
+      It sounds small, but it makes standing up, stretching, and walking to the lavatory <strong>dramatically easier</strong>.
+      That one choice multiplies the impact of everything we'll do together.
     </p>
   </div>
-  <div style="margin-top:24px;display:flex;flex-direction:column;gap:10px">
-    <button class="btn btn-primary" onclick="goCommit()">I'm in →</button>
-  </div>
+  <button class="squishy sq-neon" onclick="goCommit()" style="margin-top:20px">Got It →</button>
 </div>
 
-<!-- SCREEN: COMMIT -->
-<div id="s-commit" class="screen">
+<!-- ======================== COMMIT ======================== -->
+<div id="s-commit" class="scr">
   <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
-    <h2 style="margin-bottom:24px">Your personal plan 📋</h2>
-    <div class="commit-card card card-glow">
-      <p class="commit-text" id="commit-txt"></p>
+    <div class="pill pill-neon" style="align-self:center;margin-bottom:20px">📋 Your Plan</div>
+    <div class="blob commit-blob">
+      <p class="commit-txt" id="ctxt"></p>
     </div>
-    <p class="social social" id="social-txt" style="margin-top:0"></p>
-    <button class="btn btn-primary" onclick="goDash()" style="margin-top:8px">Begin Flight →</button>
+    <p class="social-line" id="stxt"></p>
+    <button class="squishy sq-neon" onclick="goDash()" style="margin-top:12px">Begin Flight 🚀</button>
   </div>
 </div>
 
-<!-- SCREEN: DASHBOARD -->
-<div id="s-dash" class="screen">
-  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
+<!-- ======================== DASHBOARD ======================== -->
+<div id="s-dash" class="scr">
+  <!-- Header -->
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px">
     <div>
-      <div style="font-size:13px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">In Flight</div>
-      <h2>Protecting your<br><span class="gradient-text">circulation</span></h2>
+      <div class="pill pill-neon" style="margin-bottom:8px">✈ In Flight</div>
+      <h2 style="font-family:'Space Grotesk';font-size:24px;font-weight:700;letter-spacing:-.5px">Stay <span class="pop">circulating</span></h2>
     </div>
     <div style="text-align:right">
-      <div style="font-size:11px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:1px">Score</div>
-      <div style="font-size:32px;font-weight:900;color:var(--accent);line-height:1" id="dash-xp">0</div>
+      <div style="font-size:11px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:1px">Score</div>
+      <div style="font-family:'Space Grotesk';font-size:36px;font-weight:700;color:var(--neon);line-height:1" id="dxp">0</div>
       <div style="font-size:11px;color:var(--t3)">XP</div>
     </div>
   </div>
 
-  <div id="streak-wrap" style="display:none;margin-bottom:16px">
-    <div class="streak">🔥 <span id="streak-n">0</span> checkpoint streak — don't break it!</div>
+  <div id="strk-w" style="display:none">
+    <div class="streak-b">🔥 <span id="strk-n">0</span> streak — keep it alive!</div>
   </div>
 
   <!-- Timeline -->
-  <div class="card" style="padding:16px 20px;margin-bottom:16px">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px">
-      <span style="font-size:13px;font-weight:700">Flight Progress</span>
-      <span style="font-size:13px;color:var(--t2)" id="elapsed-lbl">0h 0m</span>
+  <div class="blob" style="padding:18px 20px;margin-bottom:16px">
+    <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;margin-bottom:2px">
+      <span>Flight Progress</span>
+      <span style="color:var(--t2)" id="el-lbl">0h 00m</span>
     </div>
-    <div class="tl-wrap">
-      <div class="tl-fill" id="tl-fill" style="width:0%"></div>
-      <div id="tl-dots"></div>
+    <div class="wave-tl">
+      <div class="wave-fill" id="wf" style="width:0%"></div>
+      <div id="wdots"></div>
     </div>
     <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--t3);font-weight:500">
-      <span>Takeoff</span>
-      <span id="land-lbl">Landing</span>
+      <span>🛫 Takeoff</span>
+      <span id="ll">🛬 Landing</span>
     </div>
   </div>
 
   <!-- Stats -->
-  <div class="stats-row">
-    <div class="card stat">
-      <div class="stat-val" style="color:var(--accent)" id="st-done">0</div>
-      <div class="stat-lbl">Completed</div>
+  <div class="stat-grid">
+    <div class="blob stat-blob">
+      <span class="stat-icon">✅</span>
+      <div class="stat-n" style="color:var(--neon)" id="sd">0</div>
+      <div class="stat-l">Completed</div>
     </div>
-    <div class="card stat">
-      <div class="stat-val" style="color:#a78bfa" id="st-left">0</div>
-      <div class="stat-lbl">Remaining</div>
+    <div class="blob stat-blob">
+      <span class="stat-icon">⏳</span>
+      <div class="stat-n" style="color:var(--blue)" id="sr">0</div>
+      <div class="stat-l">Remaining</div>
     </div>
   </div>
 
-  <!-- Next Checkpoint -->
-  <div id="next-wrap">
-    <div class="card card-glow next-card" id="next-card" onclick="goEx()">
-      <div class="next-label" id="next-lbl" style="font-size:13px;color:var(--t2);font-weight:500">Next movement break in</div>
-      <div class="big-time" id="next-time">--:--</div>
-      <div style="font-size:14px;color:var(--t2)" id="next-sub">Tap when you're ready</div>
-    </div>
+  <!-- Next CP -->
+  <div class="blob next-blob" id="nc" onclick="goEx()">
+    <div class="pulse-dot" id="nc-dot">🫀</div>
+    <div style="font-size:13px;color:var(--t2);font-weight:500" id="nc-lbl">Next movement break in</div>
+    <div class="big-num" id="nc-time" style="color:var(--neon);margin:8px 0;font-size:54px">--:--</div>
+    <div style="font-size:14px;color:var(--t2)" id="nc-sub">Tap when ready</div>
   </div>
 
   <!-- Hydration -->
-  <div class="card card-hover hydro-card" onclick="logWater()" style="margin-bottom:16px">
-    <div class="hydro-tube">
-      <div class="hydro-fill" id="h-fill" style="height:0%">
-        <div class="hydro-ripple"></div>
+  <div class="blob juice" onclick="logH2O()">
+    <div class="juice-bottle">
+      <div class="juice-water" id="jf" style="height:0%">
+        <div class="juice-wave"></div>
       </div>
     </div>
-    <div class="hydro-info">
-      <div class="hydro-count">💧 <span id="h-count">0</span> glasses</div>
-      <div class="hydro-hint">Tap to log · Stay hydrated</div>
+    <div class="juice-info">
+      <div class="juice-n">💧 <span id="jn">0</span> glasses</div>
+      <div class="juice-hint">Tap to log water</div>
     </div>
-    <button class="hydro-add" aria-label="Log water">+</button>
+    <button class="juice-plus">+</button>
   </div>
 
-  <p class="social" id="dash-social"></p>
-  <button class="btn btn-danger" onclick="endFlight()" style="margin-top:4px;font-size:14px;padding:14px">End Flight</button>
+  <p class="social-line" id="dsoc"></p>
+  <button class="squishy sq-danger" onclick="endFlight()" style="font-size:14px;padding:14px;margin-top:4px">End Flight</button>
 </div>
 
-<!-- SCREEN: EXERCISE -->
-<div id="s-ex" class="screen">
+<!-- ======================== EXERCISE ======================== -->
+<div id="s-ex" class="scr">
   <div style="text-align:center;margin-bottom:16px">
-    <div style="font-size:12px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px" id="ex-cp-lbl">Checkpoint 1</div>
-    <div class="ex-name" id="ex-name">Ankle Circles</div>
+    <div class="pill pill-blue" style="margin-bottom:8px" id="exl">Checkpoint 1</div>
+    <div class="ex-name" style="font-family:'Space Grotesk';font-size:26px;font-weight:700;letter-spacing:-.5px" id="exn">Ankle Circles</div>
   </div>
 
-  <div class="ex-ring-wrap">
-    <svg viewBox="0 0 220 220">
-      <circle class="ex-ring-bg" cx="110" cy="110" r="105"/>
-      <circle class="ex-ring-fill" id="ex-ring" cx="110" cy="110" r="105"/>
+  <div class="ex-wrap">
+    <svg viewBox="0 0 240 240">
+      <defs>
+        <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:var(--purple)"/>
+          <stop offset="50%" style="stop-color:var(--blue)"/>
+          <stop offset="100%" style="stop-color:var(--neon)"/>
+        </linearGradient>
+      </defs>
+      <circle class="ex-bg" cx="120" cy="120" r="110"/>
+      <circle class="ex-fill" id="exr" cx="120" cy="120" r="110"/>
     </svg>
-    <div class="ex-anim" id="ex-svg"></div>
-    <div class="ex-big-num" id="ex-num">60</div>
+    <div class="ex-anim-box" id="exs"></div>
+    <div class="ex-big-t" id="ext">60</div>
   </div>
 
-  <p class="ex-inst" id="ex-inst">Rotate your ankles slowly in large circles.</p>
-  <div class="ex-why">
-    <strong>⚡ Why it works:</strong> <span id="ex-why"></span>
+  <p style="text-align:center;font-size:16px;color:var(--t2);line-height:1.6;margin-bottom:12px" id="exi">Rotate ankles slowly</p>
+  <div class="blob" style="padding:14px 18px;margin-bottom:20px;border-color:rgba(168,85,247,.2);background:rgba(168,85,247,.05)">
+    <div style="font-size:13px;color:var(--t2);line-height:1.6"><strong style="color:var(--purple)">⚡ Why it works:</strong> <span id="exw"></span></div>
   </div>
 
-  <div class="ex-controls">
-    <button class="btn btn-primary" id="ex-btn" onclick="toggleEx()">▶ Start</button>
-    <button class="btn btn-ghost" onclick="skipEx()" style="font-size:13px">Skip</button>
+  <div class="ex-controls" style="display:flex;gap:10px">
+    <button class="squishy sq-neon" id="exb" onclick="toggleEx()" style="flex:1">▶ Start</button>
+    <button class="squishy sq-dark" onclick="skipEx()" style="flex:0 0 80px;font-size:14px">Skip</button>
   </div>
 </div>
 
-<!-- SCREEN: SUMMARY -->
-<div id="s-sum" class="screen">
-  <div style="flex:1;display:flex;flex-direction:column;justify-content:center">
-    <div class="sum-header">
-      <span class="sum-emoji" id="sum-em">🎉</span>
-      <h1 id="sum-title">Great Flight!</h1>
-      <p class="sub" id="sum-sub">You protected your circulation</p>
+<!-- ======================== SUMMARY ======================== -->
+<div id="s-sum" class="scr">
+  <div class="sum-wrap">
+    <span class="sum-em" id="sme">🎉</span>
+    <h1 class="hero sum-h" id="smh">Great Flight!</h1>
+    <p class="desc" style="text-align:center" id="sms">You took care of yourself</p>
+
+    <div class="blob" style="margin-bottom:16px;border-color:var(--neon);border-width:2px">
+      <div class="sum-row"><span class="sum-lbl">Circulation Score</span><span class="sum-val" style="color:var(--neon)" id="sx">0 XP</span></div>
+      <div class="sum-row"><span class="sum-lbl">Checkpoints</span><span class="sum-val" id="sc">0/0</span></div>
+      <div class="sum-row"><span class="sum-lbl">Best Streak</span><span class="sum-val" id="ss">0 🔥</span></div>
+      <div class="sum-row"><span class="sum-lbl">Hydration</span><span class="sum-val" id="sh">0 💧</span></div>
+      <div class="sum-row"><span class="sum-lbl">Flight</span><span class="sum-val" id="sdu">0h</span></div>
     </div>
-    <div class="card card-glow" style="margin-bottom:16px">
-      <div class="sum-row"><span class="sum-lbl">Circulation Score</span><span class="sum-val" style="color:var(--accent)" id="sm-xp">0 XP</span></div>
-      <div class="sum-row"><span class="sum-lbl">Checkpoints Done</span><span class="sum-val" id="sm-cp">0/0</span></div>
-      <div class="sum-row"><span class="sum-lbl">Best Streak</span><span class="sum-val" id="sm-str">0 🔥</span></div>
-      <div class="sum-row"><span class="sum-lbl">Water Logged</span><span class="sum-val" id="sm-h2o">0 glasses</span></div>
-      <div class="sum-row"><span class="sum-lbl">Flight Duration</span><span class="sum-val" id="sm-dur">0h</span></div>
-    </div>
-    <div class="sum-msg card" id="sm-msg"></div>
-    <button class="btn btn-primary" onclick="reset()" style="margin-top:16px">New Flight ✈️</button>
+
+    <div class="blob sum-msg" id="smm"></div>
+    <button class="squishy sq-neon" onclick="reset()">New Flight ✈️</button>
   </div>
 </div>
 
-<!-- CELEBRATION -->
-<div class="celeb" id="celeb">
-  <div class="particles" id="particles"></div>
-  <span class="celeb-emoji" id="c-em">✨</span>
-  <div class="celeb-title" id="c-title">Checkpoint Complete!</div>
-  <div class="celeb-sub" id="c-sub">Your circulation thanks you</div>
-  <div class="celeb-xp" id="c-xp">+25 XP</div>
-  <button class="btn btn-primary" style="max-width:280px" onclick="closeCeleb()">Continue</button>
+<!-- CELEB OVERLAY -->
+<div class="celeb-overlay" id="celeb">
+  <div class="sparks" id="sparks"></div>
+  <span class="celeb-em" id="ce">✨</span>
+  <div class="celeb-h" style="font-family:'Space Grotesk'" id="ch">Done!</div>
+  <div class="celeb-p" id="cp">Nice work</div>
+  <div class="celeb-xp" id="cx">+25 XP</div>
+  <button class="squishy sq-neon" style="max-width:260px" onclick="closeC()">Continue</button>
 </div>
 
-<!-- NOTIFICATION BANNER -->
-<div class="notif-bar" id="notif" onclick="handleNotif()">
-  <span class="notif-ico" id="notif-ico">🫀</span>
-  <div class="notif-txt">
-    <div class="notif-title" id="notif-ttl">Protect your circulation now</div>
-    <div class="notif-body" id="notif-bdy">Your movement break is ready</div>
+<!-- NOTIF -->
+<div class="notif" id="notif" onclick="handleN()">
+  <span class="notif-em">🫀</span>
+  <div class="notif-t">
+    <div class="notif-h" id="nh">Protect your circulation</div>
+    <div class="notif-p" id="nb">Movement break ready</div>
   </div>
-  <button class="notif-x" onclick="event.stopPropagation();hideNotif()">✕</button>
+  <button class="notif-x" onclick="event.stopPropagation();hideN()">✕</button>
 </div>
+
 
 <script>
-// ──────────────────────────────────────────────
-//  AUDIO ENGINE
-// ──────────────────────────────────────────────
+// ═══════ AUDIO ═══════
 let AC;
-function getAC(){
-  if(!AC) AC=new(window.AudioContext||window.webkitAudioContext)();
-  if(AC.state==='suspended') AC.resume();
-  return AC;
-}
+function ga(){if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();return AC}
 
-function tone(freq,dur,vol=0.12,type='sine',delay=0){
-  try{
-    const ac=getAC(),o=ac.createOscillator(),g=ac.createGain();
-    o.type=type; o.frequency.setValueAtTime(freq,ac.currentTime+delay);
-    g.gain.setValueAtTime(0,ac.currentTime+delay);
-    g.gain.linearRampToValueAtTime(vol,ac.currentTime+delay+0.01);
-    g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+delay+dur);
-    o.connect(g); g.connect(ac.destination);
-    o.start(ac.currentTime+delay); o.stop(ac.currentTime+delay+dur+0.05);
-  }catch(e){}
-}
+function tn(f,d,v=.1,t='sine',dl=0){
+  try{const a=ga(),o=a.createOscillator(),g=a.createGain();
+  o.type=t;o.frequency.setValueAtTime(f,a.currentTime+dl);
+  g.gain.setValueAtTime(0,a.currentTime+dl);
+  g.gain.linearRampToValueAtTime(v,a.currentTime+dl+.01);
+  g.gain.exponentialRampToValueAtTime(.001,a.currentTime+dl+d);
+  o.connect(g);g.connect(a.destination);
+  o.start(a.currentTime+dl);o.stop(a.currentTime+dl+d+.05)}catch(e){}}
 
 const SFX={
-  tap:()=>{tone(800,.08,.08,'sine'); tone(1000,.06,.05,'sine',.04)},
-  chipOn:()=>{tone(600,.1,.1,'sine'); tone(900,.08,.06,'sine',.06)},
-  chipOff:()=>{tone(400,.1,.06,'sine')},
-  start:()=>{
-    tone(523,.15,.12,'sine'); tone(659,.15,.1,'sine',.12);
-    tone(784,.25,.1,'sine',.24); tone(1046,.3,.09,'sine',.4);
-  },
-  tick:()=>{tone(1200,.04,.04,'square')},
-  water:()=>{
-    tone(880,.1,.08,'sine'); tone(1046,.12,.07,'sine',.08);
-    tone(1318,.15,.06,'sine',.16);
-  },
-  complete:()=>{
-    [523,659,784,1046,1318].forEach((f,i)=>tone(f,.2,.1,'sine',i*.09));
-  },
-  warning:()=>{tone(440,.2,.15,'sawtooth'); tone(330,.3,.1,'sawtooth',.18)},
-  launch:()=>{
-    for(let i=0;i<8;i++) tone(200+i*80,.2,.08,'sine',i*.07);
-  },
-  end:()=>{
-    [784,659,523,392,523,659,784,1046].forEach((f,i)=>tone(f,.18,.09,'sine',i*.1));
-  }
+  tap:()=>{tn(900,.06,.07);tn(1200,.05,.04,'sine',.03)},
+  on:()=>{tn(700,.1,.1);tn(1050,.08,.07,'sine',.05)},
+  off:()=>{tn(400,.08,.06)},
+  go:()=>{[523,659,784,1046,1318].forEach((f,i)=>tn(f,.15,.09,'sine',i*.08))},
+  tick:()=>{tn(1400,.03,.03,'square')},
+  h2o:()=>{tn(880,.1,.08);tn(1046,.12,.06,'sine',.07);tn(1318,.14,.05,'sine',.14)},
+  win:()=>{[523,659,784,1046,1318,1568].forEach((f,i)=>tn(f,.18,.1,'sine',i*.07))},
+  warn:()=>{tn(440,.2,.12,'sawtooth');tn(330,.25,.08,'sawtooth',.15)},
+  boom:()=>{for(let i=0;i<10;i++)tn(200+i*100,.18,.07,'sine',i*.05)},
+  end:()=>{[784,659,523,392,523,659,784,1046].forEach((f,i)=>tn(f,.16,.08,'sine',i*.09))}
 };
 
-// ──────────────────────────────────────────────
-//  HAPTICS ENGINE
-// ──────────────────────────────────────────────
+// ═══════ HAPTICS ═══════
 const HX={
-  tap:()=>vib([8]),
-  select:()=>vib([12,8,12]),
-  success:()=>vib([20,10,20,10,40]),
-  warning:()=>vib([30,20,30]),
-  complete:()=>vib([15,10,15,10,15,10,60]),
-  water:()=>vib([10,5,20]),
-  tick:()=>vib([4]),
+  tap:()=>vb([8]),sel:()=>vb([12,8,12]),ok:()=>vb([20,10,20,10,40]),
+  warn:()=>vb([30,20,30]),win:()=>vb([15,10,15,10,15,10,60]),
+  h2o:()=>vb([10,5,20]),tick:()=>vb([3]),
 };
-function vib(p){
-  try{if(navigator.vibrate) navigator.vibrate(p)}catch(e){}
-}
+function vb(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
 
-// ──────────────────────────────────────────────
-//  STATE
-// ──────────────────────────────────────────────
-let S={
-  dur:4, risks:[], interval:90, start:null,
-  cps:[], done:0, cur:0, streak:0, bestStreak:0,
-  xp:0, water:0, phase:'onboard',
-  exActive:false, exLeft:60, exTRef:null,
-  exAnimRef:null, mainRef:null,
-};
+// ═══════ STATE ═══════
+let S={dur:4,risks:[],intv:90,start:null,cps:[],done:0,cur:0,
+  streak:0,best:0,xp:0,water:0,phase:'onb',
+  exOn:false,exT:60,exTR:null,exAR:null,mainR:null};
 
-// ──────────────────────────────────────────────
-//  EXERCISES
-// ──────────────────────────────────────────────
+// ═══════ EXERCISES ═══════
 const EX=[
-  {
-    name:'Ankle Circles',dur:60,
-    inst:'Lift one foot slightly and trace slow, large circles with your ankle. Switch halfway.',
-    why:'Your calf muscle pump activates with every rotation, pushing stagnant blood back toward your heart.',
-    svg:svgAnkle
-  },
-  {
-    name:'Calf Raises',dur:60,
-    inst:'Press both feet flat, then raise your heels as high as possible. Lower slowly. Repeat.',
-    why:'Calf contractions squeeze deep leg veins, creating the most powerful venous pump in your body.',
-    svg:svgCalf
-  },
-  {
-    name:'Seated March',dur:75,
-    inst:'Alternate lifting each knee toward your chest in a slow marching rhythm.',
-    why:'Hip flexion and thigh activation significantly improve blood return from your lower extremities.',
-    svg:svgMarch
-  },
-  {
-    name:'Toe Raises',dur:60,
-    inst:'Keep heels on the floor and pull your toes up toward your shin. Hold 2s, release. Repeat.',
-    why:'Engages the anterior tibialis muscle to drive circulation through the front of your lower leg.',
-    svg:svgToe
-  },
-  {
-    name:'Foot Pumps',dur:60,
-    inst:'Alternate between pointing your toes down and flexing them up — like pressing a gas pedal.',
-    why:'This push-pull activates both calf and shin muscles simultaneously for comprehensive venous pumping.',
-    svg:svgPump
-  },
-  {
-    name:'Knee Extensions',dur:75,
-    inst:'Extend one leg out straight, hold 3 seconds, then lower slowly. Alternate legs.',
-    why:'Quadriceps contraction with elevation uses gravity to drain pooled blood from your calves.',
-    svg:svgKnee
-  }
+  {n:'Ankle Circles',d:60,
+   i:'Lift one foot and trace slow, wide circles with your ankle. Switch feet halfway.',
+   w:'Ankle rotation activates your calf muscle pump, pushing stagnant venous blood back toward your heart.',
+   svg:svA},
+  {n:'Calf Raises',d:60,
+   i:'Press feet flat, lift heels as high as possible, lower slowly. Repeat rhythmically.',
+   w:'Calf contractions create the most powerful venous pump in your body, squeezing deep leg veins.',
+   svg:svC},
+  {n:'Seated March',d:75,
+   i:'Alternate lifting each knee toward your chest in a slow, steady march.',
+   w:'Hip flexion and thigh activation dramatically improve blood return from your lower extremities.',
+   svg:svM},
+  {n:'Toe Raises',d:60,
+   i:'Keep heels planted and pull toes toward your shin. Hold 2 seconds, release. Repeat.',
+   w:'Engages the anterior tibialis to drive circulation through the front compartment of your lower leg.',
+   svg:svT},
+  {n:'Foot Pumps',d:60,
+   i:'Alternate pointing toes down and flexing up — like pressing a gas pedal rhythmically.',
+   w:'Simultaneous calf and shin activation creates comprehensive venous pumping throughout your lower legs.',
+   svg:svP},
+  {n:'Knee Extensions',d:75,
+   i:'Extend one leg straight out, hold 3 seconds, lower. Alternate legs slowly.',
+   w:'Quad contraction with leg elevation uses gravity to drain pooled blood from your calves.',
+   svg:svK}
 ];
 
-// ──────────────────────────────────────────────
-//  SVG ANIMATIONS (living, breathing figures)
-// ──────────────────────────────────────────────
-function svgAnkle(){
-  return `<svg viewBox="0 0 130 130" style="width:100%;height:100%">
-    <line x1="65" y1="10" x2="65" y2="58" stroke="rgba(248,250,252,.4)" stroke-width="5" stroke-linecap="round"/>
-    <circle cx="65" cy="58" r="7" fill="rgba(248,250,252,.5)"/>
-    <g id="af">
-      <line x1="65" y1="58" x2="65" y2="98" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/>
-      <line x1="65" y1="98" x2="85" y2="112" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-      <circle cx="85" cy="112" r="4" fill="var(--accent)"/>
-    </g>
-    <circle cx="65" cy="68" r="28" fill="none" stroke="rgba(0,229,255,.15)" stroke-width="1.5" stroke-dasharray="5 3"/>
-  </svg>`;
-}
-function svgCalf(){
-  return `<svg viewBox="0 0 130 130" style="width:100%;height:100%">
-    <rect x="25" y="5" width="80" height="14" rx="5" fill="rgba(248,250,252,.12)"/>
-    <line x1="45" y1="19" x2="45" y2="70" stroke="rgba(248,250,252,.4)" stroke-width="5" stroke-linecap="round"/>
-    <line x1="85" y1="19" x2="85" y2="70" stroke="rgba(248,250,252,.4)" stroke-width="5" stroke-linecap="round"/>
-    <circle cx="45" cy="70" r="6" fill="rgba(248,250,252,.5)"/>
-    <circle cx="85" cy="70" r="6" fill="rgba(248,250,252,.5)"/>
-    <line x1="45" y1="70" x2="45" y2="105" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/>
-    <line x1="85" y1="70" x2="85" y2="105" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/>
-    <g id="ch">
-      <ellipse cx="45" cy="115" rx="13" ry="6" fill="var(--accent)"/>
-      <ellipse cx="85" cy="115" rx="13" ry="6" fill="var(--accent)"/>
-    </g>
-  </svg>`;
-}
-function svgMarch(){
-  return `<svg viewBox="0 0 130 130" style="width:100%;height:100%">
-    <rect x="10" y="8" width="110" height="12" rx="4" fill="rgba(248,250,252,.12)"/>
-    <circle cx="65" cy="38" r="12" fill="rgba(248,250,252,.4)"/>
-    <line x1="65" y1="50" x2="65" y2="76" stroke="rgba(248,250,252,.4)" stroke-width="5" stroke-linecap="round"/>
-    <g id="ml">
-      <line x1="60" y1="76" x2="44" y2="104" stroke="var(--accent)" stroke-width="4.5" stroke-linecap="round"/>
-      <line x1="44" y1="104" x2="40" y2="122" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-    </g>
-    <g id="mr">
-      <line x1="70" y1="76" x2="86" y2="104" stroke="var(--accent)" stroke-width="4.5" stroke-linecap="round"/>
-      <line x1="86" y1="104" x2="90" y2="122" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-    </g>
-  </svg>`;
-}
-function svgToe(){
-  return `<svg viewBox="0 0 130 130" style="width:100%;height:100%">
-    <line x1="65" y1="8" x2="65" y2="58" stroke="rgba(248,250,252,.4)" stroke-width="5" stroke-linecap="round"/>
-    <circle cx="65" cy="58" r="7" fill="rgba(248,250,252,.5)"/>
-    <line x1="65" y1="58" x2="65" y2="96" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/>
-    <ellipse cx="55" cy="118" rx="16" ry="6" fill="rgba(248,250,252,.15)"/>
-    <g id="tf">
-      <line x1="65" y1="96" x2="48" y2="118" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-      <circle cx="48" cy="118" r="5" fill="var(--accent)"/>
-    </g>
-  </svg>`;
-}
-function svgPump(){
-  return `<svg viewBox="0 0 130 130" style="width:100%;height:100%">
-    <line x1="65" y1="8" x2="65" y2="54" stroke="rgba(248,250,252,.4)" stroke-width="5" stroke-linecap="round"/>
-    <circle cx="65" cy="54" r="7" fill="rgba(248,250,252,.5)"/>
-    <line x1="65" y1="54" x2="65" y2="90" stroke="var(--accent)" stroke-width="5" stroke-linecap="round"/>
-    <g id="pf">
-      <line x1="65" y1="90" x2="88" y2="110" stroke="var(--accent)" stroke-width="4.5" stroke-linecap="round"/>
-      <line x1="88" y1="110" x2="106" y2="112" stroke="var(--accent)" stroke-width="3.5" stroke-linecap="round"/>
-    </g>
-    <path d="M38 112 Q65 105 92 112" fill="none" stroke="rgba(0,229,255,.2)" stroke-width="1.5" stroke-dasharray="4 3"/>
-  </svg>`;
-}
-function svgKnee(){
-  return `<svg viewBox="0 0 130 130" style="width:100%;height:100%">
-    <rect x="8" y="8" width="114" height="12" rx="4" fill="rgba(248,250,252,.12)"/>
-    <circle cx="65" cy="38" r="12" fill="rgba(248,250,252,.4)"/>
-    <line x1="65" y1="50" x2="65" y2="76" stroke="rgba(248,250,252,.4)" stroke-width="5" stroke-linecap="round"/>
-    <line x1="56" y1="76" x2="40" y2="106" stroke="rgba(248,250,252,.4)" stroke-width="4.5" stroke-linecap="round"/>
-    <line x1="40" y1="106" x2="36" y2="124" stroke="rgba(248,250,252,.4)" stroke-width="4" stroke-linecap="round"/>
-    <g id="ke">
-      <line x1="74" y1="76" x2="98" y2="88" stroke="var(--accent)" stroke-width="4.5" stroke-linecap="round"/>
-      <line x1="98" y1="88" x2="118" y2="86" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>
-      <circle cx="118" cy="86" r="4" fill="var(--accent)"/>
-    </g>
-  </svg>`;
-}
+function svA(){return`<svg viewBox="0 0 140 140" style="width:100%;height:100%"><line x1="70" y1="10" x2="70" y2="60" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/><circle cx="70" cy="60" r="7" fill="rgba(255,255,255,.5)"/><g id="af"><line x1="70" y1="60" x2="70" y2="100" stroke="var(--neon)" stroke-width="5" stroke-linecap="round"/><line x1="70" y1="100" x2="92" y2="116" stroke="var(--neon)" stroke-width="4" stroke-linecap="round"/><circle cx="92" cy="116" r="4" fill="var(--neon)"/></g><circle cx="70" cy="70" r="30" fill="none" stroke="rgba(200,255,0,.12)" stroke-width="1.5" stroke-dasharray="5 4"/></svg>`}
+function svC(){return`<svg viewBox="0 0 140 140" style="width:100%;height:100%"><rect x="25" y="5" width="90" height="15" rx="5" fill="rgba(255,255,255,.1)"/><line x1="48" y1="20" x2="48" y2="72" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/><line x1="92" y1="20" x2="92" y2="72" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/><circle cx="48" cy="72" r="6" fill="rgba(255,255,255,.4)"/><circle cx="92" cy="72" r="6" fill="rgba(255,255,255,.4)"/><line x1="48" y1="72" x2="48" y2="108" stroke="var(--neon)" stroke-width="5" stroke-linecap="round"/><line x1="92" y1="72" x2="92" y2="108" stroke="var(--neon)" stroke-width="5" stroke-linecap="round"/><g id="ch"><ellipse cx="48" cy="120" rx="14" ry="6" fill="var(--neon)"/><ellipse cx="92" cy="120" rx="14" ry="6" fill="var(--neon)"/></g></svg>`}
+function svM(){return`<svg viewBox="0 0 140 140" style="width:100%;height:100%"><rect x="10" y="8" width="120" height="13" rx="4" fill="rgba(255,255,255,.1)"/><circle cx="70" cy="40" r="13" fill="rgba(255,255,255,.35)"/><line x1="70" y1="53" x2="70" y2="80" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/><g id="ml"><line x1="64" y1="80" x2="46" y2="108" stroke="var(--neon)" stroke-width="4.5" stroke-linecap="round"/><line x1="46" y1="108" x2="42" y2="128" stroke="var(--neon)" stroke-width="4" stroke-linecap="round"/></g><g id="mr"><line x1="76" y1="80" x2="94" y2="108" stroke="var(--neon)" stroke-width="4.5" stroke-linecap="round"/><line x1="94" y1="108" x2="98" y2="128" stroke="var(--neon)" stroke-width="4" stroke-linecap="round"/></g></svg>`}
+function svT(){return`<svg viewBox="0 0 140 140" style="width:100%;height:100%"><line x1="70" y1="8" x2="70" y2="60" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/><circle cx="70" cy="60" r="7" fill="rgba(255,255,255,.5)"/><line x1="70" y1="60" x2="70" y2="100" stroke="var(--neon)" stroke-width="5" stroke-linecap="round"/><g id="tf"><line x1="70" y1="100" x2="50" y2="124" stroke="var(--neon)" stroke-width="4" stroke-linecap="round"/><circle cx="50" cy="124" r="5" fill="var(--neon)"/></g></svg>`}
+function svP(){return`<svg viewBox="0 0 140 140" style="width:100%;height:100%"><line x1="70" y1="8" x2="70" y2="56" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/><circle cx="70" cy="56" r="7" fill="rgba(255,255,255,.5)"/><line x1="70" y1="56" x2="70" y2="94" stroke="var(--neon)" stroke-width="5" stroke-linecap="round"/><g id="pf"><line x1="70" y1="94" x2="96" y2="116" stroke="var(--neon)" stroke-width="4.5" stroke-linecap="round"/><line x1="96" y1="116" x2="116" y2="118" stroke="var(--neon)" stroke-width="3.5" stroke-linecap="round"/></g></svg>`}
+function svK(){return`<svg viewBox="0 0 140 140" style="width:100%;height:100%"><rect x="8" y="8" width="124" height="13" rx="4" fill="rgba(255,255,255,.1)"/><circle cx="70" cy="40" r="13" fill="rgba(255,255,255,.35)"/><line x1="70" y1="53" x2="70" y2="80" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/><line x1="60" y1="80" x2="42" y2="112" stroke="rgba(255,255,255,.35)" stroke-width="4.5" stroke-linecap="round"/><line x1="42" y1="112" x2="38" y2="132" stroke="rgba(255,255,255,.35)" stroke-width="4" stroke-linecap="round"/><g id="ke"><line x1="80" y1="80" x2="104" y2="92" stroke="var(--neon)" stroke-width="4.5" stroke-linecap="round"/><line x1="104" y1="92" x2="126" y2="90" stroke="var(--neon)" stroke-width="4" stroke-linecap="round"/><circle cx="126" cy="90" r="4" fill="var(--neon)"/></g></svg>`}
 
-// ──────────────────────────────────────────────
-//  ANIMATION LOOP
-// ──────────────────────────────────────────────
-let animT=0;
-function startAnim(idx){
-  animT=0;
-  cancelAnim();
+// ═══════ SVG ANIM ═══════
+let at=0;
+function startA(i){
+  at=0;cancelA();
   function loop(){
-    animT+=0.035;
-    const s=Math.sin(animT), c=Math.cos(animT);
-    const t=(Math.sin(animT*1.5)+1)/2; // 0..1
-
-    switch(idx%EX.length){
-      case 0:{// ankle circle
-        const a=document.getElementById('af');
-        if(a){const dx=Math.cos(animT*2)*14,dy=Math.sin(animT*2)*10; a.setAttribute('transform',`translate(${dx},${dy})`);}
-        break;
-      }
-      case 1:{// calf raise
-        const h=document.getElementById('ch');
-        if(h){const lift=Math.max(0,s)*20; h.setAttribute('transform',`translate(0,${-lift})`);}
-        break;
-      }
-      case 2:{// march
-        const l=document.getElementById('ml'),r=document.getElementById('mr');
-        if(l&&r){
-          const lL=Math.max(0,s)*22,lR=Math.max(0,-s)*22;
-          l.setAttribute('transform',`translate(0,${-lL})rotate(${lL*.7},60,76)`);
-          r.setAttribute('transform',`translate(0,${-lR})rotate(${-lR*.7},70,76)`);
-        }
-        break;
-      }
-      case 3:{// toe
-        const tf=document.getElementById('tf');
-        if(tf){const ang=Math.max(0,s)*30; tf.setAttribute('transform',`rotate(${-ang},65,96)`);}
-        break;
-      }
-      case 4:{// pump
-        const pf=document.getElementById('pf');
-        if(pf){const ang=s*30; pf.setAttribute('transform',`rotate(${ang},65,90)`);}
-        break;
-      }
-      case 5:{// knee ext
-        const ke=document.getElementById('ke');
-        if(ke){const ang=-35*t; ke.setAttribute('transform',`rotate(${ang},74,76)`);}
-        break;
-      }
+    at+=.035;const s=Math.sin(at),c=Math.cos(at),t=(Math.sin(at*1.5)+1)/2;
+    switch(i%EX.length){
+      case 0:{const e=document.getElementById('af');if(e){const dx=c*2*16,dy=Math.sin(at*2)*12;e.setAttribute('transform',`translate(${dx},${dy})`);}break}
+      case 1:{const e=document.getElementById('ch');if(e){const l=Math.max(0,s)*22;e.setAttribute('transform',`translate(0,${-l})`);}break}
+      case 2:{const l=document.getElementById('ml'),r=document.getElementById('mr');if(l&&r){const a=Math.max(0,s)*24,b=Math.max(0,-s)*24;l.setAttribute('transform',`translate(0,${-a})rotate(${a*.7},64,80)`);r.setAttribute('transform',`translate(0,${-b})rotate(${-b*.7},76,80)`);}break}
+      case 3:{const e=document.getElementById('tf');if(e){const a=Math.max(0,s)*35;e.setAttribute('transform',`rotate(${-a},70,100)`);}break}
+      case 4:{const e=document.getElementById('pf');if(e){const a=s*32;e.setAttribute('transform',`rotate(${a},70,94)`);}break}
+      case 5:{const e=document.getElementById('ke');if(e){const a=-40*t;e.setAttribute('transform',`rotate(${a},80,80)`);}break}
     }
-    S.exAnimRef=requestAnimationFrame(loop);
+    S.exAR=requestAnimationFrame(loop);
   }
   loop();
 }
-function cancelAnim(){
-  if(S.exAnimRef){cancelAnimationFrame(S.exAnimRef);S.exAnimRef=null;}
-}
+function cancelA(){if(S.exAR){cancelAnimationFrame(S.exAR);S.exAR=null}}
 
-// ──────────────────────────────────────────────
-//  CELEBRATIONS
-// ──────────────────────────────────────────────
+// ═══════ CELEBS ═══════
 const CELEBS=[
-  {em:'🔥',t:'On Fire!',s:'Your circulation is pumping perfectly'},
-  {em:'⚡',t:'Powered Up!',s:'Fresh blood, fresh energy — feel that?'},
-  {em:'💪',t:'Strong Move!',s:'Real protection happening in your veins'},
-  {em:'🫀',t:'Heart Happy!',s:'Your cardiovascular system is grateful'},
-  {em:'🌟',t:'Star Performance!',s:'Above and beyond for your health'},
-  {em:'🚀',t:'Lift Off!',s:'Circulation levels: optimal'},
-  {em:'🏆',t:'Champion!',s:'You\'re mastering in-flight wellness'},
-  {em:'💫',t:'Brilliant!',s:'Your legs are thanking you right now'},
-  {em:'🎯',t:'Bullseye!',s:'Right on target for DVT prevention'},
-  {em:'✨',t:'Magnificent!',s:'Every rep is protecting you at altitude'},
+  {e:'🔥',t:'On Fire!',s:'Your circulation is pumping beautifully'},
+  {e:'⚡',t:'Powered Up!',s:'Fresh blood, fresh energy in your legs'},
+  {e:'💪',t:'Beast Mode!',s:'Your veins are loving this'},
+  {e:'🫀',t:'Heart Happy!',s:'Cardiovascular system says thank you'},
+  {e:'🌟',t:'Legendary!',s:'Top-tier circulation protection'},
+  {e:'🚀',t:'To The Moon!',s:'DVT risk? Not on your watch'},
+  {e:'🏆',t:'Champion!',s:'Mastering in-flight wellness'},
+  {e:'💫',t:'Spectacular!',s:'Your legs will thank you after landing'},
+  {e:'🎯',t:'Bullseye!',s:'Precision health at 35,000 feet'},
+  {e:'👑',t:'Royalty!',s:'Flying like a king/queen of circulation'},
 ];
 
-// ──────────────────────────────────────────────
-//  SCREEN ROUTER
-// ──────────────────────────────────────────────
-let currentScreen='s-onboard';
+// ═══════ ROUTER ═══════
+let curS='s-onb';
 function show(id){
-  const cur=document.getElementById(currentScreen);
-  const next=document.getElementById(id);
-  if(cur===next) return;
-  cur.classList.add('exit');
-  setTimeout(()=>{cur.classList.remove('active','exit');},400);
-  next.classList.add('active');
-  currentScreen=id;
-  HX.tap();
+  const c=document.getElementById(curS),n=document.getElementById(id);
+  if(c===n)return;
+  c.classList.remove('on');n.classList.add('on');curS=id;HX.tap();
 }
 
-// ──────────────────────────────────────────────
-//  ONBOARDING
-// ──────────────────────────────────────────────
+// ═══════ ONBOARD ═══════
 document.getElementById('chips').addEventListener('click',e=>{
-  const chip=e.target.closest('.chip');
-  if(!chip) return;
-  chip.classList.toggle('on');
-  const r=chip.dataset.r;
-  if(S.risks.includes(r)){S.risks=S.risks.filter(x=>x!==r);SFX.chipOff();HX.tap();}
-  else{S.risks.push(r);SFX.chipOn();HX.select();}
-  addRipple(e,chip);
+  const c=e.target.closest('.chip');if(!c)return;
+  c.classList.toggle('on');
+  const r=c.dataset.r;
+  if(S.risks.includes(r)){S.risks=S.risks.filter(x=>x!==r);SFX.off();HX.tap()}
+  else{S.risks.push(r);SFX.on();HX.sel()}
 });
 
 function dur(d){
   S.dur=Math.max(1,Math.min(20,S.dur+d));
-  document.getElementById('dur-val').innerHTML=`${S.dur}<small>h</small>`;
-  SFX.tap(); HX.tap();
+  const el=document.getElementById('dv');
+  el.innerHTML=`${S.dur}<small style="color:var(--t2)">h</small>`;
+  el.classList.add('bounce');setTimeout(()=>el.classList.remove('bounce'),500);
+  SFX.tap();HX.tap();
 }
 
-function calcInterval(){
-  const n=S.risks.length;
-  if(n===0) return 90;
-  if(n<=2) return 60;
-  return 45;
-}
-
-function buildCPs(){
-  const tot=S.dur*60, int=S.interval;
-  const cps=[]; let t=int;
-  while(t<tot){cps.push({t,done:false,ei:cps.length%EX.length});t+=int;}
-  return cps;
+function calcI(){const n=S.risks.length;return n===0?90:n<=2?60:45}
+function buildCP(){
+  const t=S.dur*60,i=S.intv,c=[];let m=i;
+  while(m<t){c.push({t:m,done:false,ei:c.length%EX.length});m+=i}
+  return c;
 }
 
 function goTip(){
-  S.interval=calcInterval();
-  S.cps=buildCPs();
-  S.start=Date.now();
-  S.done=0;S.cur=0;S.streak=0;S.bestStreak=0;S.xp=0;S.water=0;
-  saveS();
-  reqNotif();
-  SFX.start(); HX.success();
-  show('s-tip');
+  S.intv=calcI();S.cps=buildCP();S.start=Date.now();
+  S.done=0;S.cur=0;S.streak=0;S.best=0;S.xp=0;S.water=0;
+  saveS();reqN();SFX.go();HX.ok();show('s-tip');
 }
-
 function goCommit(){
-  const n=S.cps.length;
-  document.getElementById('commit-txt').innerHTML=
-    `Your plan: move every <em>${S.interval} minutes</em> for ${n} break${n!==1?'s':''} across your ${S.dur}-hour flight.`;
-  const b=Math.max(3,n-1);
-  document.getElementById('social-txt').textContent=
+  document.getElementById('ctxt').innerHTML=
+    `Move every <em>${S.intv} minutes</em> · ${S.cps.length} breaks across ${S.dur} hours · <em>Protect your circulation</em>`;
+  const b=Math.max(3,S.cps.length-1);
+  document.getElementById('stxt').textContent=
     `Most travelers on flights this long complete ${b}–${b+1} movement breaks.`;
-  SFX.tap(); HX.tap();
-  show('s-commit');
+  SFX.tap();HX.tap();show('s-commit');
 }
+function goDash(){S.phase='dash';saveS();SFX.boom();HX.win();show('s-dash');updateD();startM()}
 
-function goDash(){
-  S.phase='dashboard'; saveS();
-  SFX.launch(); HX.success();
-  show('s-dash');
-  updateDash();
-  startMain();
-}
+// ═══════ DASHBOARD ═══════
+function updateD(){
+  const now=Date.now(),el=now-S.start,tot=S.dur*3600000;
+  let p=Math.min(1,el/tot);
+  if(S.done>0&&p<.93)p=Math.min(.97,p+.015*S.done);
+  document.getElementById('wf').style.width=(p*100).toFixed(2)+'%';
+  const em=Math.floor(el/60000),eh=Math.floor(em/60),emm=em%60;
+  document.getElementById('el-lbl').textContent=`${eh}h ${String(emm).padStart(2,'0')}m`;
+  document.getElementById('ll').textContent=`🛬 ${S.dur}h`;
 
-// ──────────────────────────────────────────────
-//  DASHBOARD
-// ──────────────────────────────────────────────
-function updateDash(){
-  const now=Date.now(), el=now-S.start;
-  const tot=S.dur*60*60*1000;
-  let prog=Math.min(1,el/tot);
-
-  // near-completion nudge
-  if(S.done>0&&prog<0.93) prog=Math.min(0.97,prog+0.015*S.done);
-
-  document.getElementById('tl-fill').style.width=(prog*100).toFixed(2)+'%';
-
-  const em=Math.floor(el/60000), eh=Math.floor(em/60), emm=em%60;
-  document.getElementById('elapsed-lbl').textContent=`${eh}h ${String(emm).padStart(2,'0')}m`;
-  document.getElementById('land-lbl').textContent=`${S.dur}h`;
-
-  // dots
-  const dc=document.getElementById('tl-dots');
-  dc.innerHTML='';
-  S.cps.forEach((cp,i)=>{
-    const pct=(cp.t/(S.dur*60))*100;
-    const d=document.createElement('div');
-    d.className='tl-dot'+(cp.done?' done':i===S.cur?' now':'');
-    d.style.left=pct+'%';
-    dc.appendChild(d);
+  const dc=document.getElementById('wdots');dc.innerHTML='';
+  S.cps.forEach((c,i)=>{
+    const pct=(c.t/(S.dur*60))*100,d=document.createElement('div');
+    d.className='wave-dot'+(c.done?' done':i===S.cur?' now':'');
+    d.style.left=pct+'%';dc.appendChild(d);
   });
 
-  document.getElementById('st-done').textContent=S.done;
-  document.getElementById('st-left').textContent=Math.max(0,S.cps.length-S.done);
-  document.getElementById('dash-xp').textContent=S.xp;
+  document.getElementById('sd').textContent=S.done;
+  document.getElementById('sr').textContent=Math.max(0,S.cps.length-S.done);
+  document.getElementById('dxp').textContent=S.xp;
 
-  const sw=document.getElementById('streak-wrap');
-  if(S.streak>=2){sw.style.display='block';document.getElementById('streak-n').textContent=S.streak;}
-  else sw.style.display='none';
+  if(S.streak>=2){document.getElementById('strk-w').style.display='block';document.getElementById('strk-n').textContent=S.streak}
+  else document.getElementById('strk-w').style.display='none';
 
-  // hydration
-  document.getElementById('h-fill').style.height=Math.min(100,(S.water/8)*100)+'%';
-  document.getElementById('h-count').textContent=S.water;
+  document.getElementById('jf').style.height=Math.min(100,(S.water/8)*100)+'%';
+  document.getElementById('jn').textContent=S.water;
+  updateNC();
 
-  updateNextCP();
-
-  const sp=document.getElementById('dash-social');
-  if(S.done===0){const b=Math.max(3,S.cps.length-1);sp.textContent=`Most travelers on flights this long do ${b}–${b+1} movement breaks.`;}
-  else if(S.done<S.cps.length) sp.textContent=`${S.done} of ${S.cps.length} done — you're building a real protective habit.`;
-  else sp.textContent=`All ${S.cps.length} checkpoints complete. Exceptional commitment.`;
+  const sp=document.getElementById('dsoc');
+  if(S.done===0){const b=Math.max(3,S.cps.length-1);sp.textContent=`Most travelers on flights this long do ${b}–${b+1} movement breaks.`}
+  else if(S.done<S.cps.length)sp.textContent=`${S.done} of ${S.cps.length} done — real protection happening.`;
+  else sp.textContent=`All ${S.cps.length} checkpoints complete. Outstanding.`;
 }
 
-let lastAlert=-1;
-function updateNextCP(){
-  const cp=S.cps[S.cur];
-  const card=document.getElementById('next-card');
-  const tEl=document.getElementById('next-time');
-  const lEl=document.getElementById('next-lbl');
-  const sEl=document.getElementById('next-sub');
-
-  if(!cp||S.cur>=S.cps.length){
-    tEl.textContent='✓'; lEl.textContent='All checkpoints complete';
-    sEl.textContent='Outstanding work — your veins are happy!';
-    card.classList.remove('card-glow'); return;
-  }
-
-  const rem=(cp.t*60*1000)-(Date.now()-S.start);
-  if(rem<=0){
-    tEl.textContent='NOW'; lEl.textContent='Protect your circulation';
-    sEl.textContent='Tap to start your movement break';
-    card.classList.add('card-glow');
-    if(rem>-6000&&lastAlert!==S.cur){
-      lastAlert=S.cur; triggerAlert(S.cur);
-    }
-  } else {
-    const rm=Math.floor(rem/60000), rs=Math.floor((rem%60000)/1000);
-    tEl.textContent=`${rm}:${String(rs).padStart(2,'0')}`;
-    lEl.textContent='Next movement break in';
-    sEl.textContent=rem<120000?'Get ready — almost time!':'Tap when you\'re ready';
-    card.classList.toggle('card-glow',rem<60000);
+let lastA=-1;
+function updateNC(){
+  const cp=S.cps[S.cur],t=document.getElementById('nc-time'),l=document.getElementById('nc-lbl'),s=document.getElementById('nc-sub');
+  if(!cp||S.cur>=S.cps.length){t.textContent='✓';l.textContent='All checkpoints done!';s.textContent='Your veins are very happy';return}
+  const rem=(cp.t*60000)-(Date.now()-S.start);
+  if(rem<=0){t.textContent='NOW';l.textContent='🚨 Protect your circulation';s.textContent='Tap to start movement break';
+    if(rem>-6000&&lastA!==S.cur){lastA=S.cur;trigA(S.cur)}
+  }else{const rm=Math.floor(rem/60000),rs=Math.floor((rem%60000)/1000);
+    t.textContent=`${rm}:${String(rs).padStart(2,'0')}`;
+    l.textContent='Next movement break in';s.textContent=rem<120000?'Almost time!':'Tap when ready';
   }
 }
 
-// ──────────────────────────────────────────────
-//  MAIN TIMER
-// ──────────────────────────────────────────────
-function startMain(){
-  if(S.mainRef) clearInterval(S.mainRef);
-  S.mainRef=setInterval(()=>{
-    if(S.phase==='dashboard') updateDash();
-    if(Date.now()-S.start>=S.dur*3600000) endFlight();
+function startM(){
+  if(S.mainR)clearInterval(S.mainR);
+  S.mainR=setInterval(()=>{
+    if(S.phase==='dash')updateD();
+    if(Date.now()-S.start>=S.dur*3600000)endFlight();
   },1000);
 }
 
-// ──────────────────────────────────────────────
-//  EXERCISE
-// ──────────────────────────────────────────────
+// ═══════ EXERCISE ═══════
 function goEx(){
-  const cp=S.cps[S.cur];
-  if(!cp) return;
-  const ex=EX[cp.ei];
-  S.exLeft=ex.dur; S.exActive=false;
-
-  document.getElementById('ex-cp-lbl').textContent=`Checkpoint ${S.cur+1} of ${S.cps.length}`;
-  document.getElementById('ex-name').textContent=ex.name;
-  document.getElementById('ex-inst').textContent=ex.inst;
-  document.getElementById('ex-why').textContent=ex.why;
-  document.getElementById('ex-num').textContent=ex.dur;
-  document.getElementById('ex-btn').textContent='▶ Start';
-  document.getElementById('ex-ring').style.strokeDashoffset='659.73';
-  document.getElementById('ex-svg').innerHTML=ex.svg();
-
-  S.phase='exercise'; saveS();
-  SFX.tap(); HX.tap();
-  show('s-ex');
+  const cp=S.cps[S.cur];if(!cp)return;
+  const ex=EX[cp.ei];S.exT=ex.d;S.exOn=false;
+  document.getElementById('exl').textContent=`Checkpoint ${S.cur+1} of ${S.cps.length}`;
+  document.getElementById('exn').textContent=ex.n;
+  document.getElementById('exi').textContent=ex.i;
+  document.getElementById('exw').textContent=ex.w;
+  document.getElementById('ext').textContent=ex.d;
+  document.getElementById('exb').textContent='▶ Start';
+  document.getElementById('exr').style.strokeDashoffset='691.15';
+  document.getElementById('exs').innerHTML=ex.svg();
+  S.phase='ex';saveS();SFX.tap();HX.tap();show('s-ex');
 }
 
 function toggleEx(){
-  if(S.exActive){
-    S.exActive=false; clearInterval(S.exTRef); cancelAnim();
-    document.getElementById('ex-btn').textContent='▶ Resume';
-    SFX.tap(); HX.tap();
-  } else {
-    S.exActive=true;
-    document.getElementById('ex-btn').textContent='⏸ Pause';
-    SFX.tap(); HX.select();
-    const cp=S.cps[S.cur];
-    const ex=EX[cp.ei];
-    startAnim(cp.ei);
-    S.exTRef=setInterval(()=>{
-      S.exLeft--;
-      document.getElementById('ex-num').textContent=S.exLeft;
-      const ring=document.getElementById('ex-ring');
-      const prog=1-(S.exLeft/ex.dur);
-      ring.style.strokeDashoffset=659.73*(1-prog);
-      if(S.exLeft%10===0&&S.exLeft>0){SFX.tick();HX.tick();}
-      if(S.exLeft<=0){clearInterval(S.exTRef);cancelAnim();completeCP();}
+  if(S.exOn){
+    S.exOn=false;clearInterval(S.exTR);cancelA();
+    document.getElementById('exb').textContent='▶ Resume';SFX.tap();HX.tap();
+  }else{
+    S.exOn=true;document.getElementById('exb').textContent='⏸ Pause';SFX.tap();HX.sel();
+    const cp=S.cps[S.cur],ex=EX[cp.ei];startA(cp.ei);
+    S.exTR=setInterval(()=>{
+      S.exT--;const el=document.getElementById('ext');
+      el.textContent=S.exT;el.classList.add('bounce');setTimeout(()=>el.classList.remove('bounce'),500);
+      document.getElementById('exr').style.strokeDashoffset=691.15*(S.exT/ex.d);
+      if(S.exT%10===0&&S.exT>0){SFX.tick();HX.tick()}
+      if(S.exT<=3&&S.exT>0){SFX.tick();HX.tap()}
+      if(S.exT<=0){clearInterval(S.exTR);cancelA();compCP()}
     },1000);
   }
 }
 
 function skipEx(){
-  clearInterval(S.exTRef); cancelAnim(); S.exActive=false;
-  S.xp+=10; S.cps[S.cur].done=true; S.done++;
-  S.streak=0; S.cur++; saveS();
-  SFX.tap(); HX.tap();
-  S.phase='dashboard';
-  show('s-dash'); updateDash();
+  clearInterval(S.exTR);cancelA();S.exOn=false;
+  S.xp+=10;S.cps[S.cur].done=true;S.done++;S.streak=0;S.cur++;saveS();
+  SFX.tap();HX.tap();S.phase='dash';show('s-dash');updateD();
 }
 
-function completeCP(){
-  S.cps[S.cur].done=true; S.done++; S.streak++;
-  if(S.streak>S.bestStreak) S.bestStreak=S.streak;
-  let xpGain=25;
-  if(S.streak>=3) xpGain+=10;
-  if(S.streak>=5) xpGain+=20;
-  if(S.water>=3) xpGain+=5;
-  S.xp+=xpGain; S.cur++; saveS();
-  SFX.complete(); HX.complete();
-  showCeleb(xpGain);
+function compCP(){
+  S.cps[S.cur].done=true;S.done++;S.streak++;
+  if(S.streak>S.best)S.best=S.streak;
+  let xp=25;if(S.streak>=3)xp+=10;if(S.streak>=5)xp+=20;if(S.water>=3)xp+=5;
+  S.xp+=xp;S.cur++;saveS();SFX.win();HX.win();showC(xp);
 }
 
-// ──────────────────────────────────────────────
-//  CELEBRATION
-// ──────────────────────────────────────────────
-function showCeleb(xp){
+// ═══════ CELEB ═══════
+function showC(xp){
   const c=CELEBS[Math.floor(Math.random()*CELEBS.length)];
-  document.getElementById('c-em').textContent=c.em;
-  document.getElementById('c-title').textContent=c.t;
-  let sub=c.s;
-  if(S.streak>=3) sub+=` · ${S.streak}-streak!🔥`;
-  document.getElementById('c-sub').textContent=sub;
-  document.getElementById('c-xp').textContent=`+${xp} XP`;
-  makeParticles();
-  document.getElementById('celeb').classList.add('show');
-  floatXP(`+${xp} XP`);
+  document.getElementById('ce').textContent=c.e;
+  document.getElementById('ch').textContent=c.t;
+  let sub=c.s;if(S.streak>=3)sub+=` · ${S.streak} streak! 🔥`;
+  document.getElementById('cp').textContent=sub;
+  document.getElementById('cx').textContent=`+${xp} XP`;
+  mkSparks();document.getElementById('celeb').classList.add('on');
+  xpToast(`+${xp} XP`);
 }
+function closeC(){document.getElementById('celeb').classList.remove('on');S.phase='dash';show('s-dash');updateD();SFX.tap();HX.tap()}
 
-function closeCeleb(){
-  document.getElementById('celeb').classList.remove('show');
-  S.phase='dashboard';
-  show('s-dash'); updateDash();
-  SFX.tap(); HX.tap();
-}
-
-function makeParticles(){
-  const p=document.getElementById('particles');
-  p.innerHTML='';
-  const colors=['#00e5ff','#7c3aed','#f59e0b','#34d399','#f472b6','#818cf8'];
-  for(let i=0;i<24;i++){
-    const el=document.createElement('div');
-    el.className='particle';
-    const dx=(Math.random()-0.5)*400, dy=-(Math.random()*400+100), dr=(Math.random()-0.5)*720;
-    el.style.cssText=`left:50%;top:50%;background:${colors[i%colors.length]};
-      --dx:${dx}px;--dy:${dy}px;--dr:${dr}deg;
-      animation-delay:${Math.random()*.3}s;animation-duration:${1+Math.random()*.8}s;
-      border-radius:${Math.random()>0.5?'50%':'2px'};`;
-    p.appendChild(el);
+function mkSparks(){
+  const p=document.getElementById('sparks');p.innerHTML='';
+  const cols=['#c8ff00','#4d7cff','#ff4d8d','#ff8a00','#a855f7','#00e5ff','#34d399'];
+  for(let i=0;i<30;i++){
+    const e=document.createElement('div');e.className='spark';
+    const sx=(Math.random()-.5)*500,sy=-(Math.random()*500+50);
+    e.style.cssText=`left:50%;top:50%;background:${cols[i%cols.length]};
+      --sx:${sx}px;--sy:${sy}px;width:${4+Math.random()*6}px;height:${4+Math.random()*6}px;
+      animation-delay:${Math.random()*.3}s;animation-duration:${.8+Math.random()*.6}s;
+      border-radius:${Math.random()>.5?'50%':'2px'}`;
+    p.appendChild(e);
   }
 }
 
-function floatXP(txt){
-  const el=document.createElement('div');
-  el.className='xp-float'; el.textContent=txt;
-  document.body.appendChild(el);
-  setTimeout(()=>el.remove(),900);
+function xpToast(t){
+  const e=document.createElement('div');e.className='xp-toast';e.textContent=t;
+  document.body.appendChild(e);setTimeout(()=>e.remove(),800);
 }
 
-// ──────────────────────────────────────────────
-//  HYDRATION
-// ──────────────────────────────────────────────
-function logWater(){
-  S.water++; S.xp+=5; saveS();
-  updateDash();
-  SFX.water(); HX.water();
-  floatXP('+5 XP 💧');
+// ═══════ HYDRATION ═══════
+function logH2O(){
+  S.water++;S.xp+=5;saveS();updateD();SFX.h2o();HX.h2o();xpToast('+5 💧');
 }
 
-// ──────────────────────────────────────────────
-//  NOTIFICATIONS
-// ──────────────────────────────────────────────
-let notifPerm='default';
-function reqNotif(){
-  if('Notification' in window){
-    Notification.requestPermission().then(p=>notifPerm=p);
-  }
+// ═══════ NOTIFS ═══════
+let nP='default';
+function reqN(){if('Notification'in window)Notification.requestPermission().then(p=>nP=p)}
+
+const alertM=['Protect your circulation now','Your veins need movement','Keep blood flowing — move!',
+  'Time to activate circulation','Don\'t let blood pool — quick break!'];
+
+function trigA(i){
+  const m=alertM[i%alertM.length];
+  if(nP==='granted'&&document.hidden)try{new Notification('Circulate',{body:m})}catch(e){}
+  showN(m,'Tap to start your movement break');SFX.warn();HX.warn();
 }
 
-const alertMsgs=[
-  'Protect your circulation now',
-  'Your veins need a quick movement break',
-  'Keep your blood flowing — move now',
-  'Time to activate your circulation',
-  'Don\'t let blood pool — move!',
-];
-
-function triggerAlert(idx){
-  const msg=alertMsgs[idx%alertMsgs.length];
-  if(notifPerm==='granted'&&document.hidden){
-    try{new Notification('Circulate',{body:msg,icon:'🫀'});}catch(e){}
-  }
-  showNotif(msg,'Tap to start your 60-second break');
-  SFX.warning(); HX.warning();
+let nT;
+function showN(t,b){
+  document.getElementById('nh').textContent=t;
+  document.getElementById('nb').textContent=b;
+  document.getElementById('notif').classList.add('on');
+  clearTimeout(nT);nT=setTimeout(hideN,9000);
 }
+function hideN(){document.getElementById('notif').classList.remove('on')}
+function handleN(){hideN();if(S.phase==='dash')goEx()}
 
-let notifTimeout;
-function showNotif(title,body){
-  document.getElementById('notif-ttl').textContent=title;
-  document.getElementById('notif-bdy').textContent=body;
-  document.getElementById('notif').classList.add('show');
-  clearTimeout(notifTimeout);
-  notifTimeout=setTimeout(hideNotif,9000);
-}
-function hideNotif(){document.getElementById('notif').classList.remove('show');}
-function handleNotif(){hideNotif();if(S.phase==='dashboard') goEx();}
-
-// ──────────────────────────────────────────────
-//  END FLIGHT
-// ──────────────────────────────────────────────
+// ═══════ END FLIGHT ═══════
 function endFlight(){
-  if(S.mainRef) clearInterval(S.mainRef);
-  S.phase='summary'; saveS();
-  const rate=S.cps.length>0?S.done/S.cps.length:0;
+  if(S.mainR)clearInterval(S.mainR);S.phase='sum';saveS();
+  const r=S.cps.length>0?S.done/S.cps.length:0;
+  document.getElementById('sx').textContent=S.xp+' XP';
+  document.getElementById('sc').textContent=`${S.done}/${S.cps.length}`;
+  document.getElementById('ss').textContent=`${S.best} 🔥`;
+  document.getElementById('sh').textContent=`${S.water} 💧`;
+  document.getElementById('sdu').textContent=`${S.dur}h`;
 
-  document.getElementById('sm-xp').textContent=S.xp+' XP';
-  document.getElementById('sm-cp').textContent=`${S.done}/${S.cps.length}`;
-  document.getElementById('sm-str').textContent=`${S.bestStreak} 🔥`;
-  document.getElementById('sm-h2o').textContent=`${S.water} glasses`;
-  document.getElementById('sm-dur').textContent=`${S.dur}h`;
-
-  const emojis=['🏆','✨','💪','🌟','🎉'];
-  const titles=['Outstanding!','Well Done!','Excellent Work!','Mission Complete!','Great Flight!'];
-
-  if(rate>=0.8){
-    document.getElementById('sum-em').textContent='🏆';
-    document.getElementById('sum-title').textContent='Outstanding!';
-    document.getElementById('sum-sub').textContent=`${Math.round(rate*100)}% completion — exceptional.`;
-    document.getElementById('sm-msg').textContent='You gave your veins a real gift today. Maximum protection throughout your flight. Travel safely! ✈️';
-  } else if(rate>=0.5){
-    document.getElementById('sum-em').textContent=emojis[Math.floor(Math.random()*emojis.length)];
-    document.getElementById('sum-title').textContent=titles[Math.floor(Math.random()*titles.length)];
-    document.getElementById('sum-sub').textContent='You took your circulation seriously.';
-    document.getElementById('sm-msg').textContent='Every movement break made a measurable difference. Your legs stayed safer because of what you did today. ✈️';
-  } else {
-    document.getElementById('sum-em').textContent='✈️';
-    document.getElementById('sum-title').textContent='Flight Complete';
-    document.getElementById('sum-sub').textContent='Every bit of movement counts.';
-    document.getElementById('sm-msg').textContent='Even a few breaks help. Next flight, try a shorter interval — it\'s easier than you think. Safe travels! ✈️';
+  if(r>=.8){
+    document.getElementById('sme').textContent='🏆';
+    document.getElementById('smh').textContent='Outstanding!';
+    document.getElementById('sms').textContent=`${Math.round(r*100)}% completion — absolute legend.`;
+    document.getElementById('smm').textContent='Your veins had a five-star flight. Maximum protection from takeoff to landing. Safe travels! ✈️';
+  }else if(r>=.5){
+    document.getElementById('sme').textContent='🌟';
+    document.getElementById('smh').textContent='Well Done!';
+    document.getElementById('sms').textContent='Solid circulation protection.';
+    document.getElementById('smm').textContent='Every movement break made a real, measurable difference. Your legs stayed safer because of you. ✈️';
+  }else{
+    document.getElementById('sme').textContent='✈️';
+    document.getElementById('smh').textContent='Flight Complete';
+    document.getElementById('sms').textContent='Every bit counts.';
+    document.getElementById('smm').textContent='Even a few breaks help. Next time, try a shorter interval — it adds up fast. Safe travels! ✈️';
   }
-
-  SFX.end(); HX.success();
-  show('s-sum');
+  SFX.end();HX.ok();show('s-sum');
 }
 
-// ──────────────────────────────────────────────
-//  RESET
-// ──────────────────────────────────────────────
+// ═══════ RESET ═══════
 function reset(){
-  clearInterval(S.mainRef); clearInterval(S.exTRef); cancelAnim();
-  localStorage.removeItem('cx_s');
-  S={dur:4,risks:[],interval:90,start:null,cps:[],done:0,cur:0,streak:0,bestStreak:0,
-     xp:0,water:0,phase:'onboard',exActive:false,exLeft:60,
-     exTRef:null,exAnimRef:null,mainRef:null};
-  lastAlert=-1;
-  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
-  document.getElementById('dur-val').innerHTML='4<small>h</small>';
-  SFX.tap(); HX.tap();
-  show('s-onboard');
+  clearInterval(S.mainR);clearInterval(S.exTR);cancelA();
+  localStorage.removeItem('cx2');
+  S={dur:4,risks:[],intv:90,start:null,cps:[],done:0,cur:0,streak:0,best:0,
+     xp:0,water:0,phase:'onb',exOn:false,exT:60,exTR:null,exAR:null,mainR:null};
+  lastA=-1;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+  document.getElementById('dv').innerHTML='4<small style="color:var(--t2)">h</small>';
+  SFX.tap();HX.tap();show('s-onb');
 }
 
-// ──────────────────────────────────────────────
-//  PERSISTENCE
-// ──────────────────────────────────────────────
-function saveS(){
-  try{localStorage.setItem('cx_s',JSON.stringify({
-    dur:S.dur,risks:S.risks,interval:S.interval,start:S.start,
-    cps:S.cps,done:S.done,cur:S.cur,streak:S.streak,bestStreak:S.bestStreak,
-    xp:S.xp,water:S.water,phase:S.phase
-  }));}catch(e){}
+// ═══════ SAVE/LOAD ═══════
+function saveS(){try{localStorage.setItem('cx2',JSON.stringify({
+  dur:S.dur,risks:S.risks,intv:S.intv,start:S.start,cps:S.cps,done:S.done,
+  cur:S.cur,streak:S.streak,best:S.best,xp:S.xp,water:S.water,phase:S.phase
+}))}catch(e){}}
+
+function loadS(){try{
+  const d=localStorage.getItem('cx2');if(!d)return false;
+  const p=JSON.parse(d);if(!p||!p.start)return false;
+  Object.assign(S,p);S.exOn=false;S.exTR=null;S.exAR=null;S.mainR=null;return true;
+}catch(e){return false}}
+
+// ═══════ OFFLINE ═══════
+function chkOnl(){const b=document.getElementById('offline-b');navigator.onLine?b.classList.remove('on'):b.classList.add('on')}
+window.addEventListener('online',chkOnl);window.addEventListener('offline',chkOnl);
+
+// ═══════ SW ═══════
+if('serviceWorker'in navigator){
+  const sw=`const V='cx2-v1';
+self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(['${location.href}']).catch(()=>{})));self.skipWaiting()});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))));self.clients.claim()});
+self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{if(res.status===200){const c=res.clone();caches.open(V).then(ca=>ca.put(e.request,c))}return res}).catch(()=>caches.match(e.request)))})`;
+  navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{});
 }
 
-function loadS(){
-  try{
-    const d=localStorage.getItem('cx_s');
-    if(!d) return false;
-    const p=JSON.parse(d);
-    if(!p||!p.start) return false;
-    Object.assign(S,p);
-    S.exActive=false;S.exTRef=null;S.exAnimRef=null;S.mainRef=null;
-    return true;
-  }catch(e){return false;}
-}
-
-// ──────────────────────────────────────────────
-//  RIPPLE
-// ──────────────────────────────────────────────
-function addRipple(e,el){
-  const r=document.createElement('span');
-  r.className='ripple';
-  const rect=el.getBoundingClientRect();
-  const size=Math.max(rect.width,rect.height)*2;
-  r.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`;
-  el.style.position='relative';el.style.overflow='hidden';
-  el.appendChild(r);
-  setTimeout(()=>r.remove(),500);
-}
-
-document.addEventListener('click',e=>{
-  const btn=e.target.closest('.btn');
-  if(btn) addRipple(e,btn);
-});
-
-// ──────────────────────────────────────────────
-//  OFFLINE DETECTION
-// ──────────────────────────────────────────────
-function checkOnline(){
-  const b=document.getElementById('offline-badge');
-  if(!navigator.onLine){b.classList.add('show');}
-  else{b.classList.remove('show');}
-}
-window.addEventListener('online',checkOnline);
-window.addEventListener('offline',checkOnline);
-
-// ──────────────────────────────────────────────
-//  SERVICE WORKER
-// ──────────────────────────────────────────────
-if('serviceWorker' in navigator){
-  const sw=`
-const V='cx-v2',A=['${location.href}'];
-self.addEventListener('install',e=>{
-  e.waitUntil(caches.open(V).then(c=>c.addAll(A).catch(()=>{})));
-  self.skipWaiting();
-});
-self.addEventListener('activate',e=>{
-  e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==V).map(k=>caches.delete(k)))));
-  self.clients.claim();
-});
-self.addEventListener('fetch',e=>{
-  e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{
-    if(res.status===200){const c=res.clone();caches.open(V).then(ca=>ca.put(e.request,c));}
-    return res;
-  }).catch(()=>caches.match(e.request))));
-});`;
-  const blob=new Blob([sw],{type:'application/javascript'});
-  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
-}
-
-// ──────────────────────────────────────────────
-//  BOOT
-// ──────────────────────────────────────────────
+// ═══════ BOOT ═══════
 window.addEventListener('load',()=>{
-  checkOnline();
+  chkOnl();
   setTimeout(()=>{
-    document.getElementById('boot').classList.add('hide');
+    document.getElementById('boot').classList.add('bye');
     if(loadS()){
+      document.getElementById('s-onb').classList.remove('on');
       switch(S.phase){
-        case'dashboard':case'exercise':
-          document.getElementById('s-onboard').classList.remove('active');
-          document.getElementById('s-dash').classList.add('active');
-          currentScreen='s-dash';
-          updateDash(); startMain(); break;
-        case'summary':
-          document.getElementById('s-onboard').classList.remove('active');
-          document.getElementById('s-sum').classList.add('active');
-          currentScreen='s-sum'; endFlight(); break;
-        case'tip':
-          document.getElementById('s-onboard').classList.remove('active');
-          document.getElementById('s-tip').classList.add('active');
-          currentScreen='s-tip'; break;
-        case'commit':
-          document.getElementById('s-onboard').classList.remove('active');
-          document.getElementById('s-commit').classList.add('active');
-          currentScreen='s-commit'; goCommit(); break;
-        default:
-          document.getElementById('s-onboard').classList.add('active');
-          currentScreen='s-onboard';
+        case'dash':case'ex':document.getElementById('s-dash').classList.add('on');curS='s-dash';updateD();startM();break;
+        case'sum':document.getElementById('s-sum').classList.add('on');curS='s-sum';endFlight();break;
+        default:document.getElementById('s-onb').classList.add('on');curS='s-onb';
       }
-    } else {
-      document.getElementById('s-onboard').classList.add('active');
     }
-    setTimeout(()=>document.getElementById('boot').remove(),700);
-  },1200);
+    setTimeout(()=>{const b=document.getElementById('boot');if(b)b.remove()},800);
+  },1000);
 });
 </script>
 </body>
