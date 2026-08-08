@@ -1,3 +1,6 @@
+
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,59 +26,29 @@
 html,body{font-family:var(--font);background:var(--bg);color:var(--w);
 min-height:100dvh;overflow:hidden;-webkit-font-smoothing:antialiased;touch-action:manipulation}
 
-/* ═══ LOTTIE-STYLE HERO ANIMATION ═══ */
-.hero-anim{
-width:100%;max-width:380px;margin:0 auto;
-position:relative;overflow:visible;
-}
-.hero-anim svg{width:100%;height:auto;display:block}
-
-/* Animated person doing stretches */
-.person-body{transform-origin:50% 50%}
-.person-limb{transition:transform .3s cubic-bezier(.4,0,.2,1)}
-
-/* ═══ SCREENS ═══ */
 .scr{
 position:absolute;inset:0;display:flex;flex-direction:column;
 z-index:2;overflow-y:auto;overflow-x:hidden;
 opacity:0;pointer-events:none;
 transition:opacity .5s cubic-bezier(.4,0,.2,1),transform .5s cubic-bezier(.4,0,.2,1);
 transform:translateX(40px);
-scrollbar-width:none;
+scrollbar-width:none;-webkit-overflow-scrolling:touch;
 }
 .scr::-webkit-scrollbar{display:none}
 .scr.on{opacity:1;pointer-events:all;transform:translateX(0)}
 .scr.out-l{opacity:0;transform:translateX(-40px)}
 
-/* ═══ FULLBLEED HERO ═══ */
-.hero-section{
-position:relative;min-height:100dvh;display:flex;flex-direction:column;
-background:var(--bg);overflow:hidden;
-}
-.hero-bg{
-position:absolute;inset:0;
-background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(205,255,78,.04),transparent 70%);
-}
-.hero-content{
-flex:1;display:flex;flex-direction:column;justify-content:flex-end;
-padding:0 24px calc(32px + var(--safe-b));position:relative;z-index:2;
-max-width:500px;margin:0 auto;width:100%;
-}
-.hero-top{
-flex:1;display:flex;align-items:center;justify-content:center;
-padding:40px 20px 20px;
-}
+.hero-anim{width:100%;max-width:280px;margin:0 auto;position:relative;overflow:visible}
+.hero-anim svg{width:100%;height:auto;display:block}
 
-/* ═══ TYPOGRAPHY ═══ */
-.display{font-size:44px;font-weight:900;line-height:1.0;letter-spacing:-2px}
-.title{font-size:28px;font-weight:800;line-height:1.1;letter-spacing:-1px}
+.display{font-size:38px;font-weight:900;line-height:1.05;letter-spacing:-2px}
+.title{font-size:26px;font-weight:800;line-height:1.1;letter-spacing:-1px}
 .heading{font-size:22px;font-weight:700;letter-spacing:-.5px}
 .body{font-size:15px;line-height:1.6;color:var(--w60)}
 .caption{font-size:13px;color:var(--w40);font-weight:500}
 .overline{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--w40)}
 .accent{color:var(--lime)}
 
-/* ═══ CLEAN BUTTONS ═══ */
 .btn{
 width:100%;height:56px;border:none;border-radius:var(--r2);
 font-family:var(--font);font-size:16px;font-weight:700;
@@ -86,22 +59,16 @@ letter-spacing:-.2px;position:relative;overflow:hidden;
 .btn:active{transform:scale(.96)}
 .btn-fill{background:var(--lime);color:#000}
 .btn-fill:active{background:var(--lime-d)}
-.btn-outline{background:transparent;color:var(--w);border:1.5px solid var(--w20)}
-.btn-outline:active{background:var(--w05)}
 .btn-ghost{background:var(--w05);color:var(--w)}
 .btn-ghost:active{background:var(--w10)}
 .btn-sm{height:48px;font-size:14px;border-radius:var(--r3)}
 .btn-danger{background:rgba(255,107,107,.1);color:var(--coral);border:1px solid rgba(255,107,107,.15)}
 
-/* ═══ CLEAN CARDS ═══ */
 .card{
 background:var(--s2);border-radius:var(--r);padding:20px;
-border:1px solid var(--w05);
-transition:all .2s;
+border:1px solid var(--w05);transition:all .2s;
 }
-.card:active{background:var(--s3)}
 
-/* ═══ CHIPS ═══ */
 .chip-grid{display:flex;flex-wrap:wrap;gap:8px}
 .chip{
 height:44px;padding:0 18px;border-radius:22px;
@@ -112,16 +79,10 @@ transition:all .25s cubic-bezier(.4,0,.2,1);
 display:flex;align-items:center;gap:8px;user-select:none;
 }
 .chip:active{transform:scale(.93)}
-.chip.on{
-border-color:var(--lime);color:var(--lime);background:var(--lime-g);
-}
+.chip.on{border-color:var(--lime);color:var(--lime);background:var(--lime-g)}
 .chip .ce{font-size:16px}
 
-/* ═══ DURATION ═══ */
-.dur-strip{
-display:flex;align-items:center;justify-content:center;gap:32px;
-padding:24px 0;
-}
+.dur-strip{display:flex;align-items:center;justify-content:center;gap:28px;padding:16px 0}
 .dur-btn{
 width:56px;height:56px;border-radius:50%;border:1.5px solid var(--w10);
 background:transparent;color:var(--w);font-size:24px;
@@ -129,195 +90,128 @@ display:flex;align-items:center;justify-content:center;
 cursor:pointer;transition:all .2s;font-family:var(--font);font-weight:300;
 }
 .dur-btn:active{background:var(--lime);color:#000;border-color:var(--lime);transform:scale(.9)}
-.dur-num{font-size:72px;font-weight:900;letter-spacing:-4px;color:var(--w);
-min-width:80px;text-align:center;line-height:1;
-transition:transform .3s cubic-bezier(.4,0,.2,1)}
-.dur-num.pop{animation:dpop .4s cubic-bezier(.4,0,.2,1)}
+.dur-num{font-size:64px;font-weight:900;letter-spacing:-3px;color:var(--w);
+min-width:70px;text-align:center;line-height:1;transition:transform .3s}
+.dur-num.pop{animation:dpop .4s}
 @keyframes dpop{0%{transform:scale(1)}40%{transform:scale(1.15)}100%{transform:scale(1)}}
 .dur-unit{font-size:14px;color:var(--w40);font-weight:500;text-align:center;margin-top:4px}
 
-/* ═══ PROGRESS RING ═══ */
-.ring-wrap{
-width:280px;height:280px;margin:0 auto;position:relative;
-}
-.ring-wrap svg{width:100%;height:100%}
-.ring-bg{fill:none;stroke:var(--w05);stroke-width:6}
-.ring-fill{fill:none;stroke:var(--lime);stroke-width:6;stroke-linecap:round;
-stroke-dasharray:791.68;stroke-dashoffset:791.68;
-transition:stroke-dashoffset 1s linear;
-filter:drop-shadow(0 0 12px rgba(205,255,78,.3))}
-.ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;
-align-items:center;justify-content:center}
-.ring-time{font-size:64px;font-weight:900;letter-spacing:-3px;line-height:1}
-.ring-label{font-size:14px;color:var(--w40);margin-top:4px}
-
-/* ═══ TIMELINE ═══ */
-.tl-bar{position:relative;height:4px;background:var(--w05);border-radius:2px;margin:20px 0 12px}
-.tl-fill{height:100%;border-radius:2px;background:var(--lime);
-transition:width 1s cubic-bezier(.4,0,.2,1);position:relative}
-.tl-fill::after{content:'';position:absolute;right:-3px;top:-4px;
-width:12px;height:12px;border-radius:50%;background:var(--lime);
-box-shadow:0 0 16px rgba(205,255,78,.4)}
+.tl-bar{position:relative;height:4px;background:var(--w05);border-radius:2px;margin:16px 0 10px}
+.tl-fill{height:100%;border-radius:2px;background:var(--lime);transition:width 1s;position:relative}
+.tl-fill::after{content:'';position:absolute;right:-3px;top:-4px;width:12px;height:12px;
+border-radius:50%;background:var(--lime);box-shadow:0 0 12px rgba(205,255,78,.4)}
 .tl-dot{position:absolute;top:50%;transform:translate(-50%,-50%);
-width:12px;height:12px;border-radius:50%;
-background:var(--s1);border:2px solid var(--w20);
+width:12px;height:12px;border-radius:50%;background:var(--s1);border:2px solid var(--w20);
 transition:all .3s;z-index:2}
 .tl-dot.done{background:var(--lime);border-color:var(--lime)}
 .tl-dot.now{border-color:var(--lime);box-shadow:0 0 0 4px var(--lime-g)}
 
-/* ═══ STAT BLOCKS ═══ */
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .stat{padding:20px 16px;text-align:center}
-.stat-n{font-size:36px;font-weight:900;line-height:1}
+.stat-n{font-size:34px;font-weight:900;line-height:1}
 .stat-l{font-size:12px;color:var(--w40);margin-top:6px;font-weight:500}
 
-/* ═══ NEXT CHECKPOINT ═══ */
-.next-block{
-padding:28px;text-align:center;cursor:pointer;
-border:1.5px solid rgba(205,255,78,.15);
-background:linear-gradient(180deg,rgba(205,255,78,.03),transparent);
-}
+.next-block{padding:28px;text-align:center;cursor:pointer;
+border:1.5px solid rgba(205,255,78,.15);background:linear-gradient(180deg,rgba(205,255,78,.03),transparent)}
 .next-block:active{background:rgba(205,255,78,.06)}
-.next-icon{font-size:40px;margin-bottom:12px;display:block}
-.next-time{font-size:52px;font-weight:900;color:var(--lime);letter-spacing:-3px;margin:4px 0}
+.next-icon{font-size:36px;margin-bottom:10px;display:block}
+.next-time{font-size:48px;font-weight:900;color:var(--lime);letter-spacing:-3px;margin:4px 0}
 .next-label{font-size:14px;color:var(--w40)}
 
-/* ═══ HYDRATION ═══ */
-.hydro-row{display:flex;align-items:center;gap:16px;cursor:pointer;padding:20px}
+.hydro-row{display:flex;align-items:center;gap:14px;cursor:pointer;padding:18px}
 .hydro-bar-wrap{flex:1;height:8px;background:var(--w05);border-radius:4px;overflow:hidden}
 .hydro-bar{height:100%;background:linear-gradient(90deg,var(--sky),#4FC3F7);
-border-radius:4px;transition:width .6s cubic-bezier(.4,0,.2,1)}
-.hydro-n{font-size:20px;font-weight:800;min-width:40px}
+border-radius:4px;transition:width .6s}
+.hydro-n{font-size:18px;font-weight:800;min-width:36px}
 .hydro-plus{
-width:48px;height:48px;border-radius:50%;border:none;
-background:var(--w05);color:var(--w);font-size:24px;
+width:46px;height:46px;border-radius:50%;border:none;
+background:var(--w05);color:var(--w);font-size:22px;
 display:flex;align-items:center;justify-content:center;
 cursor:pointer;transition:all .2s;flex-shrink:0;
 }
 .hydro-plus:active{background:var(--sky);color:#000;transform:scale(.88)}
 
-/* ═══ STREAK ═══ */
 .streak-pill{
 display:inline-flex;align-items:center;gap:6px;padding:6px 14px;
 border-radius:50px;font-size:13px;font-weight:700;
-background:rgba(255,183,77,.08);border:1px solid rgba(255,183,77,.15);
-color:var(--peach);margin-bottom:12px;
+background:rgba(255,183,77,.08);border:1px solid rgba(255,183,77,.15);color:var(--peach);margin-bottom:12px;
 }
 
-/* ═══ EXERCISE ANIM ═══ */
-.ex-figure{
-width:200px;height:200px;margin:0 auto;
-}
+.ring-wrap{width:260px;height:260px;margin:0 auto;position:relative}
+.ring-wrap svg{width:100%;height:100%}
+.ring-bg{fill:none;stroke:var(--w05);stroke-width:6}
+.ring-fill{fill:none;stroke:var(--lime);stroke-width:6;stroke-linecap:round;
+stroke-dasharray:753.98;stroke-dashoffset:753.98;
+transition:stroke-dashoffset 1s linear;filter:drop-shadow(0 0 10px rgba(205,255,78,.3))}
+.ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-time{font-size:56px;font-weight:900;letter-spacing:-3px;line-height:1;color:var(--lime)}
+
+.ex-figure{width:160px;height:160px;margin:0 auto}
 .ex-figure svg{width:100%;height:100%}
+.ex-why{padding:14px 18px;background:var(--s2);border-radius:var(--r3);
+font-size:13px;color:var(--w40);line-height:1.6}
+.ex-why b{color:var(--violet)}
 
-/* ═══ CELEBRATION ═══ */
+.bottom-actions{
+position:sticky;bottom:0;padding:16px 24px calc(16px + var(--safe-b));
+background:linear-gradient(transparent,var(--bg) 30%);display:flex;gap:8px}
+
+.social{font-size:13px;color:var(--w20);text-align:center;font-style:italic;line-height:1.5}
+
 .celeb{position:fixed;inset:0;z-index:500;
 display:flex;flex-direction:column;align-items:center;justify-content:center;
-background:rgba(0,0,0,.96);
-opacity:0;pointer-events:none;transition:opacity .4s;padding:32px}
+background:rgba(0,0,0,.96);opacity:0;pointer-events:none;transition:opacity .4s;padding:32px}
 .celeb.on{opacity:1;pointer-events:all}
-.cel-emoji{font-size:88px;margin-bottom:24px;animation:celPop .6s cubic-bezier(.4,0,.2,1)}
-@keyframes celPop{0%{transform:scale(0) rotate(-90deg)}60%{transform:scale(1.2) rotate(10deg)}100%{transform:scale(1) rotate(0)}}
-.cel-title{font-size:32px;font-weight:900;margin-bottom:8px}
+.cel-emoji{font-size:80px;margin-bottom:20px;animation:celPop .6s cubic-bezier(.4,0,.2,1)}
+@keyframes celPop{0%{transform:scale(0) rotate(-90deg)}60%{transform:scale(1.2) rotate(10deg)}100%{transform:scale(1)}}
+.cel-title{font-size:30px;font-weight:900;margin-bottom:8px}
 .cel-sub{font-size:16px;color:var(--w60);text-align:center;margin-bottom:8px;line-height:1.5}
-.cel-xp{font-size:22px;font-weight:800;color:var(--lime);margin-bottom:32px}
+.cel-xp{font-size:22px;font-weight:800;color:var(--lime);margin-bottom:28px}
 
-/* particles */
 .particles{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.ptcl{position:absolute;border-radius:50%;
-animation:ptclFly 1.4s cubic-bezier(.4,0,.2,1) forwards}
+.ptcl{position:absolute;border-radius:50%;animation:ptclFly 1.4s cubic-bezier(.4,0,.2,1) forwards}
 @keyframes ptclFly{0%{opacity:1;transform:translate(0,0) scale(1)}
 100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(0)}}
 
-/* ═══ NOTIFICATION ═══ */
 .notif{position:fixed;top:12px;left:12px;right:12px;z-index:999;
-padding:16px 20px;border-radius:var(--r2);
-background:var(--s2);border:1px solid var(--w10);
+padding:16px 20px;border-radius:var(--r2);background:var(--s2);border:1px solid var(--w10);
 display:flex;align-items:center;gap:12px;cursor:pointer;
-transform:translateY(calc(-100% - 20px));
-transition:transform .5s cubic-bezier(.4,0,.2,1);
+transform:translateY(calc(-100% - 20px));transition:transform .5s cubic-bezier(.4,0,.2,1);
 max-width:500px;margin:0 auto}
 .notif.on{transform:translateY(0)}
 .notif-dot{width:10px;height:10px;border-radius:50%;background:var(--lime);
 animation:pulse 1.5s ease-in-out infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.notif-txt{flex:1}
 .notif-h{font-size:14px;font-weight:700}
 .notif-p{font-size:13px;color:var(--w40)}
 .notif-x{width:28px;height:28px;border-radius:50%;border:none;
 background:var(--w05);color:var(--w40);font-size:14px;cursor:pointer;
 display:flex;align-items:center;justify-content:center}
 
-/* ═══ XP FLOAT ═══ */
 .xpf{position:fixed;left:50%;font-size:28px;font-weight:900;color:var(--lime);
-pointer-events:none;z-index:999;animation:xpUp .8s cubic-bezier(.4,0,.2,1) forwards}
+pointer-events:none;z-index:999;animation:xpUp .8s forwards}
 @keyframes xpUp{0%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-80px)}}
 
-/* ═══ PAGE CONTENT WRAPPER ═══ */
-.page{max-width:500px;margin:0 auto;width:100%;padding:0 24px}
-.page-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-.page-scroll::-webkit-scrollbar{display:none}
+.tip-visual{width:100px;height:100px;margin:0 auto 20px;border-radius:50%;background:var(--s2);
+display:flex;align-items:center;justify-content:center;font-size:48px;border:2px solid var(--w05)}
 
-/* ═══ SPACING ═══ */
-.mt-4{margin-top:4px}.mt-8{margin-top:8px}.mt-12{margin-top:12px}
-.mt-16{margin-top:16px}.mt-20{margin-top:20px}.mt-24{margin-top:24px}
-.mt-32{margin-top:32px}.mt-40{margin-top:40px}
-.mb-4{margin-bottom:4px}.mb-8{margin-bottom:8px}.mb-12{margin-bottom:12px}
-.mb-16{margin-bottom:16px}.mb-20{margin-bottom:20px}.mb-24{margin-bottom:24px}
-.gap-8{gap:8px}.gap-12{gap:12px}.gap-16{gap:16px}
-.pb-safe{padding-bottom:calc(24px + var(--safe-b))}
-.px{padding-left:24px;padding-right:24px}
-.center{text-align:center}
-
-/* ═══ TIP CARD ═══ */
-.tip-visual{
-width:120px;height:120px;margin:0 auto 24px;
-border-radius:50%;background:var(--s2);
-display:flex;align-items:center;justify-content:center;
-font-size:56px;
-border:2px solid var(--w05);
-}
-
-/* ═══ COMMIT ═══ */
-.commit-block{
-padding:32px 24px;text-align:center;
-border:1.5px solid rgba(205,255,78,.2);
-background:linear-gradient(180deg,var(--lime-g),transparent);
-}
-.commit-txt{font-size:18px;font-weight:600;line-height:1.7}
+.commit-block{padding:28px 24px;text-align:center;
+border:1.5px solid rgba(205,255,78,.2);background:linear-gradient(180deg,var(--lime-g),transparent)}
+.commit-txt{font-size:17px;font-weight:600;line-height:1.7}
 .commit-txt em{color:var(--lime);font-style:normal;font-weight:800}
 
-/* ═══ SUMMARY ═══ */
 .sum-row{display:flex;justify-content:space-between;align-items:center;
-padding:16px 0;border-bottom:1px solid var(--w05)}
+padding:14px 0;border-bottom:1px solid var(--w05)}
 .sum-row:last-child{border:none}
 .sum-label{font-size:15px;color:var(--w40)}
 .sum-value{font-size:16px;font-weight:700}
 
-/* ═══ EXERCISE SCREEN ═══ */
-.ex-why{padding:16px 20px;background:var(--s2);border-radius:var(--r3);
-font-size:13px;color:var(--w40);line-height:1.6}
-.ex-why b{color:var(--violet)}
-
-/* ═══ BOTTOM NAV (exercise) ═══ */
-.bottom-actions{
-position:sticky;bottom:0;left:0;right:0;
-padding:16px 24px calc(16px + var(--safe-b));
-background:linear-gradient(transparent,var(--bg) 30%);
-display:flex;gap:8px;
-}
-
-/* ═══ SOCIAL ═══ */
-.social{font-size:13px;color:var(--w20);text-align:center;font-style:italic;line-height:1.5}
-
-/* ═══ BOOT ═══ */
 .boot{position:fixed;inset:0;z-index:9999;background:var(--bg);
 display:flex;align-items:center;justify-content:center;transition:opacity .6s}
 .boot.bye{opacity:0;pointer-events:none}
-.boot-mark{display:flex;align-items:center;gap:12px}
 .boot-dot{width:12px;height:12px;border-radius:50%;background:var(--lime);
-animation:bootPulse 1.2s ease-in-out infinite}
-@keyframes bootPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.5}}
+animation:bootPulse 1s ease-in-out infinite;margin-right:12px}
+@keyframes bootPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.5);opacity:.5}}
 .boot-name{font-size:28px;font-weight:800;letter-spacing:-1px}
 
 .offline-bar{position:fixed;bottom:calc(var(--safe-b) + 8px);left:50%;
@@ -326,153 +220,102 @@ padding:8px 20px;border-radius:50px;font-size:12px;font-weight:600;
 z-index:800;display:none;border:1px solid var(--w05)}
 .offline-bar.on{display:block}
 
-@media(max-width:380px){
-.display{font-size:36px}.dur-num{font-size:60px}
-.ring-wrap{width:240px;height:240px}.ring-time{font-size:52px}
-.next-time{font-size:44px}
-}
+.page{max-width:500px;margin:0 auto;width:100%;padding:0 24px}
+.pb-safe{padding-bottom:calc(24px + var(--safe-b))}
+
+@media(max-width:380px){.display{font-size:32px}.dur-num{font-size:52px}
+.ring-wrap{width:220px;height:220px}.ring-time{font-size:46px}.next-time{font-size:40px}}
 </style>
 </head>
 <body>
 
 <div class="boot" id="boot">
-<div class="boot-mark"><div class="boot-dot"></div><div class="boot-name">Circulate</div></div>
+<div style="display:flex;align-items:center"><div class="boot-dot"></div><div class="boot-name">Circulate</div></div>
 </div>
-<div class="offline-bar" id="offb">Offline mode — everything works</div>
+<div class="offline-bar" id="offb">Offline — everything works</div>
 
-<!-- ══════════════════ ONBOARD ══════════════════ -->
+<!-- ═══════════ HOME ═══════════ -->
 <div id="s-home" class="scr on">
-<div class="hero-section">
-<div class="hero-bg"></div>
-<div class="hero-top">
-<div class="hero-anim">
-<svg viewBox="0 0 400 350" fill="none" id="heroSvg">
-<!-- AIRPLANE CABIN BACKGROUND -->
-<rect x="0" y="0" width="400" height="350" rx="0" fill="#0a0a0a"/>
+<div style="padding:20px 24px calc(32px + var(--safe-b));max-width:500px;margin:0 auto;width:100%">
 
+<!-- Animated Hero -->
+<div class="hero-anim" style="margin-bottom:20px">
+<svg viewBox="0 0 400 280" fill="none" id="heroSvg">
+<rect x="0" y="0" width="400" height="280" fill="#000"/>
 <!-- Window -->
-<rect x="290" y="40" width="70" height="90" rx="35" fill="#0d0d1a" stroke="rgba(255,255,255,.06)" stroke-width="2"/>
-<circle cx="325" cy="75" r="18" fill="#0a0a20"/>
-<circle cx="320" cy="68" r="3" fill="rgba(255,255,255,.15)"/>
-<circle cx="330" cy="78" r="2" fill="rgba(255,255,255,.1)"/>
-<!-- Stars -->
-<circle cx="315" cy="62" r="1" fill="rgba(255,255,255,.3)"><animate attributeName="opacity" values=".3;.8;.3" dur="2s" repeatCount="indefinite"/></circle>
-<circle cx="332" cy="70" r=".8" fill="rgba(255,255,255,.2)"><animate attributeName="opacity" values=".2;.6;.2" dur="3s" repeatCount="indefinite"/></circle>
-
-<!-- SEAT -->
-<path d="M90 180 L90 290 Q90 300 100 300 L220 300 Q230 300 230 290 L230 180" fill="#1a1a1a" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
-<!-- Seat back -->
-<rect x="230" y="120" width="30" height="180" rx="12" fill="#1a1a1a" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+<rect x="295" y="20" width="65" height="80" rx="32" fill="#0a0a18" stroke="rgba(255,255,255,.05)" stroke-width="1.5"/>
+<circle cx="327" cy="52" r="16" fill="#08081a"/>
+<circle cx="322" cy="45" r="2" fill="rgba(255,255,255,.12)"/>
+<circle cx="333" cy="55" r="1.5" fill="rgba(255,255,255,.08)"/>
+<circle cx="318" cy="40" r="1" fill="rgba(255,255,255,.2)"><animate attributeName="opacity" values=".2;.7;.2" dur="2s" repeatCount="indefinite"/></circle>
+<!-- Seat -->
+<path d="M85 150 L85 240 Q85 248 93 248 L215 248 Q223 248 223 240 L223 150" fill="#111" stroke="rgba(255,255,255,.03)" stroke-width="1"/>
+<rect x="223" y="100" width="24" height="148" rx="10" fill="#111"/>
 <!-- Armrest -->
-<rect x="85" y="200" width="8" height="80" rx="4" fill="#222"/>
-
-<!-- PERSON -->
-<!-- Hair -->
-<ellipse cx="165" cy="128" rx="28" ry="22" fill="#2d1f12"/>
+<rect x="80" y="168" width="7" height="65" rx="3.5" fill="#1a1a1a"/>
+<!-- Person Hair -->
+<ellipse cx="160" cy="105" rx="24" ry="18" fill="#2d1f12"/>
 <!-- Head -->
-<circle cx="165" cy="140" r="24" fill="#FFCC80"/>
-<!-- Face -->
-<circle cx="156" cy="136" r="2.5" fill="#1a1a1a"/>
-<circle cx="174" cy="136" r="2.5" fill="#1a1a1a"/>
+<circle cx="160" cy="115" r="20" fill="#FFCC80"/>
+<!-- Eyes -->
+<circle cx="153" cy="112" r="2" fill="#111"/><circle cx="167" cy="112" r="2" fill="#111"/>
 <!-- Smile -->
-<path d="M158 148 Q165 155 172 148" stroke="#e08040" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M155 120 Q160 126 165 120" stroke="#d07030" stroke-width="1.8" fill="none" stroke-linecap="round"/>
 <!-- Neck -->
-<rect x="158" y="162" width="14" height="10" rx="4" fill="#FFCC80"/>
-<!-- Torso (t-shirt) -->
-<path d="M130 172 Q132 168 140 168 L190 168 Q198 168 200 172 L210 240 L120 240 Z" fill="#64B5F6"/>
-<!-- Collar detail -->
-<path d="M148 168 Q165 178 182 168" stroke="#42A5F5" stroke-width="1.5" fill="none"/>
-
-<!-- LEFT ARM (animated) -->
-<g id="armL">
-<path d="M130 180 Q115 210 118 240" stroke="#FFCC80" stroke-width="10" stroke-linecap="round" fill="none"/>
-<circle cx="118" cy="242" r="7" fill="#FFCC80"/>
-</g>
-
-<!-- RIGHT ARM (animated) -->
-<g id="armR">
-<path d="M200 180 Q215 210 212 240" stroke="#FFCC80" stroke-width="10" stroke-linecap="round" fill="none"/>
-<circle cx="212" cy="242" r="7" fill="#FFCC80"/>
-</g>
-
+<rect x="154" y="133" width="12" height="8" rx="4" fill="#FFCC80"/>
+<!-- Torso -->
+<path d="M130 141 Q132 138 140 138 L180 138 Q188 138 190 141 L198 200 L122 200 Z" fill="var(--sky)"/>
+<path d="M146 138 Q160 146 174 138" stroke="#42A5F5" stroke-width="1.2" fill="none"/>
+<!-- Left Arm -->
+<g id="aL"><path d="M130 150 Q116 178 119 200" stroke="#FFCC80" stroke-width="8" stroke-linecap="round" fill="none"/>
+<circle cx="119" cy="202" r="6" fill="#FFCC80"/></g>
+<!-- Right Arm -->
+<g id="aR"><path d="M190 150 Q204 178 201 200" stroke="#FFCC80" stroke-width="8" stroke-linecap="round" fill="none"/>
+<circle cx="201" cy="202" r="6" fill="#FFCC80"/></g>
 <!-- Pants -->
-<path d="M125 238 L118 300 L148 300 L155 260 L175 260 L182 300 L212 300 L205 238 Z" fill="#37474F"/>
-
-<!-- LEFT LEG (animated) -->
-<g id="legL">
-<line x1="133" y1="298" x2="130" y2="335" stroke="#37474F" stroke-width="12" stroke-linecap="round"/>
-<!-- Shoe -->
-<ellipse cx="122" cy="340" rx="18" ry="8" fill="#CDFF4E" opacity=".9"/>
-<!-- Circulation glow -->
-<ellipse cx="122" cy="340" rx="24" ry="12" fill="none" stroke="rgba(205,255,78,.2)" stroke-width="1.5">
-<animate attributeName="rx" values="24;30;24" dur="1.5s" repeatCount="indefinite"/>
-<animate attributeName="opacity" values=".3;.1;.3" dur="1.5s" repeatCount="indefinite"/>
-</ellipse>
+<path d="M126 198 L120 248 L146 248 L152 218 L168 218 L174 248 L200 248 L194 198 Z" fill="#37474F"/>
+<!-- Left Leg -->
+<g id="lL">
+<line x1="133" y1="246" x2="130" y2="270" stroke="#37474F" stroke-width="10" stroke-linecap="round"/>
+<ellipse cx="124" cy="274" rx="15" ry="6" fill="#CDFF4E" opacity=".85"/>
 </g>
-
-<!-- RIGHT LEG (animated) -->
-<g id="legR">
-<line x1="197" y1="298" x2="200" y2="335" stroke="#37474F" stroke-width="12" stroke-linecap="round"/>
-<!-- Shoe -->
-<ellipse cx="208" cy="340" rx="18" ry="8" fill="#CDFF4E" opacity=".9"/>
-<ellipse cx="208" cy="340" rx="24" ry="12" fill="none" stroke="rgba(205,255,78,.2)" stroke-width="1.5">
-<animate attributeName="rx" values="24;30;24" dur="1.5s" repeatCount="indefinite" begin=".75s"/>
-<animate attributeName="opacity" values=".3;.1;.3" dur="1.5s" repeatCount="indefinite" begin=".75s"/>
-</ellipse>
+<!-- Right Leg -->
+<g id="lR">
+<line x1="187" y1="246" x2="190" y2="270" stroke="#37474F" stroke-width="10" stroke-linecap="round"/>
+<ellipse cx="196" cy="274" rx="15" ry="6" fill="#CDFF4E" opacity=".85"/>
 </g>
-
-<!-- CIRCULATION FLOW ARROWS -->
+<!-- Circulation arrows -->
 <g opacity=".5">
-<!-- Left leg flow down -->
-<path d="M115 280 Q105 310 115 340" stroke="#CDFF4E" stroke-width="1.5" fill="none" stroke-dasharray="4 4">
-<animate attributeName="stroke-dashoffset" values="24;0" dur="1.5s" repeatCount="indefinite"/>
-</path>
-<!-- Left leg flow up -->
-<path d="M140 340 Q150 310 140 280" stroke="#64B5F6" stroke-width="1.5" fill="none" stroke-dasharray="4 4" opacity=".4">
-<animate attributeName="stroke-dashoffset" values="0;24" dur="2s" repeatCount="indefinite"/>
-</path>
-<!-- Right leg flow down -->
-<path d="M185 280 Q175 310 185 340" stroke="#CDFF4E" stroke-width="1.5" fill="none" stroke-dasharray="4 4">
-<animate attributeName="stroke-dashoffset" values="24;0" dur="1.5s" repeatCount="indefinite" begin=".75s"/>
-</path>
-<!-- Right leg flow up -->
-<path d="M210 340 Q220 310 210 280" stroke="#64B5F6" stroke-width="1.5" fill="none" stroke-dasharray="4 4" opacity=".4">
-<animate attributeName="stroke-dashoffset" values="0;24" dur="2s" repeatCount="indefinite" begin=".75s"/>
-</path>
+<path d="M116 230 Q106 255 116 274" stroke="#CDFF4E" stroke-width="1.5" fill="none" stroke-dasharray="4 4">
+<animate attributeName="stroke-dashoffset" values="20;0" dur="1.5s" repeatCount="indefinite"/></path>
+<path d="M204 230 Q214 255 204 274" stroke="#CDFF4E" stroke-width="1.5" fill="none" stroke-dasharray="4 4">
+<animate attributeName="stroke-dashoffset" values="20;0" dur="1.5s" repeatCount="indefinite" begin=".7s"/></path>
 </g>
-
-<!-- HEART PULSE (top right) -->
-<g transform="translate(40,80)" opacity=".6">
-<circle cx="0" cy="0" r="12" fill="rgba(255,107,107,.1)" stroke="rgba(255,107,107,.3)" stroke-width="1">
-<animate attributeName="r" values="12;16;12" dur="1s" repeatCount="indefinite"/>
-</circle>
-<text x="0" y="5" text-anchor="middle" font-size="14" fill="#FF6B6B">♥</text>
-</g>
+<!-- Heart -->
+<g transform="translate(50,60)" opacity=".5">
+<circle cx="0" cy="0" r="10" fill="rgba(255,107,107,.1)" stroke="rgba(255,107,107,.25)" stroke-width="1">
+<animate attributeName="r" values="10;14;10" dur="1s" repeatCount="indefinite"/></circle>
+<text x="0" y="4" text-anchor="middle" font-size="12" fill="#FF6B6B">♥</text></g>
 </svg>
 </div>
-</div>
 
-<div class="hero-content">
-<div class="overline mb-8">In-flight DVT prevention</div>
-<h1 class="display mb-8">Move well,<br>fly <span class="accent">safe.</span></h1>
-<p class="body mb-24">Personalized movement breaks that keep your blood flowing at 35,000 feet. Science-backed. Judgment-free.</p>
+<div class="overline" style="margin-bottom:8px">In-flight DVT prevention</div>
+<h1 class="display" style="margin-bottom:8px">Move well,<br>fly <span class="accent">safe.</span></h1>
+<p class="body" style="margin-bottom:24px">Science-backed movement reminders that keep your blood flowing at altitude.</p>
 
-<div class="mb-20">
-<div class="overline mb-12">Flight Duration</div>
+<div style="margin-bottom:20px">
+<div class="overline" style="margin-bottom:10px">Flight Duration</div>
 <div class="card">
 <div class="dur-strip">
 <button class="dur-btn" onclick="dur(-1)">−</button>
-<div>
-<div class="dur-num" id="dv">4</div>
-<div class="dur-unit">hours</div>
-</div>
+<div><div class="dur-num" id="dv">4</div><div class="dur-unit">hours</div></div>
 <button class="dur-btn" onclick="dur(1)">+</button>
 </div>
 </div>
 </div>
 
-<div class="mb-24">
-<div class="overline mb-12">Risk Factors</div>
+<div style="margin-bottom:24px">
+<div class="overline" style="margin-bottom:10px">Risk Factors</div>
 <div class="chip-grid" id="chips">
 <button class="chip" data-r="age"><span class="ce">👤</span>Age 50+</button>
 <button class="chip" data-r="clot"><span class="ce">🩸</span>Prior clot</button>
@@ -484,138 +327,104 @@ z-index:800;display:none;border:1px solid var(--w05)}
 </div>
 
 <button class="btn btn-fill" onclick="goTip()">Get Started</button>
-<p class="caption center mt-12">No account · Works offline · Data stays on device</p>
-</div>
+<p class="caption" style="text-align:center;margin-top:12px">No account · Works offline · Data stays on device</p>
 </div>
 </div>
 
-<!-- ══════════════════ TIP ══════════════════ -->
+<!-- ═══════════ TIP ═══════════ -->
 <div id="s-tip" class="scr">
-<div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:24px">
-<div class="page" style="padding:0">
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:24px;max-width:500px;margin:0 auto;width:100%">
 <div class="tip-visual">💺</div>
-<div class="overline center mb-8">Insider tip</div>
-<h2 class="title center mb-16">Pick the aisle seat</h2>
-<p class="body center mb-32">If you have any choice at all — the aisle makes it dramatically easier to stand, stretch, and walk. One small decision that multiplies the impact of every exercise you'll do.</p>
+<div class="overline" style="text-align:center;margin-bottom:8px">Insider tip</div>
+<h2 class="title" style="text-align:center;margin-bottom:16px">Pick the aisle seat</h2>
+<p class="body" style="text-align:center;margin-bottom:32px">If you can — the aisle makes it dramatically easier to stand, stretch, and walk. One small decision that multiplies every exercise you'll do.</p>
 <button class="btn btn-fill" onclick="goCommit()">Got it →</button>
 </div>
 </div>
-</div>
 
-<!-- ══════════════════ COMMIT ══════════════════ -->
+<!-- ═══════════ COMMIT ═══════════ -->
 <div id="s-commit" class="scr">
-<div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:24px">
-<div class="page" style="padding:0">
-<div class="overline center mb-16">Your plan</div>
-<div class="card commit-block mb-16">
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:24px;max-width:500px;margin:0 auto;width:100%">
+<div class="overline" style="text-align:center;margin-bottom:16px">Your plan</div>
+<div class="card commit-block" style="margin-bottom:16px">
 <p class="commit-txt" id="ctxt"></p>
 </div>
-<p class="social mb-24" id="stxt"></p>
+<p class="social" style="margin-bottom:24px" id="stxt"></p>
 <button class="btn btn-fill" onclick="goDash()">Begin Flight</button>
 </div>
 </div>
-</div>
 
-<!-- ══════════════════ DASHBOARD ══════════════════ -->
+<!-- ═══════════ DASHBOARD ═══════════ -->
 <div id="s-dash" class="scr">
-<div class="page-scroll">
-<div class="page pb-safe" style="padding-top:24px">
+<div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch" class="page-scroll">
+<div style="padding:24px 24px calc(24px + var(--safe-b));max-width:500px;margin:0 auto;width:100%">
 
-<div style="display:flex;justify-content:space-between;align-items:flex-start" class="mb-20">
-<div>
-<div class="overline mb-4">In flight</div>
-<h2 class="heading">Dashboard</h2>
-</div>
+<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px">
+<div><div class="overline" style="margin-bottom:4px">In flight</div><h2 class="heading">Dashboard</h2></div>
 <div style="text-align:right">
-<div style="font-size:32px;font-weight:900;color:var(--lime);line-height:1" id="dxp">0</div>
+<div style="font-size:30px;font-weight:900;color:var(--lime);line-height:1" id="dxp">0</div>
 <div class="caption">XP</div>
 </div>
 </div>
 
 <div id="stk-w" style="display:none"><div class="streak-pill">🔥 <span id="stk-n">0</span> streak</div></div>
 
-<!-- Timeline -->
-<div class="card mb-12">
-<div style="display:flex;justify-content:space-between" class="mb-4">
+<div class="card" style="margin-bottom:10px">
+<div style="display:flex;justify-content:space-between;margin-bottom:4px">
 <span class="caption" style="font-weight:700;color:var(--w60)">Progress</span>
 <span class="caption" id="el-l">0h 00m</span>
 </div>
-<div class="tl-bar">
-<div class="tl-fill" id="wf" style="width:0%"></div>
-<div id="wdots"></div>
-</div>
-<div style="display:flex;justify-content:space-between">
-<span class="caption">Takeoff</span>
-<span class="caption" id="ll">Landing</span>
-</div>
+<div class="tl-bar"><div class="tl-fill" id="wf" style="width:0%"></div><div id="wdots"></div></div>
+<div style="display:flex;justify-content:space-between"><span class="caption">Takeoff</span><span class="caption" id="ll">Landing</span></div>
 </div>
 
-<!-- Stats -->
-<div class="stats mb-12">
-<div class="card stat">
-<div class="stat-n accent" id="sd">0</div>
-<div class="stat-l">Done</div>
-</div>
-<div class="card stat">
-<div class="stat-n" style="color:var(--sky)" id="sr">0</div>
-<div class="stat-l">Left</div>
-</div>
+<div class="stats" style="margin-bottom:10px">
+<div class="card stat"><div class="stat-n accent" id="sd">0</div><div class="stat-l">Done</div></div>
+<div class="card stat"><div class="stat-n" style="color:var(--sky)" id="sr">0</div><div class="stat-l">Left</div></div>
 </div>
 
-<!-- Next CP -->
-<div class="card next-block mb-12" id="nc" onclick="goEx()">
+<div class="card next-block" style="margin-bottom:10px" id="nc" onclick="goEx()">
 <span class="next-icon">🫀</span>
 <div class="next-label" id="nc-l">Next break in</div>
 <div class="next-time" id="nc-t">--:--</div>
 <div class="caption" id="nc-s">Tap when ready</div>
 </div>
 
-<!-- Hydration -->
-<div class="card hydro-row mb-12" onclick="logH2O()">
-<div>
-<div class="hydro-n">💧 <span id="jn">0</span></div>
-<div class="caption">glasses</div>
-</div>
-<div class="hydro-bar-wrap">
-<div class="hydro-bar" id="jf" style="width:0%"></div>
-</div>
+<div class="card hydro-row" style="margin-bottom:10px" onclick="logH2O()">
+<div><div class="hydro-n">💧 <span id="jn">0</span></div><div class="caption">glasses</div></div>
+<div class="hydro-bar-wrap"><div class="hydro-bar" id="jf" style="width:0%"></div></div>
 <button class="hydro-plus" onclick="event.stopPropagation();logH2O()">+</button>
 </div>
 
-<p class="social mb-20" id="dsoc"></p>
+<p class="social" style="margin-bottom:16px" id="dsoc"></p>
 <button class="btn btn-danger btn-sm" onclick="endFlight()">End Flight</button>
 </div>
 </div>
 </div>
 
-<!-- ══════════════════ EXERCISE ══════════════════ -->
+<!-- ═══════════ EXERCISE ═══════════ -->
 <div id="s-ex" class="scr">
-<div class="page-scroll">
-<div class="page" style="padding-top:24px">
-<div class="center mb-4">
-<div class="overline" id="exl">Checkpoint 1</div>
-</div>
-<h2 class="title center mb-20" id="exn">Ankle Circles</h2>
+<div style="flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch">
+<div style="padding:24px 24px 0;max-width:500px;margin:0 auto;width:100%">
+<div style="text-align:center;margin-bottom:4px"><div class="overline" id="exl">Checkpoint 1</div></div>
+<h2 class="title" style="text-align:center;margin-bottom:20px" id="exn">Ankle Circles</h2>
 
-<div class="ring-wrap mb-20">
-<svg viewBox="0 0 280 280">
+<div class="ring-wrap" style="margin-bottom:20px">
+<svg viewBox="0 0 260 260">
 <defs><linearGradient id="exGrad" x1="0%" y1="0%" x2="100%" y2="100%">
 <stop offset="0%" stop-color="#B388FF"/><stop offset="100%" stop-color="#CDFF4E"/></linearGradient></defs>
-<circle class="ring-bg" cx="140" cy="140" r="126"/>
-<circle class="ring-fill" id="exr" cx="140" cy="140" r="126"/>
+<circle class="ring-bg" cx="130" cy="130" r="120"/>
+<circle class="ring-fill" id="exr" cx="130" cy="130" r="120"/>
 </svg>
 <div class="ring-inner">
 <div class="ex-figure" id="exs"></div>
 </div>
 </div>
 
-<div class="ring-wrap" style="width:auto;height:auto;margin:0">
-<div class="center mb-4"><div class="ring-time accent" id="ext">60</div></div>
-<div class="center caption mb-16" id="ext-lbl">seconds</div>
-</div>
-
-<p class="body center mb-16" id="exi"></p>
-<div class="ex-why mb-24"><b>⚡ Why:</b> <span id="exw"></span></div>
+<div style="text-align:center;margin-bottom:4px"><div class="ring-time" id="ext">60</div></div>
+<div class="caption" style="text-align:center;margin-bottom:16px">seconds</div>
+<p class="body" style="text-align:center;margin-bottom:14px" id="exi"></p>
+<div class="ex-why" style="margin-bottom:24px"><b>⚡ Why:</b> <span id="exw"></span></div>
 </div>
 </div>
 <div class="bottom-actions">
@@ -624,27 +433,23 @@ z-index:800;display:none;border:1px solid var(--w05)}
 </div>
 </div>
 
-<!-- ══════════════════ SUMMARY ══════════════════ -->
+<!-- ═══════════ SUMMARY ═══════════ -->
 <div id="s-sum" class="scr">
-<div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:24px">
-<div class="page" style="padding:0">
-<div class="center mb-24">
-<div style="font-size:72px" id="sme">🎉</div>
-<h1 class="title mt-12" id="smh">Great Flight!</h1>
-<p class="body mt-4" id="sms">You protected your circulation</p>
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:24px;max-width:500px;margin:0 auto;width:100%">
+<div style="text-align:center;margin-bottom:20px">
+<div style="font-size:64px" id="sme">🎉</div>
+<h1 class="title" style="margin-top:12px" id="smh">Great Flight!</h1>
+<p class="body" style="margin-top:4px" id="sms">You protected your circulation</p>
 </div>
-
-<div class="card mb-16">
+<div class="card" style="margin-bottom:16px">
 <div class="sum-row"><span class="sum-label">Score</span><span class="sum-value accent" id="sx">0</span></div>
 <div class="sum-row"><span class="sum-label">Checkpoints</span><span class="sum-value" id="sc">0</span></div>
 <div class="sum-row"><span class="sum-label">Best Streak</span><span class="sum-value" id="ssv">0</span></div>
 <div class="sum-row"><span class="sum-label">Water</span><span class="sum-value" id="sh">0</span></div>
 <div class="sum-row"><span class="sum-label">Duration</span><span class="sum-value" id="sdu">0h</span></div>
 </div>
-
-<div class="card center mb-24"><p class="body" id="smm" style="padding:8px"></p></div>
+<div class="card" style="text-align:center;margin-bottom:24px"><p class="body" style="padding:8px" id="smm"></p></div>
 <button class="btn btn-fill" onclick="reset()">New Flight</button>
-</div>
 </div>
 </div>
 
@@ -661,51 +466,31 @@ z-index:800;display:none;border:1px solid var(--w05)}
 <!-- NOTIF -->
 <div class="notif" id="notif" onclick="handleN()">
 <div class="notif-dot"></div>
-<div class="notif-txt"><div class="notif-h" id="nh">Move now</div><div class="notif-p" id="nb">Tap to start</div></div>
+<div style="flex:1"><div class="notif-h" id="nh">Move now</div><div class="notif-p" id="nb">Tap to start</div></div>
 <button class="notif-x" onclick="event.stopPropagation();hideN()">✕</button>
 </div>
 
 <script>
-// ═══ HERO ANIMATION (starts immediately) ═══
-let heroT=0,heroRaf;
-function animHero(){
-heroT+=.02;
-const s=Math.sin(heroT*1.5),c=Math.cos(heroT);
-const legLift=Math.max(0,s)*20;
-const legLift2=Math.max(0,-s)*20;
-const armSwing=s*8;
-
-const ll=document.getElementById('legL');
-const lr=document.getElementById('legR');
-const al=document.getElementById('armL');
-const ar=document.getElementById('armR');
-
-if(ll)ll.setAttribute('transform',`translate(0,${-legLift}) rotate(${-legLift*.4},133,298)`);
-if(lr)lr.setAttribute('transform',`translate(0,${-legLift2}) rotate(${-legLift2*.4},197,298)`);
-if(al)al.setAttribute('transform',`rotate(${armSwing},130,180)`);
-if(ar)ar.setAttribute('transform',`rotate(${-armSwing},200,180)`);
-
-heroRaf=requestAnimationFrame(animHero);
-}
-animHero();
+// ═══ HERO ANIM ═══
+let ht=0,hRaf;
+function animH(){
+ht+=.025;const s=Math.sin(ht*1.5),c=Math.cos(ht);
+const a=Math.max(0,s)*16,b=Math.max(0,-s)*16;
+const ll=document.getElementById('lL'),lr=document.getElementById('lR');
+const al=document.getElementById('aL'),ar=document.getElementById('aR');
+if(ll)ll.setAttribute('transform',`translate(0,${-a}) rotate(${-a*.4},133,246)`);
+if(lr)lr.setAttribute('transform',`translate(0,${-b}) rotate(${-b*.4},187,246)`);
+if(al)al.setAttribute('transform',`rotate(${s*6},130,150)`);
+if(ar)ar.setAttribute('transform',`rotate(${-s*6},190,150)`);
+hRaf=requestAnimationFrame(animH)}
+animH();
 
 // ═══ AUDIO ═══
 let AC;
 function ga(){if(!AC)AC=new(window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();return AC}
-function tn(f,d,v=.08,t='sine',dl=0){try{const a=ga(),o=a.createOscillator(),g=a.createGain();o.type=t;o.frequency.setValueAtTime(f,a.currentTime+dl);g.gain.setValueAtTime(0,a.currentTime+dl);g.gain.linearRampToValueAtTime(v,a.currentTime+dl+.01);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+dl+d);o.connect(g);g.connect(a.destination);o.start(a.currentTime+dl);o.stop(a.currentTime+dl+d+.05)}catch(e){}}
-const SFX={
-tap:()=>{tn(800,.05,.05);tn(1100,.04,.03,'sine',.02)},
-on:()=>{tn(600,.08,.07);tn(950,.07,.05,'sine',.04)},
-off:()=>{tn(350,.06,.04)},
-go:()=>{[523,659,784,1046].forEach((f,i)=>tn(f,.12,.06,'sine',i*.07))},
-tick:()=>{tn(1200,.03,.02,'square')},
-h2o:()=>{tn(800,.08,.05);tn(1000,.1,.04,'sine',.06)},
-win:()=>{[523,659,784,1046,1318].forEach((f,i)=>tn(f,.14,.07,'sine',i*.06))},
-warn:()=>{tn(440,.15,.08,'sawtooth')},
-end:()=>{[784,659,523,659,784,1046].forEach((f,i)=>tn(f,.12,.06,'sine',i*.08))}
-};
-const HX={tap:()=>vb([6]),sel:()=>vb([10,5,10]),ok:()=>vb([15,8,15,8,30]),
-warn:()=>vb([20,10,20]),win:()=>vb([10,6,10,6,10,6,40]),h2o:()=>vb([8,4,14]),tick:()=>vb([3])};
+function tn(f,d,v=.07,t='sine',dl=0){try{const a=ga(),o=a.createOscillator(),g=a.createGain();o.type=t;o.frequency.setValueAtTime(f,a.currentTime+dl);g.gain.setValueAtTime(0,a.currentTime+dl);g.gain.linearRampToValueAtTime(v,a.currentTime+dl+.01);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+dl+d);o.connect(g);g.connect(a.destination);o.start(a.currentTime+dl);o.stop(a.currentTime+dl+d+.05)}catch(e){}}
+const SFX={tap:()=>{tn(800,.05,.05);tn(1100,.04,.03,'sine',.02)},on:()=>{tn(600,.08,.06);tn(950,.07,.04,'sine',.04)},off:()=>{tn(350,.06,.03)},go:()=>{[523,659,784,1046].forEach((f,i)=>tn(f,.12,.05,'sine',i*.07))},tick:()=>{tn(1200,.03,.02,'square')},h2o:()=>{tn(800,.08,.04);tn(1000,.1,.03,'sine',.06)},win:()=>{[523,659,784,1046,1318].forEach((f,i)=>tn(f,.12,.06,'sine',i*.06))},warn:()=>{tn(440,.15,.07,'sawtooth')},end:()=>{[784,659,523,659,784,1046].forEach((f,i)=>tn(f,.1,.05,'sine',i*.08))}};
+const HX={tap:()=>vb([6]),sel:()=>vb([10,5,10]),ok:()=>vb([15,8,15,8,30]),warn:()=>vb([20,10,20]),win:()=>vb([10,6,10,6,10,6,40]),h2o:()=>vb([8,4,14]),tick:()=>vb([3])};
 function vb(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
 
 // ═══ STATE ═══
@@ -713,180 +498,90 @@ let S={dur:4,risks:[],intv:90,start:null,cps:[],done:0,cur:0,streak:0,best:0,xp:
 
 // ═══ EXERCISES ═══
 const EX=[
-{n:'Ankle Circles',d:60,i:'Lift one foot, trace slow wide circles. Switch halfway.',
-w:'Ankle rotation activates your calf muscle pump — pushing pooled blood back to your heart.',svg:svA},
-{n:'Calf Raises',d:60,i:'Feet flat, raise heels high, lower slowly. Repeat.',
-w:'Calf contractions squeeze deep leg veins, creating the body\'s most powerful venous pump.',svg:svC},
-{n:'Seated March',d:75,i:'Alternate lifting knees toward your chest in a steady rhythm.',
-w:'Hip flexion activates large thigh muscles, improving blood return from your legs.',svg:svM},
-{n:'Toe Raises',d:60,i:'Heels down, pull toes up toward shin. Hold 2s, release.',
-w:'Engages the anterior tibialis to drive circulation through the front of your lower leg.',svg:svT},
-{n:'Foot Pumps',d:60,i:'Point toes down, then flex up — like pressing a gas pedal.',
-w:'Alternating calf and shin activation creates comprehensive pumping through both legs.',svg:svP},
-{n:'Knee Extensions',d:75,i:'Extend one leg straight, hold 3s, lower. Alternate.',
-w:'Quad contraction with elevation uses gravity to drain pooled blood from your calves.',svg:svK}
-];
+{n:'Ankle Circles',d:60,i:'Lift one foot, trace slow wide circles. Switch halfway.',w:'Ankle rotation activates your calf muscle pump — pushing pooled blood back to your heart.',svg:svA},
+{n:'Calf Raises',d:60,i:'Feet flat, raise heels high, lower slowly. Repeat.',w:'Calf contractions squeeze deep leg veins — the body\'s most powerful venous pump.',svg:svC},
+{n:'Seated March',d:75,i:'Alternate lifting knees toward chest in a steady rhythm.',w:'Hip flexion activates large thigh muscles, improving blood return from your legs.',svg:svM},
+{n:'Toe Raises',d:60,i:'Heels down, pull toes up toward shin. Hold 2s, release.',w:'Engages the anterior tibialis to drive circulation through the front of your lower leg.',svg:svT},
+{n:'Foot Pumps',d:60,i:'Point toes down, then flex up — like pressing a gas pedal.',w:'Alternating calf and shin activation creates comprehensive pumping through both legs.',svg:svP},
+{n:'Knee Extensions',d:75,i:'Extend one leg straight, hold 3s, lower. Alternate.',w:'Quad contraction with elevation uses gravity to drain pooled blood from your calves.',svg:svK}];
 
-function svA(){return`<svg viewBox="0 0 200 200"><line x1="100" y1="20" x2="100" y2="80" stroke="rgba(255,255,255,.2)" stroke-width="6" stroke-linecap="round"/><circle cx="100" cy="85" r="6" fill="rgba(255,255,255,.15)"/><g id="af"><line x1="100" y1="85" x2="100" y2="140" stroke="#CDFF4E" stroke-width="6" stroke-linecap="round"/><line x1="100" y1="140" x2="125" y2="165" stroke="#CDFF4E" stroke-width="5" stroke-linecap="round"/><circle cx="130" cy="170" r="6" fill="#CDFF4E" opacity=".6"/></g><circle cx="100" cy="100" r="35" fill="none" stroke="rgba(205,255,78,.08)" stroke-width="1" stroke-dasharray="4 4"/></svg>`}
-function svC(){return`<svg viewBox="0 0 200 200"><rect x="40" y="10" width="120" height="14" rx="6" fill="rgba(255,255,255,.06)"/><line x1="70" y1="24" x2="70" y2="90" stroke="rgba(255,255,255,.2)" stroke-width="6" stroke-linecap="round"/><line x1="130" y1="24" x2="130" y2="90" stroke="rgba(255,255,255,.2)" stroke-width="6" stroke-linecap="round"/><line x1="70" y1="95" x2="70" y2="145" stroke="#CDFF4E" stroke-width="6" stroke-linecap="round"/><line x1="130" y1="95" x2="130" y2="145" stroke="#CDFF4E" stroke-width="6" stroke-linecap="round"/><g id="ch"><ellipse cx="70" cy="160" rx="16" ry="7" fill="#CDFF4E" opacity=".7"/><ellipse cx="130" cy="160" rx="16" ry="7" fill="#CDFF4E" opacity=".7"/></g></svg>`}
-function svM(){return`<svg viewBox="0 0 200 200"><rect x="15" y="10" width="170" height="14" rx="5" fill="rgba(255,255,255,.06)"/><circle cx="100" cy="50" r="16" fill="#FFCC80"/><circle cx="93" cy="46" r="2" fill="#1a1a1a"/><circle cx="107" cy="46" r="2" fill="#1a1a1a"/><line x1="100" y1="66" x2="100" y2="100" stroke="#64B5F6" stroke-width="8" stroke-linecap="round"/><g id="ml"><line x1="92" y1="100" x2="70" y2="138" stroke="#CDFF4E" stroke-width="5" stroke-linecap="round"/><line x1="70" y1="138" x2="64" y2="170" stroke="#CDFF4E" stroke-width="5" stroke-linecap="round"/></g><g id="mr"><line x1="108" y1="100" x2="130" y2="138" stroke="#CDFF4E" stroke-width="5" stroke-linecap="round"/><line x1="130" y1="138" x2="136" y2="170" stroke="#CDFF4E" stroke-width="5" stroke-linecap="round"/></g></svg>`}
-function svT(){return`<svg viewBox="0 0 200 200"><line x1="100" y1="15" x2="100" y2="80" stroke="rgba(255,255,255,.2)" stroke-width="6" stroke-linecap="round"/><circle cx="100" cy="85" r="6" fill="rgba(255,255,255,.15)"/><line x1="100" y1="85" x2="100" y2="135" stroke="#CDFF4E" stroke-width="6" stroke-linecap="round"/><g id="tf"><line x1="100" y1="135" x2="75" y2="165" stroke="#CDFF4E" stroke-width="5" stroke-linecap="round"/><circle cx="70" cy="170" r="7" fill="#CDFF4E" opacity=".6"/></g></svg>`}
-function svP(){return`<svg viewBox="0 0 200 200"><line x1="100" y1="15" x2="100" y2="75" stroke="rgba(255,255,255,.2)" stroke-width="6" stroke-linecap="round"/><circle cx="100" cy="80" r="6" fill="rgba(255,255,255,.15)"/><line x1="100" y1="80" x2="100" y2="125" stroke="#CDFF4E" stroke-width="6" stroke-linecap="round"/><g id="pf"><line x1="100" y1="125" x2="130" y2="150" stroke="#CDFF4E" stroke-width="5" stroke-linecap="round"/><line x1="130" y1="150" x2="150" y2="152" stroke="#CDFF4E" stroke-width="4" stroke-linecap="round"/></g></svg>`}
-function svK(){return`<svg viewBox="0 0 200 200"><rect x="10" y="10" width="180" height="14" rx="5" fill="rgba(255,255,255,.06)"/><circle cx="100" cy="50" r="16" fill="#FFCC80"/><circle cx="93" cy="46" r="2" fill="#1a1a1a"/><circle cx="107" cy="46" r="2" fill="#1a1a1a"/><line x1="100" y1="66" x2="100" y2="100" stroke="#64B5F6" stroke-width="8" stroke-linecap="round"/><line x1="88" y1="100" x2="65" y2="140" stroke="rgba(255,255,255,.2)" stroke-width="5" stroke-linecap="round"/><line x1="65" y1="140" x2="58" y2="170" stroke="rgba(255,255,255,.2)" stroke-width="5" stroke-linecap="round"/><g id="ke"><line x1="112" y1="100" x2="142" y2="115" stroke="#CDFF4E" stroke-width="5" stroke-linecap="round"/><line x1="142" y1="115" x2="170" y2="113" stroke="#CDFF4E" stroke-width="5" stroke-linecap="round"/><circle cx="175" cy="113" r="5" fill="#CDFF4E" opacity=".6"/></g></svg>`}
+function svA(){return`<svg viewBox="0 0 160 160"><line x1="80" y1="15" x2="80" y2="65" stroke="rgba(255,255,255,.2)" stroke-width="5" stroke-linecap="round"/><circle cx="80" cy="70" r="5" fill="rgba(255,255,255,.15)"/><g id="af"><line x1="80" y1="70" x2="80" y2="115" stroke="#CDFF4E" stroke-width="5" stroke-linecap="round"/><line x1="80" y1="115" x2="102" y2="138" stroke="#CDFF4E" stroke-width="4" stroke-linecap="round"/><circle cx="106" cy="142" r="5" fill="#CDFF4E" opacity=".6"/></g><circle cx="80" cy="85" r="28" fill="none" stroke="rgba(205,255,78,.08)" stroke-width="1" stroke-dasharray="4 4"/></svg>`}
+function svC(){return`<svg viewBox="0 0 160 160"><rect x="35" y="8" width="90" height="12" rx="5" fill="rgba(255,255,255,.05)"/><line x1="58" y1="20" x2="58" y2="75" stroke="rgba(255,255,255,.2)" stroke-width="5" stroke-linecap="round"/><line x1="102" y1="20" x2="102" y2="75" stroke="rgba(255,255,255,.2)" stroke-width="5" stroke-linecap="round"/><line x1="58" y1="80" x2="58" y2="120" stroke="#CDFF4E" stroke-width="5" stroke-linecap="round"/><line x1="102" y1="80" x2="102" y2="120" stroke="#CDFF4E" stroke-width="5" stroke-linecap="round"/><g id="ch"><ellipse cx="58" cy="134" rx="14" ry="6" fill="#CDFF4E" opacity=".7"/><ellipse cx="102" cy="134" rx="14" ry="6" fill="#CDFF4E" opacity=".7"/></g></svg>`}
+function svM(){return`<svg viewBox="0 0 160 160"><rect x="10" y="8" width="140" height="12" rx="4" fill="rgba(255,255,255,.05)"/><circle cx="80" cy="40" r="13" fill="#FFCC80"/><circle cx="74" cy="37" r="2" fill="#111"/><circle cx="86" cy="37" r="2" fill="#111"/><line x1="80" y1="53" x2="80" y2="82" stroke="#64B5F6" stroke-width="7" stroke-linecap="round"/><g id="ml"><line x1="74" y1="82" x2="56" y2="114" stroke="#CDFF4E" stroke-width="5" stroke-linecap="round"/><line x1="56" y1="114" x2="50" y2="140" stroke="#CDFF4E" stroke-width="4" stroke-linecap="round"/></g><g id="mr"><line x1="86" y1="82" x2="104" y2="114" stroke="#CDFF4E" stroke-width="5" stroke-linecap="round"/><line x1="104" y1="114" x2="110" y2="140" stroke="#CDFF4E" stroke-width="4" stroke-linecap="round"/></g></svg>`}
+function svT(){return`<svg viewBox="0 0 160 160"><line x1="80" y1="12" x2="80" y2="65" stroke="rgba(255,255,255,.2)" stroke-width="5" stroke-linecap="round"/><circle cx="80" cy="70" r="5" fill="rgba(255,255,255,.15)"/><line x1="80" y1="70" x2="80" y2="112" stroke="#CDFF4E" stroke-width="5" stroke-linecap="round"/><g id="tf"><line x1="80" y1="112" x2="60" y2="140" stroke="#CDFF4E" stroke-width="4" stroke-linecap="round"/><circle cx="56" cy="144" r="6" fill="#CDFF4E" opacity=".6"/></g></svg>`}
+function svP(){return`<svg viewBox="0 0 160 160"><line x1="80" y1="12" x2="80" y2="62" stroke="rgba(255,255,255,.2)" stroke-width="5" stroke-linecap="round"/><circle cx="80" cy="66" r="5" fill="rgba(255,255,255,.15)"/><line x1="80" y1="66" x2="80" y2="105" stroke="#CDFF4E" stroke-width="5" stroke-linecap="round"/><g id="pf"><line x1="80" y1="105" x2="108" y2="128" stroke="#CDFF4E" stroke-width="4.5" stroke-linecap="round"/><line x1="108" y1="128" x2="126" y2="130" stroke="#CDFF4E" stroke-width="3.5" stroke-linecap="round"/></g></svg>`}
+function svK(){return`<svg viewBox="0 0 160 160"><rect x="8" y="8" width="144" height="12" rx="4" fill="rgba(255,255,255,.05)"/><circle cx="80" cy="40" r="13" fill="#FFCC80"/><circle cx="74" cy="37" r="2" fill="#111"/><circle cx="86" cy="37" r="2" fill="#111"/><line x1="80" y1="53" x2="80" y2="82" stroke="#64B5F6" stroke-width="7" stroke-linecap="round"/><line x1="72" y1="82" x2="55" y2="118" stroke="rgba(255,255,255,.2)" stroke-width="5" stroke-linecap="round"/><line x1="55" y1="118" x2="50" y2="140" stroke="rgba(255,255,255,.2)" stroke-width="4" stroke-linecap="round"/><g id="ke"><line x1="88" y1="82" x2="115" y2="96" stroke="#CDFF4E" stroke-width="5" stroke-linecap="round"/><line x1="115" y1="96" x2="140" y2="94" stroke="#CDFF4E" stroke-width="4" stroke-linecap="round"/><circle cx="144" cy="94" r="4" fill="#CDFF4E" opacity=".6"/></g></svg>`}
 
 let at=0;
 function startA(i){at=0;cancelA();function loop(){at+=.035;const s=Math.sin(at);
 switch(i%EX.length){
-case 0:{const e=document.getElementById('af');if(e)e.setAttribute('transform',`translate(${Math.cos(at*2)*18},${Math.sin(at*2)*14})`);break}
-case 1:{const e=document.getElementById('ch');if(e)e.setAttribute('transform',`translate(0,${-Math.max(0,s)*24})`);break}
-case 2:{const l=document.getElementById('ml'),r=document.getElementById('mr');if(l&&r){const a=Math.max(0,s)*28,b=Math.max(0,-s)*28;l.setAttribute('transform',`translate(0,${-a}) rotate(${a*.6},92,100)`);r.setAttribute('transform',`translate(0,${-b}) rotate(${-b*.6},108,100)`);}break}
-case 3:{const e=document.getElementById('tf');if(e)e.setAttribute('transform',`rotate(${-Math.max(0,s)*40},100,135)`);break}
-case 4:{const e=document.getElementById('pf');if(e)e.setAttribute('transform',`rotate(${s*35},100,125)`);break}
-case 5:{const e=document.getElementById('ke');if(e)e.setAttribute('transform',`rotate(${-((Math.sin(at*1.5)+1)/2)*45},112,100)`);break}
-}S.exAR=requestAnimationFrame(loop)}loop()}
+case 0:{const e=document.getElementById('af');if(e)e.setAttribute('transform',`translate(${Math.cos(at*2)*16},${Math.sin(at*2)*12})`);break}
+case 1:{const e=document.getElementById('ch');if(e)e.setAttribute('transform',`translate(0,${-Math.max(0,s)*22})`);break}
+case 2:{const l=document.getElementById('ml'),r=document.getElementById('mr');if(l&&r){const a=Math.max(0,s)*24,b=Math.max(0,-s)*24;l.setAttribute('transform',`translate(0,${-a}) rotate(${a*.6},74,82)`);r.setAttribute('transform',`translate(0,${-b}) rotate(${-b*.6},86,82)`);}break}
+case 3:{const e=document.getElementById('tf');if(e)e.setAttribute('transform',`rotate(${-Math.max(0,s)*38},80,112)`);break}
+case 4:{const e=document.getElementById('pf');if(e)e.setAttribute('transform',`rotate(${s*32},80,105)`);break}
+case 5:{const e=document.getElementById('ke');if(e)e.setAttribute('transform',`rotate(${-((Math.sin(at*1.5)+1)/2)*42},88,82)`);break}}
+S.exAR=requestAnimationFrame(loop)}loop()}
 function cancelA(){if(S.exAR){cancelAnimationFrame(S.exAR);S.exAR=null}}
 
-const CELEBS=[
-{e:'🔥',t:'On Fire!',s:'Circulation pumping strong'},
-{e:'⚡',t:'Electric!',s:'Fresh blood flowing through'},
-{e:'💪',t:'Beast Mode!',s:'Your veins love this'},
-{e:'🫀',t:'Heart Happy!',s:'Cardiovascular system thanks you'},
-{e:'🌟',t:'Stellar!',s:'Top-tier protection'},
-{e:'🚀',t:'Liftoff!',s:'DVT doesn\'t stand a chance'},
-{e:'🏆',t:'Champion!',s:'In-flight wellness mastered'},
-{e:'💫',t:'Incredible!',s:'Your legs will thank you'},
-{e:'🎯',t:'Bullseye!',s:'Precision health at altitude'},
-{e:'👑',t:'Royalty!',s:'Flying like wellness royalty'}];
+const CELEBS=[{e:'🔥',t:'On Fire!',s:'Circulation pumping strong'},{e:'⚡',t:'Electric!',s:'Fresh blood flowing'},{e:'💪',t:'Beast Mode!',s:'Your veins love this'},{e:'🫀',t:'Heart Happy!',s:'Cardiovascular thanks you'},{e:'🌟',t:'Stellar!',s:'Top protection'},{e:'🚀',t:'Liftoff!',s:'DVT doesn\'t stand a chance'},{e:'🏆',t:'Champion!',s:'Wellness mastered'},{e:'💫',t:'Incredible!',s:'Legs will thank you'},{e:'🎯',t:'Bullseye!',s:'Precision health'},{e:'👑',t:'Royalty!',s:'Flying like royalty'}];
 
 // ═══ ROUTER ═══
 let curS='s-home';
-function show(id){
-const c=document.getElementById(curS),n=document.getElementById(id);
-if(c===n)return;
-c.classList.add('out-l');c.classList.remove('on');
-setTimeout(()=>c.classList.remove('out-l'),500);
-n.classList.add('on');curS=id;HX.tap();
-// Stop hero anim when leaving home
-if(id!=='s-home'&&heroRaf){cancelAnimationFrame(heroRaf);heroRaf=null}
-if(id==='s-home'&&!heroRaf)animHero();
-}
+function show(id){const c=document.getElementById(curS),n=document.getElementById(id);
+if(c===n)return;c.classList.add('out-l');c.classList.remove('on');
+setTimeout(()=>c.classList.remove('out-l'),500);n.classList.add('on');curS=id;HX.tap();
+if(id!=='s-home'&&hRaf){cancelAnimationFrame(hRaf);hRaf=null}
+if(id==='s-home'&&!hRaf)animH()}
 
 // ═══ ONBOARD ═══
-document.getElementById('chips').addEventListener('click',e=>{
-const c=e.target.closest('.chip');if(!c)return;c.classList.toggle('on');
-const r=c.dataset.r;
-if(S.risks.includes(r)){S.risks=S.risks.filter(x=>x!==r);SFX.off();HX.tap()}
-else{S.risks.push(r);SFX.on();HX.sel()}});
+document.getElementById('chips').addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c)return;c.classList.toggle('on');
+const r=c.dataset.r;if(S.risks.includes(r)){S.risks=S.risks.filter(x=>x!==r);SFX.off();HX.tap()}else{S.risks.push(r);SFX.on();HX.sel()}});
 
-function dur(d){S.dur=Math.max(1,Math.min(20,S.dur+d));
-const el=document.getElementById('dv');el.textContent=S.dur;
-el.classList.add('pop');setTimeout(()=>el.classList.remove('pop'),400);
-SFX.tap();HX.tap()}
+function dur(d){S.dur=Math.max(1,Math.min(20,S.dur+d));const el=document.getElementById('dv');el.textContent=S.dur;el.classList.add('pop');setTimeout(()=>el.classList.remove('pop'),400);SFX.tap();HX.tap()}
 
 function calcI(){const n=S.risks.length;return n===0?90:n<=2?60:45}
-function buildCP(){const t=S.dur*60,iv=S.intv,c=[];let m=iv;
-while(m<t){c.push({t:m,done:false,ei:c.length%EX.length});m+=iv}return c}
+function buildCP(){const t=S.dur*60,iv=S.intv,c=[];let m=iv;while(m<t){c.push({t:m,done:false,ei:c.length%EX.length});m+=iv}return c}
 
-function goTip(){S.intv=calcI();S.cps=buildCP();S.start=Date.now();
-S.done=0;S.cur=0;S.streak=0;S.best=0;S.xp=0;S.water=0;
-saveS();reqNP();SFX.go();HX.ok();show('s-tip')}
-
-function goCommit(){
-document.getElementById('ctxt').innerHTML=`Move every <em>${S.intv} min</em> · ${S.cps.length} breaks · <em>${S.dur}h flight</em>`;
-const b=Math.max(3,S.cps.length-1);
-document.getElementById('stxt').textContent=`Most travelers do ${b}–${b+1} breaks on flights this long.`;
-SFX.tap();HX.tap();show('s-commit')}
-
+function goTip(){S.intv=calcI();S.cps=buildCP();S.start=Date.now();S.done=0;S.cur=0;S.streak=0;S.best=0;S.xp=0;S.water=0;saveS();reqNP();SFX.go();HX.ok();show('s-tip')}
+function goCommit(){document.getElementById('ctxt').innerHTML=`Move every <em>${S.intv} min</em> · ${S.cps.length} breaks · <em>${S.dur}h flight</em>`;const b=Math.max(3,S.cps.length-1);document.getElementById('stxt').textContent=`Most travelers do ${b}–${b+1} breaks on flights this long.`;SFX.tap();HX.tap();show('s-commit')}
 function goDash(){S.phase='dash';saveS();SFX.go();HX.win();show('s-dash');updateD();startM()}
 
 // ═══ DASHBOARD ═══
-function updateD(){
-const now=Date.now(),el=now-S.start,tot=S.dur*3600000;
-let p=Math.min(1,el/tot);if(S.done>0&&p<.93)p=Math.min(.97,p+.012*S.done);
-document.getElementById('wf').style.width=(p*100)+'%';
-const em=Math.floor(el/60000),eh=Math.floor(em/60),emm=em%60;
-document.getElementById('el-l').textContent=`${eh}h ${String(emm).padStart(2,'0')}m`;
-document.getElementById('ll').textContent=`${S.dur}h`;
-const dc=document.getElementById('wdots');dc.innerHTML='';
-S.cps.forEach((c,i)=>{const pct=(c.t/(S.dur*60))*100,d=document.createElement('div');
-d.className='tl-dot'+(c.done?' done':i===S.cur?' now':'');d.style.left=pct+'%';dc.appendChild(d)});
-document.getElementById('sd').textContent=S.done;
-document.getElementById('sr').textContent=Math.max(0,S.cps.length-S.done);
-document.getElementById('dxp').textContent=S.xp;
-if(S.streak>=2){document.getElementById('stk-w').style.display='block';document.getElementById('stk-n').textContent=S.streak}
-else document.getElementById('stk-w').style.display='none';
-document.getElementById('jf').style.width=Math.min(100,(S.water/8)*100)+'%';
-document.getElementById('jn').textContent=S.water;
-updateNC();
-const sp=document.getElementById('dsoc');
-if(S.done===0){const b=Math.max(3,S.cps.length-1);sp.textContent=`Most travelers do ${b}–${b+1} breaks.`}
-else if(S.done<S.cps.length)sp.textContent=`${S.done}/${S.cps.length} done — veins protected.`;
-else sp.textContent=`All ${S.cps.length} complete. Outstanding.`}
+function updateD(){const now=Date.now(),el=now-S.start,tot=S.dur*3600000;let p=Math.min(1,el/tot);if(S.done>0&&p<.93)p=Math.min(.97,p+.012*S.done);document.getElementById('wf').style.width=(p*100)+'%';const em=Math.floor(el/60000),eh=Math.floor(em/60),emm=em%60;document.getElementById('el-l').textContent=`${eh}h ${String(emm).padStart(2,'0')}m`;document.getElementById('ll').textContent=`${S.dur}h`;
+const dc=document.getElementById('wdots');dc.innerHTML='';S.cps.forEach((c,i)=>{const pct=(c.t/(S.dur*60))*100,d=document.createElement('div');d.className='tl-dot'+(c.done?' done':i===S.cur?' now':'');d.style.left=pct+'%';dc.appendChild(d)});
+document.getElementById('sd').textContent=S.done;document.getElementById('sr').textContent=Math.max(0,S.cps.length-S.done);document.getElementById('dxp').textContent=S.xp;
+if(S.streak>=2){document.getElementById('stk-w').style.display='block';document.getElementById('stk-n').textContent=S.streak}else document.getElementById('stk-w').style.display='none';
+document.getElementById('jf').style.width=Math.min(100,(S.water/8)*100)+'%';document.getElementById('jn').textContent=S.water;updateNC();
+const sp=document.getElementById('dsoc');if(S.done===0){const b=Math.max(3,S.cps.length-1);sp.textContent=`Most travelers do ${b}–${b+1} breaks.`}else if(S.done<S.cps.length)sp.textContent=`${S.done}/${S.cps.length} done — veins protected.`;else sp.textContent=`All ${S.cps.length} complete. Outstanding.`}
 
 let lastAl=-1;
 function updateNC(){const cp=S.cps[S.cur],t=document.getElementById('nc-t'),l=document.getElementById('nc-l'),s=document.getElementById('nc-s');
 if(!cp||S.cur>=S.cps.length){t.textContent='✓';l.textContent='All done';s.textContent='Great job';return}
 const rem=(cp.t*60000)-(Date.now()-S.start);
-if(rem<=0){t.textContent='NOW';l.textContent='Protect your circulation';s.textContent='Tap to start';
-if(rem>-5000&&lastAl!==S.cur){lastAl=S.cur;trigAl(S.cur)}}
-else{const rm=Math.floor(rem/60000),rs=Math.floor((rem%60000)/1000);
-t.textContent=`${rm}:${String(rs).padStart(2,'0')}`;l.textContent='Next break in';
-s.textContent=rem<120000?'Almost time':'Tap when ready'}}
+if(rem<=0){t.textContent='NOW';l.textContent='Protect your circulation';s.textContent='Tap to start';if(rem>-5000&&lastAl!==S.cur){lastAl=S.cur;trigAl(S.cur)}}
+else{const rm=Math.floor(rem/60000),rs=Math.floor((rem%60000)/1000);t.textContent=`${rm}:${String(rs).padStart(2,'0')}`;l.textContent='Next break in';s.textContent=rem<120000?'Almost time':'Tap when ready'}}
 
-function startM(){if(S.mainR)clearInterval(S.mainR);
-S.mainR=setInterval(()=>{if(S.phase==='dash')updateD();
-if(Date.now()-S.start>=S.dur*3600000)endFlight()},1000)}
+function startM(){if(S.mainR)clearInterval(S.mainR);S.mainR=setInterval(()=>{if(S.phase==='dash')updateD();if(Date.now()-S.start>=S.dur*3600000)endFlight()},1000)}
 
 // ═══ EXERCISE ═══
-function goEx(){const cp=S.cps[S.cur];if(!cp)return;const ex=EX[cp.ei];
-S.exT=ex.d;S.exOn=false;
-document.getElementById('exl').textContent=`Checkpoint ${S.cur+1}/${S.cps.length}`;
-document.getElementById('exn').textContent=ex.n;
-document.getElementById('exi').textContent=ex.i;
-document.getElementById('exw').textContent=ex.w;
-document.getElementById('ext').textContent=ex.d;
-document.getElementById('exb').textContent='Start';
-document.getElementById('exr').style.strokeDashoffset='791.68';
-document.getElementById('exs').innerHTML=ex.svg();
-S.phase='ex';saveS();SFX.tap();HX.tap();show('s-ex')}
+function goEx(){const cp=S.cps[S.cur];if(!cp)return;const ex=EX[cp.ei];S.exT=ex.d;S.exOn=false;
+document.getElementById('exl').textContent=`Checkpoint ${S.cur+1}/${S.cps.length}`;document.getElementById('exn').textContent=ex.n;document.getElementById('exi').textContent=ex.i;document.getElementById('exw').textContent=ex.w;document.getElementById('ext').textContent=ex.d;document.getElementById('exb').textContent='Start';document.getElementById('exr').style.strokeDashoffset='753.98';document.getElementById('exs').innerHTML=ex.svg();S.phase='ex';saveS();SFX.tap();HX.tap();show('s-ex')}
 
-function toggleEx(){if(S.exOn){S.exOn=false;clearInterval(S.exTR);cancelA();
-document.getElementById('exb').textContent='Resume';SFX.tap();HX.tap()}
-else{S.exOn=true;document.getElementById('exb').textContent='Pause';SFX.tap();HX.sel();
-const cp=S.cps[S.cur],ex=EX[cp.ei];startA(cp.ei);
-S.exTR=setInterval(()=>{S.exT--;document.getElementById('ext').textContent=S.exT;
-document.getElementById('exr').style.strokeDashoffset=791.68*(S.exT/ex.d);
-if(S.exT%10===0&&S.exT>0){SFX.tick();HX.tick()}
-if(S.exT<=3&&S.exT>0){SFX.tick();HX.tap()}
-if(S.exT<=0){clearInterval(S.exTR);cancelA();compCP()}},1000)}}
+function toggleEx(){if(S.exOn){S.exOn=false;clearInterval(S.exTR);cancelA();document.getElementById('exb').textContent='Resume';SFX.tap();HX.tap()}
+else{S.exOn=true;document.getElementById('exb').textContent='Pause';SFX.tap();HX.sel();const cp=S.cps[S.cur],ex=EX[cp.ei];startA(cp.ei);
+S.exTR=setInterval(()=>{S.exT--;document.getElementById('ext').textContent=S.exT;document.getElementById('exr').style.strokeDashoffset=753.98*(S.exT/ex.d);if(S.exT%10===0&&S.exT>0){SFX.tick();HX.tick()}if(S.exT<=3&&S.exT>0){SFX.tick();HX.tap()}if(S.exT<=0){clearInterval(S.exTR);cancelA();compCP()}},1000)}}
 
-function skipEx(){clearInterval(S.exTR);cancelA();S.exOn=false;
-S.xp+=10;S.cps[S.cur].done=true;S.done++;S.streak=0;S.cur++;saveS();
-SFX.tap();HX.tap();S.phase='dash';show('s-dash');updateD()}
+function skipEx(){clearInterval(S.exTR);cancelA();S.exOn=false;S.xp+=10;S.cps[S.cur].done=true;S.done++;S.streak=0;S.cur++;saveS();SFX.tap();HX.tap();S.phase='dash';show('s-dash');updateD()}
 
-function compCP(){S.cps[S.cur].done=true;S.done++;S.streak++;
-if(S.streak>S.best)S.best=S.streak;
-let xp=25;if(S.streak>=3)xp+=10;if(S.streak>=5)xp+=20;if(S.water>=3)xp+=5;
-S.xp+=xp;S.cur++;saveS();SFX.win();HX.win();showCeleb(xp)}
+function compCP(){S.cps[S.cur].done=true;S.done++;S.streak++;if(S.streak>S.best)S.best=S.streak;let xp=25;if(S.streak>=3)xp+=10;if(S.streak>=5)xp+=20;if(S.water>=3)xp+=5;S.xp+=xp;S.cur++;saveS();SFX.win();HX.win();showCeleb(xp)}
 
-function showCeleb(xp){const c=CELEBS[Math.floor(Math.random()*CELEBS.length)];
-document.getElementById('ce').textContent=c.e;document.getElementById('cH').textContent=c.t;
-let sub=c.s;if(S.streak>=3)sub+=` · ${S.streak} streak 🔥`;
-document.getElementById('cP').textContent=sub;document.getElementById('cX').textContent=`+${xp} XP`;
-mkSparks();document.getElementById('celeb').classList.add('on');xpF(`+${xp}`)}
+function showCeleb(xp){const c=CELEBS[Math.floor(Math.random()*CELEBS.length)];document.getElementById('ce').textContent=c.e;document.getElementById('cH').textContent=c.t;let sub=c.s;if(S.streak>=3)sub+=` · ${S.streak} streak 🔥`;document.getElementById('cP').textContent=sub;document.getElementById('cX').textContent=`+${xp} XP`;mkSparks();document.getElementById('celeb').classList.add('on');xpF(`+${xp}`)}
 function closeC(){document.getElementById('celeb').classList.remove('on');S.phase='dash';show('s-dash');updateD();SFX.tap();HX.tap()}
 
-function mkSparks(){const p=document.getElementById('sparks');p.innerHTML='';
-const cols=['#CDFF4E','#64B5F6','#FF6B6B','#FFB74D','#B388FF','#5eead4'];
-for(let i=0;i<30;i++){const e=document.createElement('div');e.className='ptcl';
-const tx=(Math.random()-.5)*500,ty=-(Math.random()*400+100);
-e.style.cssText=`left:50%;top:50%;background:${cols[i%cols.length]};
---tx:${tx}px;--ty:${ty}px;width:${4+Math.random()*6}px;height:${4+Math.random()*6}px;
-animation-delay:${Math.random()*.3}s;animation-duration:${.8+Math.random()*.7}s;
-border-radius:${Math.random()>.5?'50%':'2px'}`;p.appendChild(e)}}
+function mkSparks(){const p=document.getElementById('sparks');p.innerHTML='';const cols=['#CDFF4E','#64B5F6','#FF6B6B','#FFB74D','#B388FF','#5eead4'];for(let i=0;i<30;i++){const e=document.createElement('div');e.className='ptcl';const tx=(Math.random()-.5)*500,ty=-(Math.random()*400+100);e.style.cssText=`left:50%;top:50%;background:${cols[i%cols.length]};--tx:${tx}px;--ty:${ty}px;width:${4+Math.random()*6}px;height:${4+Math.random()*6}px;animation-delay:${Math.random()*.3}s;animation-duration:${.8+Math.random()*.7}s;border-radius:${Math.random()>.5?'50%':'2px'}`;p.appendChild(e)}}
 
-function xpF(t){const e=document.createElement('div');e.className='xpf';e.textContent=t;e.style.top='45%';
-document.body.appendChild(e);setTimeout(()=>e.remove(),800)}
+function xpF(t){const e=document.createElement('div');e.className='xpf';e.textContent=t;e.style.top='45%';document.body.appendChild(e);setTimeout(()=>e.remove(),800)}
 
 // ═══ HYDRATION ═══
 function logH2O(){S.water++;S.xp+=5;saveS();updateD();SFX.h2o();HX.h2o();xpF('+5 💧')}
@@ -894,63 +589,35 @@ function logH2O(){S.water++;S.xp+=5;saveS();updateD();SFX.h2o();HX.h2o();xpF('+5
 // ═══ NOTIFS ═══
 let nP='default';function reqNP(){if('Notification'in window)Notification.requestPermission().then(p=>nP=p)}
 const alertM=['Protect your circulation','Time to move','Keep blood flowing','Activate circulation'];
-function trigAl(i){const m=alertM[i%alertM.length];
-if(nP==='granted'&&document.hidden)try{new Notification('Circulate',{body:m})}catch(e){}
-showN(m,'Tap to start');SFX.warn();HX.warn()}
-let nTO;function showN(t,b){document.getElementById('nh').textContent=t;document.getElementById('nb').textContent=b;
-document.getElementById('notif').classList.add('on');clearTimeout(nTO);nTO=setTimeout(hideN,8000)}
+function trigAl(i){const m=alertM[i%alertM.length];if(nP==='granted'&&document.hidden)try{new Notification('Circulate',{body:m})}catch(e){}showN(m,'Tap to start');SFX.warn();HX.warn()}
+let nTO;function showN(t,b){document.getElementById('nh').textContent=t;document.getElementById('nb').textContent=b;document.getElementById('notif').classList.add('on');clearTimeout(nTO);nTO=setTimeout(hideN,8000)}
 function hideN(){document.getElementById('notif').classList.remove('on')}
 function handleN(){hideN();if(S.phase==='dash')goEx()}
 
 // ═══ END ═══
-function endFlight(){if(S.mainR)clearInterval(S.mainR);S.phase='sum';saveS();
-const r=S.cps.length>0?S.done/S.cps.length:0;
-document.getElementById('sx').textContent=S.xp+' XP';
-document.getElementById('sc').textContent=`${S.done}/${S.cps.length}`;
-document.getElementById('ssv').textContent=`${S.best} 🔥`;
-document.getElementById('sh').textContent=`${S.water} 💧`;
-document.getElementById('sdu').textContent=`${S.dur}h`;
-if(r>=.8){document.getElementById('sme').textContent='🏆';document.getElementById('smh').textContent='Outstanding!';
-document.getElementById('sms').textContent=`${Math.round(r*100)}% completion`;
-document.getElementById('smm').textContent='Maximum circulation protection. Your veins had a first-class flight. ✈️'}
-else if(r>=.5){document.getElementById('sme').textContent='🌟';document.getElementById('smh').textContent='Well Done!';
-document.getElementById('sms').textContent='Solid protection';
-document.getElementById('smm').textContent='Every movement break made a real difference. Safe travels! ✈️'}
-else{document.getElementById('sme').textContent='✈️';document.getElementById('smh').textContent='Flight Complete';
-document.getElementById('sms').textContent='Every bit counts';
-document.getElementById('smm').textContent='Even a few breaks help. Try shorter intervals next time. Safe travels! ✈️'}
+function endFlight(){if(S.mainR)clearInterval(S.mainR);S.phase='sum';saveS();const r=S.cps.length>0?S.done/S.cps.length:0;
+document.getElementById('sx').textContent=S.xp+' XP';document.getElementById('sc').textContent=`${S.done}/${S.cps.length}`;document.getElementById('ssv').textContent=`${S.best} 🔥`;document.getElementById('sh').textContent=`${S.water} 💧`;document.getElementById('sdu').textContent=`${S.dur}h`;
+if(r>=.8){document.getElementById('sme').textContent='🏆';document.getElementById('smh').textContent='Outstanding!';document.getElementById('sms').textContent=`${Math.round(r*100)}% completion`;document.getElementById('smm').textContent='Maximum protection. Your veins had a first-class flight. ✈️'}
+else if(r>=.5){document.getElementById('sme').textContent='🌟';document.getElementById('smh').textContent='Well Done!';document.getElementById('sms').textContent='Solid protection';document.getElementById('smm').textContent='Every break made a real difference. Safe travels! ✈️'}
+else{document.getElementById('sme').textContent='✈️';document.getElementById('smh').textContent='Flight Complete';document.getElementById('sms').textContent='Every bit counts';document.getElementById('smm').textContent='Even a few breaks help. Try shorter intervals next time. ✈️'}
 SFX.end();HX.ok();show('s-sum')}
 
-function reset(){clearInterval(S.mainR);clearInterval(S.exTR);cancelA();localStorage.removeItem('cx4');
-S={dur:4,risks:[],intv:90,start:null,cps:[],done:0,cur:0,streak:0,best:0,xp:0,water:0,phase:'onb',exOn:false,exT:60,exTR:null,exAR:null,mainR:null};
-lastAl=-1;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
-document.getElementById('dv').textContent='4';SFX.tap();HX.tap();show('s-home')}
+function reset(){clearInterval(S.mainR);clearInterval(S.exTR);cancelA();localStorage.removeItem('cx5');S={dur:4,risks:[],intv:90,start:null,cps:[],done:0,cur:0,streak:0,best:0,xp:0,water:0,phase:'onb',exOn:false,exT:60,exTR:null,exAR:null,mainR:null};lastAl=-1;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));document.getElementById('dv').textContent='4';SFX.tap();HX.tap();show('s-home')}
 
 // ═══ SAVE/LOAD ═══
-function saveS(){try{localStorage.setItem('cx4',JSON.stringify({dur:S.dur,risks:S.risks,intv:S.intv,start:S.start,
-cps:S.cps,done:S.done,cur:S.cur,streak:S.streak,best:S.best,xp:S.xp,water:S.water,phase:S.phase}))}catch(e){}}
-function loadS(){try{const d=localStorage.getItem('cx4');if(!d)return false;const p=JSON.parse(d);
-if(!p||!p.start)return false;Object.assign(S,p);S.exOn=false;S.exTR=null;S.exAR=null;S.mainR=null;return true}catch(e){return false}}
+function saveS(){try{localStorage.setItem('cx5',JSON.stringify({dur:S.dur,risks:S.risks,intv:S.intv,start:S.start,cps:S.cps,done:S.done,cur:S.cur,streak:S.streak,best:S.best,xp:S.xp,water:S.water,phase:S.phase}))}catch(e){}}
+function loadS(){try{const d=localStorage.getItem('cx5');if(!d)return false;const p=JSON.parse(d);if(!p||!p.start)return false;Object.assign(S,p);S.exOn=false;S.exTR=null;S.exAR=null;S.mainR=null;return true}catch(e){return false}}
 
 // ═══ OFFLINE ═══
 function chkO(){const b=document.getElementById('offb');navigator.onLine?b.classList.remove('on'):b.classList.add('on')}
 window.addEventListener('online',chkO);window.addEventListener('offline',chkO);
 
 // ═══ SW ═══
-if('serviceWorker'in navigator){const sw=`const V='cx4-v1';
-self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(['${location.href}']).catch(()=>{})));self.skipWaiting()});
-self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))));self.clients.claim()});
-self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{if(res.status===200){const c=res.clone();caches.open(V).then(ca=>ca.put(e.request,c))}return res}).catch(()=>caches.match(e.request)))})`;
-navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{})}
+if('serviceWorker'in navigator){const sw=`const V='cx5-v1';self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(['${location.href}']).catch(()=>{})));self.skipWaiting()});self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))));self.clients.claim()});self.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request).then(res=>{if(res.status===200){const c=res.clone();caches.open(V).then(ca=>ca.put(e.request,c))}return res}).catch(()=>caches.match(e.request)))})`;navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{})}
 
 // ═══ BOOT ═══
-window.addEventListener('load',()=>{chkO();
-setTimeout(()=>{document.getElementById('boot').classList.add('bye');
-if(loadS()){document.getElementById('s-home').classList.remove('on');
-switch(S.phase){case'dash':case'ex':document.getElementById('s-dash').classList.add('on');curS='s-dash';updateD();startM();break;
-case'sum':document.getElementById('s-sum').classList.add('on');curS='s-sum';endFlight();break;
-default:document.getElementById('s-home').classList.add('on');curS='s-home'}}
-setTimeout(()=>{const b=document.getElementById('boot');if(b)b.remove()},600)},800)})
+window.addEventListener('load',()=>{chkO();setTimeout(()=>{document.getElementById('boot').classList.add('bye');if(loadS()){document.getElementById('s-home').classList.remove('on');switch(S.phase){case'dash':case'ex':document.getElementById('s-dash').classList.add('on');curS='s-dash';updateD();startM();break;case'sum':document.getElementById('s-sum').classList.add('on');curS='s-sum';endFlight();break;default:document.getElementById('s-home').classList.add('on');curS='s-home'}}setTimeout(()=>{const b=document.getElementById('boot');if(b)b.remove()},600)},800)})
 </script>
 </body>
 </html>
+```
